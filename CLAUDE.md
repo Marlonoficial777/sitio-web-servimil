@@ -52,7 +52,7 @@ Clases: `bg-navy`, `text-orange`, `border-cyan`, `bg-ice`, etc.
 
 ## Estructura de secciones (orden en `src/pages/index.astro`)
 
-1. **Header** — overlay transparente sobre el hero; al hacer scroll cambia a fondo sólido `#011126` con sombra (transición suave). Logo/menú/WhatsApp en blanco. Hamburguesa en móvil.
+1. **Header** — overlay `fixed` transparente sobre el hero; al hacer scroll (>40px) gana clase `.is-scrolled` → fondo sólido `rgba(1,17,38,.92)` + sombra + blur (transición 0.3s, CSS en `global.css`). Logo/menú/WhatsApp en blanco. Hamburguesa en móvil. Altura `h-[80px] md:h-[88px]`. Entrada en cascada (stagger): logo → links → WhatsApp, vía `.h-stagger` + `animation-delay` escalonado (keyframe `headerIn`, respeta reduced-motion).
 2. **Hero** — video de fondo Cloudinary a pantalla completa.
 3. **Barra de confianza** (`TrustBar`).
 4. **Servicios actuales** (`Servicios`).
@@ -89,6 +89,14 @@ public/  favicon.svg, _headers
 - Botón flotante naranja **"Analiza tu crédito"** (abajo-derecha, `z-50`) → abre modal accesible en la misma página (slider monto + select cuotas → cuota mensual estimada + total + CTA WhatsApp).
 - **FÓRMULA AÚN ES PLACEHOLDER:** amortización francesa con `monthlyRate = 0.015` (1.5%/mes) en `CREDIT_CONFIG` / `monthlyPayment()`. **Pendiente datos reales de Servimil.**
 
+## Logo (`Logo.astro`)
+
+- Imagen oficial Cloudinary PNG. **OJO:** el PNG original es 1200×1200 con mucho padding transparente (logo útil 968×170). Por eso la URL usa **`e_trim`** para recortar el espacio vacío — sin eso el logo se ve diminuto dentro de su caja.
+- URL: `https://res.cloudinary.com/dzh85ye7y/image/upload/e_trim/q_auto/f_auto/v1781730267/Logo-Horizontal-Original-2_ys22y9.png`
+- Blanco vía `filter:brightness(0) invert(1)` cuando `dark` (header + footer).
+- Tamaño actual (ajustado a ojo con el usuario): `h-8 md:h-9`, bajado con `mt-7` en el wrapper del Header. `w-auto` (sin deformar).
+- Usado con `dark` en `Header.astro` y `Footer.astro`. Sigue siendo link a `#top`, con micro-hover.
+
 ## Lugares clave para editar
 
 - **Contenido / contacto / datos calculadora:** `src/lib/site.ts` (`SERVICIOS`, `BIENESTAR`, `NUEVOS`, `TESTIMONIOS`, `REQUISITOS`, `CREDIT_CONFIG`, WhatsApp).
@@ -100,6 +108,20 @@ public/  favicon.svg, _headers
 - [ ] **Fórmula real de la calculadora**: tasa real, montos mín/máx, plazos y condiciones (hoy placeholder 1.5%/mes).
 - [ ] **Fotos reales de testimonios** (hoy sin foto / avatar decorativo).
 - [ ] **Conectar dominio `servimil.co`** a Cloudflare Pages.
+
+## Estado / último avance (al 2026-06-17)
+
+- ✅ Hero con video de fondo Cloudinary a pantalla completa (`min-h-[100svh]`, contenido centrado), overlay, poster, reduced-motion. Badge "+5.000 familias" **eliminado**.
+- ✅ Header overlay transparente → sólido al scroll, con entrada en cascada (stagger).
+- ✅ Logo oficial Cloudinary con `e_trim`, blanco, tamaño afinado (`h-8 md:h-9`, `mt-7`).
+- ✅ `npm run deploy` despliega directo a producción (`--branch=main`).
+- ✅ Sitio vivo: https://servimil.pages.dev
+- Último commit: `8a7eccb` (logo h-8/md h-9 + mt-7).
+
+### Próximos pasos (mañana)
+
+- Revisar resto de secciones (TrustBar, Servicios, Bienestar, NuevosServicios, Testimonios, CtaFinal, Footer) — pulir contenido/estilo.
+- Atacar PENDIENTES de abajo (fórmula real calculadora, fotos testimonios, dominio).
 
 ## Notas
 
