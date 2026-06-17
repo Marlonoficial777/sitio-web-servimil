@@ -32,6 +32,28 @@ html {
   -webkit-backdrop-filter: blur(10px);
 }
 
+/* ---- Entrada en cascada (stagger) de los elementos del header ---- */
+@keyframes headerIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.h-stagger {
+  opacity: 0;
+  animation: headerIn 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .h-stagger {
+    opacity: 1;
+    animation: none;
+  }
+}
+
 body {
   margin: 0;
   background: var(--color-ice);
