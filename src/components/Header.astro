@@ -4,12 +4,13 @@ import Icon from "./Icon.astro";
 import { NAV_LINKS, WHATSAPP_URL } from "../lib/site";
 ---
 <header
-  class="sticky top-0 z-40 border-b border-[#dbe7ef] bg-white/[.93] backdrop-blur-[10px]"
+  id="siteHeader"
+  class="fixed inset-x-0 top-0 z-40 bg-transparent"
 >
   <div
     class="mx-auto flex h-[74px] max-w-[1200px] items-center justify-between gap-6 px-6"
   >
-    <Logo />
+    <Logo dark />
 
     <!-- Navegación desktop -->
     <nav class="hidden items-center gap-[34px] md:flex" aria-label="Principal">
@@ -17,7 +18,7 @@ import { NAV_LINKS, WHATSAPP_URL } from "../lib/site";
         NAV_LINKS.map((l) => (
           <a
             href={l.href}
-            class="text-[15px] font-medium text-[#3a4a5a] no-underline transition-colors hover:text-orange"
+            class="text-[15px] font-medium text-white/90 no-underline transition-colors hover:text-cyan"
           >
             {l.label}
           </a>
@@ -30,7 +31,7 @@ import { NAV_LINKS, WHATSAPP_URL } from "../lib/site";
         href={WHATSAPP_URL}
         target="_blank"
         rel="noopener"
-        class="inline-flex items-center gap-[9px] rounded-full bg-navy px-5 py-[11px] text-[15px] font-semibold text-white no-underline shadow-[0_6px_18px_rgba(1,17,38,.25)] transition-transform hover:-translate-y-0.5"
+        class="inline-flex items-center gap-[9px] rounded-full border border-white/30 bg-white/10 px-5 py-[11px] text-[15px] font-semibold text-white no-underline backdrop-blur-sm transition-colors hover:border-white/60 hover:bg-white/20"
       >
         <Icon name="whatsapp" size={18} stroke={2} />
         <span class="hidden sm:inline">WhatsApp</span>
@@ -43,7 +44,7 @@ import { NAV_LINKS, WHATSAPP_URL } from "../lib/site";
         aria-label="Abrir menú"
         aria-expanded="false"
         aria-controls="mobileNav"
-        class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#c5d6e3] text-navy md:hidden"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/30 text-white md:hidden"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
           <path d="M3 6h18M3 12h18M3 18h18" />
@@ -55,7 +56,7 @@ import { NAV_LINKS, WHATSAPP_URL } from "../lib/site";
   <!-- Navegación móvil desplegable -->
   <nav
     id="mobileNav"
-    class="hidden border-t border-[#dbe7ef] bg-white px-6 py-4 md:hidden"
+    class="hidden border-t border-white/10 bg-navy/95 px-6 py-4 backdrop-blur-md md:hidden"
     aria-label="Principal móvil"
   >
     <ul class="flex flex-col gap-1">
@@ -64,7 +65,7 @@ import { NAV_LINKS, WHATSAPP_URL } from "../lib/site";
           <li>
             <a
               href={l.href}
-              class="block rounded-lg px-3 py-3 text-[15px] font-medium text-[#3a4a5a] no-underline hover:bg-ice"
+              class="block rounded-lg px-3 py-3 text-[15px] font-medium text-white/90 no-underline hover:bg-white/10"
             >
               {l.label}
             </a>
@@ -76,8 +77,19 @@ import { NAV_LINKS, WHATSAPP_URL } from "../lib/site";
 </header>
 
 <script>
+  const header = document.getElementById("siteHeader");
   const toggle = document.getElementById("navToggle");
   const menu = document.getElementById("mobileNav");
+
+  // Fondo sólido al hacer scroll (ya pasó el hero)
+  const onScroll = () => {
+    if (!header) return;
+    header.classList.toggle("is-scrolled", window.scrollY > 40);
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Menú hamburguesa
   toggle?.addEventListener("click", () => {
     const open = menu?.classList.toggle("hidden") === false;
     toggle.setAttribute("aria-expanded", String(open));
