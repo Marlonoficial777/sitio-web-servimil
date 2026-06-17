@@ -1,16 +1,23 @@
 ---
-/** Logo de texto SERVIMIL con marca degradada. */
+/** Logo oficial SERVIMIL (imagen). dark=true → se renderiza en blanco. */
 interface Props {
-  dark?: boolean; // true = sobre fondo oscuro (footer)
+  dark?: boolean; // true = sobre fondo oscuro (header overlay / scroll, footer)
 }
 const { dark = false } = Astro.props;
+const LOGO =
+  "https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1781730267/Logo-Horizontal-Original-2_ys22y9.png";
 ---
-<a href="#top" class="flex items-center gap-[11px] no-underline">
-  <span
-    class="flex items-center justify-center rounded-[11px] font-bold text-white"
-    style="width:40px;height:40px;background:linear-gradient(135deg,#96DDED,#011126);font-size:20px;letter-spacing:-.5px;"
-  >S</span>
-  <span class={`font-bold text-[21px] tracking-[-.5px] ${dark ? "text-white" : "text-navy"}`}>
-    SERVI<span class={dark ? "text-cyan" : "text-navy/55"}>MIL</span>
-  </span>
+<a
+  href="#top"
+  aria-label="Servimil — inicio"
+  class="sm-fade inline-flex items-center no-underline transition-transform duration-300 hover:-translate-y-0.5 hover:scale-[1.03]"
+>
+  <img
+    src={LOGO}
+    alt="Servimil"
+    class="h-10 w-auto md:h-[46px]"
+    style={dark ? "filter:brightness(0) invert(1);" : ""}
+    loading="eager"
+    decoding="async"
+  />
 </a>
