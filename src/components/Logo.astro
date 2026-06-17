@@ -4,8 +4,9 @@ interface Props {
   dark?: boolean; // true = sobre fondo oscuro (header overlay / scroll, footer)
 }
 const { dark = false } = Astro.props;
+// e_trim recorta el gran padding transparente del PNG (1200x1200 → 968x170).
 const LOGO =
-  "https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1781730267/Logo-Horizontal-Original-2_ys22y9.png";
+  "https://res.cloudinary.com/dzh85ye7y/image/upload/e_trim/q_auto/f_auto/v1781730267/Logo-Horizontal-Original-2_ys22y9.png";
 ---
 <a
   href="#top"
