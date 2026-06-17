@@ -1,0 +1,203 @@
+---
+import Icon from "./Icon.astro";
+import { WHATSAPP_URL, CREDIT_CONFIG, REQUISITOS } from "../lib/site";
+const reqs = REQUISITOS;
+const c = CREDIT_CONFIG;
+---
+<!-- ============ BOTÓN FLOTANTE ============ -->
+<button
+  type="button"
+  data-open-credito
+  aria-haspopup="dialog"
+  aria-controls="creditoModal"
+  class="sm-pulse fixed bottom-6 right-6 z-50 inline-flex cursor-pointer items-center gap-[10px] rounded-full border-none bg-orange px-[22px] py-[15px] text-[15px] font-semibold text-white transition-transform hover:-translate-y-0.5 hover:scale-[1.02]"
+>
+  <Icon name="id-card" size={20} stroke={1.9} />
+  Analiza tu crédito
+</button>
+
+<!-- ============ MODAL CALCULADORA ============ -->
+<div
+  id="creditoModal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="creditoTitle"
+  hidden
+  class="fixed inset-0 z-[60] flex items-center justify-center bg-navy/[.62] p-6 backdrop-blur-[4px]"
+>
+  <div
+    id="creditoPanel"
+    class="sm-fade max-h-[92vh] w-full max-w-[520px] overflow-auto rounded-[24px] bg-white shadow-[0_40px_90px_rgba(0,0,0,.4)]"
+  >
+    <!-- Encabezado -->
+    <div class="flex items-start justify-between gap-4 rounded-t-[24px] bg-navy px-7 py-[26px] text-white">
+      <div>
+        <div class="mb-[6px] text-[12px] font-semibold uppercase tracking-[1px] text-cyan">
+          Calculadora de crédito
+        </div>
+        <h3 id="creditoTitle" class="m-0 text-[24px] font-bold tracking-[-.5px]">
+          Analiza tu crédito
+        </h3>
+      </div>
+      <button
+        type="button"
+        data-close-credito
+        aria-label="Cerrar"
+        class="flex h-[38px] w-[38px] flex-none cursor-pointer items-center justify-center rounded-[10px] border-none bg-cyan/[.14] text-white transition-colors hover:bg-cyan/[.28]"
+      >
+        <Icon name="close" size={20} stroke={2.2} />
+      </button>
+    </div>
+
+    <!-- Cuerpo -->
+    <div class="p-7">
+      <!-- Monto -->
+      <div class="mb-6">
+        <div class="mb-[10px] flex items-baseline justify-between">
+          <label for="montoRange" class="text-[15px] font-semibold text-navy">Monto deseado</label>
+          <span id="montoFmt" class="text-[18px] font-bold text-navy"></span>
+        </div>
+        <input
+          id="montoRange"
+          type="range"
+          min={c.min}
+          max={c.max}
+          step={c.step}
+          value={c.defaultMonto}
+          class="h-[6px] w-full cursor-pointer"
+          style="accent-color:#F34616;"
+        />
+        <div class="mt-[6px] flex justify-between text-[12px] text-[#94a6b8]">
+          <span>$1.000.000</span><span>$50.000.000</span>
+        </div>
+      </div>
+
+      <!-- Cuotas -->
+      <div class="mb-6">
+        <label for="cuotasSel" class="mb-[10px] block text-[15px] font-semibold text-navy">
+          Número de cuotas
+        </label>
+        <select
+          id="cuotasSel"
+          class="w-full cursor-pointer rounded-xl border-[1.5px] border-[#c5d6e3] bg-white px-[14px] py-[13px] text-[15px] font-medium text-navy"
+        >
+          {c.plazos.map((p) => (
+            <option value={p} selected={p === c.defaultCuotas}>{p} cuotas</option>
+          ))}
+        </select>
+      </div>
+
+      <!-- Resultado -->
+      <div
+        class="mb-[22px] rounded-2xl px-6 py-[22px] text-white"
+        style="background:linear-gradient(135deg,#011126,#0a2238);"
+      >
+        <div class="mb-[6px] text-[13px] font-medium text-cyan">Cuota mensual estimada</div>
+        <div id="cuotaFmt" class="text-[36px] font-bold leading-none tracking-[-1px]"></div>
+        <div class="mt-[10px] text-[13px] text-[#b8c6d4]">
+          Total estimado a pagar: <span id="totalFmt"></span>
+        </div>
+      </div>
+
+      <!-- Requisitos -->
+      <div class="mb-[22px] rounded-xl border border-[#dbe7ef] bg-ice px-[18px] py-4">
+        <div class="mb-[10px] text-[13px] font-semibold text-navy">Requisitos</div>
+        <ul class="m-0 flex list-none flex-col gap-2 p-0">
+          {reqs.map((r) => (
+            <li class="flex items-center gap-[9px] text-[13px] text-[#5a6a7a]">
+              <Icon name="check" size={15} stroke={2.8} class="flex-none text-orange" />
+              {r}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <p class="m-0 mb-4 text-center text-[11px] leading-[1.5] text-[#94a6b8]">
+        * Cálculo de referencia. La cuota final se confirma según estudio de
+        crédito y condiciones vigentes.
+      </p>
+
+      <a
+        href={WHATSAPP_URL}
+        target="_blank"
+        rel="noopener"
+        class="flex items-center justify-center gap-[9px] rounded-xl bg-orange px-4 py-[15px] text-[16px] font-semibold text-white no-underline shadow-[0_10px_26px_rgba(243,70,22,.32)] transition-transform hover:-translate-y-0.5"
+      >
+        <Icon name="whatsapp" size={19} stroke={2} />
+        Solicitar por WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ cfg: CREDIT_CONFIG }}>
+  (() => {
+    const modal = document.getElementById("creditoModal");
+    const panel = document.getElementById("creditoPanel");
+    const montoEl = document.getElementById("montoRange");
+    const cuotasEl = document.getElementById("cuotasSel");
+    const montoFmt = document.getElementById("montoFmt");
+    const cuotaFmt = document.getElementById("cuotaFmt");
+    const totalFmt = document.getElementById("totalFmt");
+    let lastFocus = null;
+
+    const fmt = (v) =>
+      new Intl.NumberFormat("es-CO", {
+        style: "currency",
+        currency: "COP",
+        maximumFractionDigits: 0,
+      }).format(Math.round(v));
+
+    /* ---- FÓRMULA (placeholder, único lugar a cambiar) ----
+       Cuota fija tipo amortización francesa con tasa mensual cfg.monthlyRate.
+       Reemplazar este bloque cuando se definan las condiciones reales. */
+    function monthlyPayment(principal, n) {
+      const r = cfg.monthlyRate;
+      return r > 0 ? (principal * r) / (1 - Math.pow(1 + r, -n)) : principal / n;
+    }
+
+    function recompute() {
+      const P = +montoEl.value;
+      const n = +cuotasEl.value;
+      const cuota = monthlyPayment(P, n);
+      montoFmt.textContent = fmt(P);
+      cuotaFmt.textContent = fmt(cuota);
+      totalFmt.textContent = fmt(cuota * n);
+    }
+
+    function open() {
+      lastFocus = document.activeElement;
+      modal.hidden = false;
+      document.body.style.overflow = "hidden";
+      // reinicia animación del panel
+      panel.classList.remove("sm-fade");
+      void panel.offsetWidth;
+      panel.classList.add("sm-fade");
+      modal.querySelector("[data-close-credito]")?.focus();
+    }
+    function close() {
+      modal.hidden = true;
+      document.body.style.overflow = "";
+      if (lastFocus) lastFocus.focus();
+    }
+
+    document.querySelectorAll("[data-open-credito]").forEach((b) =>
+      b.addEventListener("click", open),
+    );
+    document.querySelectorAll("[data-close-credito]").forEach((b) =>
+      b.addEventListener("click", close),
+    );
+    // Cerrar al hacer clic fuera del panel
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) close();
+    });
+    // Cerrar con Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.hidden) close();
+    });
+
+    montoEl.addEventListener("input", recompute);
+    cuotasEl.addEventListener("change", recompute);
+    recompute();
+  })();
+</script>

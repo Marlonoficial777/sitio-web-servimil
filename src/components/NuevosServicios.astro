@@ -1,0 +1,51 @@
+---
+import Icon from "./Icon.astro";
+import { NUEVOS } from "../lib/site";
+---
+<section class="bg-beige">
+  <div class="mx-auto max-w-[1200px] px-6 py-[88px]">
+    <div data-reveal class="mb-[46px] max-w-[720px]">
+      <div
+        class="mb-[14px] inline-flex items-center gap-2 rounded-full border border-[#e3d9c9] bg-white px-[14px] py-[7px] text-[13px] font-bold uppercase tracking-[.8px] text-navy"
+      >
+        <span class="h-[7px] w-[7px] rounded-full bg-orange"></span> Nuevos servicios
+      </div>
+      <h2 class="m-0 mb-[14px] text-[32px] font-bold leading-[1.12] tracking-[-.8px] sm:text-[40px]">
+        Más beneficios, recién llegados para ti
+      </h2>
+      <p class="m-0 text-[18px] font-normal leading-[1.55] text-[#5a6a7a]">
+        Ampliamos nuestro respaldo con servicios pensados para la vida de hoy.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-[22px] lg:grid-cols-2">
+      {
+        NUEVOS.map((n) => (
+          <article
+            data-reveal
+            class="relative rounded-[20px] border border-[#e3d9c9] bg-white p-[30px] transition-[transform,box-shadow] duration-300 hover:-translate-y-[5px] hover:shadow-[0_24px_50px_rgba(1,17,38,.12)]"
+          >
+            <span class="absolute right-5 top-5 rounded-full bg-orange px-[11px] py-[5px] text-[11px] font-bold tracking-[.6px] text-white">
+              NUEVO
+            </span>
+            <div class="mb-[18px] flex h-[56px] w-[56px] items-center justify-center rounded-[15px] bg-cyan text-navy">
+              <Icon name={n.icon} size={28} />
+            </div>
+            <h3 class="m-0 mb-2 text-[21px] font-semibold">{n.title}</h3>
+            <p class="m-0 mb-4 text-[15px] font-normal leading-[1.55] text-[#5a6a7a]">
+              {n.desc}
+            </p>
+            <ul class="m-0 flex list-none flex-col gap-[9px] p-0">
+              {n.items.map((it) => (
+                <li class="flex items-center gap-[9px] text-[14px] text-[#3a4a5a]">
+                  <Icon name="check" size={17} stroke={2.6} class="flex-none text-orange" />
+                  {it}
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

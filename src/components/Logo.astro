@@ -1,0 +1,16 @@
+---
+/** Logo de texto SERVIMIL con marca degradada. */
+interface Props {
+  dark?: boolean; // true = sobre fondo oscuro (footer)
+}
+const { dark = false } = Astro.props;
+---
+<a href="#top" class="flex items-center gap-[11px] no-underline">
+  <span
+    class="flex items-center justify-center rounded-[11px] font-bold text-white"
+    style="width:40px;height:40px;background:linear-gradient(135deg,#96DDED,#011126);font-size:20px;letter-spacing:-.5px;"
+  >S</span>
+  <span class="font-bold text-[21px] tracking-[-.5px] text-navy">
+    SERVI<span class={dark ? "text-cyan" : "text-navy/55"}>MIL</span>
+  </span>
+</a>

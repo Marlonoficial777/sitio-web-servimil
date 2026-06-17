@@ -1,0 +1,39 @@
+---
+import Icon from "./Icon.astro";
+import { SERVICIOS } from "../lib/site";
+---
+<section id="servicios" class="bg-ice">
+  <div class="mx-auto max-w-[1200px] px-6 py-[88px]">
+    <div data-reveal class="mb-11 max-w-[680px]">
+      <div class="mb-3 text-[13px] font-bold uppercase tracking-[1.2px] text-navy/60">
+        Nuestros servicios
+      </div>
+      <h2 class="m-0 mb-[14px] text-[32px] font-bold leading-[1.12] tracking-[-.8px] sm:text-[40px]">
+        Beneficios que cuidan lo que más importa
+      </h2>
+      <p class="m-0 text-[18px] font-normal leading-[1.55] text-[#5a6a7a]">
+        Soluciones pensadas para el día a día de la familia militar. Claras,
+        cercanas y siempre a tu lado.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-[22px] sm:grid-cols-2 lg:grid-cols-3">
+      {
+        SERVICIOS.map((s) => (
+          <article
+            data-reveal
+            class="group rounded-[18px] border border-[#dbe7ef] bg-white p-7 transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-[5px] hover:border-cyan hover:shadow-[0_22px_46px_rgba(1,17,38,.10)]"
+          >
+            <div class="mb-[18px] flex h-[54px] w-[54px] items-center justify-center rounded-[14px] bg-cyan text-navy">
+              <Icon name={s.icon} size={27} />
+            </div>
+            <h3 class="m-0 mb-2 text-[19px] font-semibold">{s.title}</h3>
+            <p class="m-0 text-[15px] font-normal leading-[1.55] text-[#5a6a7a]">
+              {s.desc}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

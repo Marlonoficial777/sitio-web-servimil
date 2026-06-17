@@ -1,0 +1,96 @@
+---
+import Icon from "./Icon.astro";
+import { TESTIMONIOS } from "../lib/site";
+---
+<section id="testimonios" class="border-t border-[#dbe7ef] bg-white">
+  <div class="mx-auto max-w-[980px] px-6 py-[88px] text-center">
+    <div data-reveal>
+      <div class="mb-3 text-[13px] font-bold uppercase tracking-[1.2px] text-navy/60">
+        Testimonios
+      </div>
+      <h2 class="m-0 mb-11 text-[32px] font-bold leading-[1.12] tracking-[-.8px] sm:text-[40px]">
+        La voz de quienes ya nos eligieron
+      </h2>
+    </div>
+
+    <div
+      data-reveal
+      class="relative rounded-[24px] border border-[#dbe7ef] bg-ice px-6 py-10 sm:px-11 sm:py-12"
+    >
+      <!-- Diapositiva activa (rellenada por JS) -->
+      <div id="tCard" class="sm-fade">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="#96DDED" class="mx-auto mb-[18px] block" aria-hidden="true">
+          <path d="M9.5 6C6.5 7 5 9.5 5 13v5h6v-7H8c0-2 .8-3.3 2.4-3.8L9.5 6zm9 0c-3 1-4.5 3.5-4.5 7v5h6v-7h-3c0-2 .8-3.3 2.4-3.8L18.5 6z"/>
+        </svg>
+        <p
+          id="tQuote"
+          class="mx-auto m-0 mb-7 max-w-[720px] text-[20px] font-medium leading-[1.5] text-balance text-navy sm:text-[23px]"
+        ></p>
+        <div class="flex items-center justify-center gap-[14px]">
+          <div
+            class="flex h-[52px] w-[52px] items-center justify-center rounded-full font-mono text-[9px] text-[#7e94a8]"
+            style="background:repeating-linear-gradient(45deg,#d3e4ef,#d3e4ef 6px,#c7dbe9 6px,#c7dbe9 12px);"
+          >foto</div>
+          <div class="text-left">
+            <div id="tName" class="text-[16px] font-semibold text-navy"></div>
+            <div id="tRole" class="text-[14px] font-medium text-[#6b8794]"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controles -->
+      <div class="mt-[34px] flex items-center justify-center gap-[18px]">
+        <button
+          id="tPrev"
+          type="button"
+          aria-label="Testimonio anterior"
+          class="flex h-[46px] w-[46px] items-center justify-center rounded-full border border-[#c5d6e3] bg-white text-navy transition-colors hover:border-navy hover:bg-navy hover:text-white"
+        >
+          <Icon name="arrowLeft" size={20} stroke={2.2} />
+        </button>
+        <span id="tLabel" class="min-w-[54px] text-[15px] font-semibold text-[#6b7a88]"></span>
+        <button
+          id="tNext"
+          type="button"
+          aria-label="Siguiente testimonio"
+          class="flex h-[46px] w-[46px] items-center justify-center rounded-full border border-[#c5d6e3] bg-white text-navy transition-colors hover:border-navy hover:bg-navy hover:text-white"
+        >
+          <Icon name="arrowRight" size={20} stroke={2.2} />
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline define:vars={{ TESTIMONIOS }}>
+  (() => {
+    const data = TESTIMONIOS;
+    let i = 0;
+    const card = document.getElementById("tCard");
+    const q = document.getElementById("tQuote");
+    const n = document.getElementById("tName");
+    const r = document.getElementById("tRole");
+    const label = document.getElementById("tLabel");
+
+    function render() {
+      const t = data[i];
+      q.textContent = `"${t.q}"`;
+      n.textContent = t.n;
+      r.textContent = t.r;
+      label.textContent = `${i + 1} / ${data.length}`;
+      // reinicia la animación de fade
+      card.classList.remove("sm-fade");
+      void card.offsetWidth;
+      card.classList.add("sm-fade");
+    }
+    document.getElementById("tPrev").addEventListener("click", () => {
+      i = (i - 1 + data.length) % data.length;
+      render();
+    });
+    document.getElementById("tNext").addEventListener("click", () => {
+      i = (i + 1) % data.length;
+      render();
+    });
+    render();
+  })();
+</script>

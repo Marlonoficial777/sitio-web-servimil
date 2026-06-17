@@ -1,0 +1,92 @@
+---
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import { NAV_LINKS, WHATSAPP_URL } from "../lib/site";
+---
+<header
+  class="sticky top-0 z-40 border-b border-[#dbe7ef] bg-white/[.93] backdrop-blur-[10px]"
+>
+  <div
+    class="mx-auto flex h-[74px] max-w-[1200px] items-center justify-between gap-6 px-6"
+  >
+    <Logo />
+
+    <!-- Navegación desktop -->
+    <nav class="hidden items-center gap-[34px] md:flex" aria-label="Principal">
+      {
+        NAV_LINKS.map((l) => (
+          <a
+            href={l.href}
+            class="text-[15px] font-medium text-[#3a4a5a] no-underline transition-colors hover:text-orange"
+          >
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a
+        href={WHATSAPP_URL}
+        target="_blank"
+        rel="noopener"
+        class="inline-flex items-center gap-[9px] rounded-full bg-navy px-5 py-[11px] text-[15px] font-semibold text-white no-underline shadow-[0_6px_18px_rgba(1,17,38,.25)] transition-transform hover:-translate-y-0.5"
+      >
+        <Icon name="whatsapp" size={18} stroke={2} />
+        <span class="hidden sm:inline">WhatsApp</span>
+      </a>
+
+      <!-- Botón menú móvil -->
+      <button
+        id="navToggle"
+        type="button"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="mobileNav"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#c5d6e3] text-navy md:hidden"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M3 6h18M3 12h18M3 18h18" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Navegación móvil desplegable -->
+  <nav
+    id="mobileNav"
+    class="hidden border-t border-[#dbe7ef] bg-white px-6 py-4 md:hidden"
+    aria-label="Principal móvil"
+  >
+    <ul class="flex flex-col gap-1">
+      {
+        NAV_LINKS.map((l) => (
+          <li>
+            <a
+              href={l.href}
+              class="block rounded-lg px-3 py-3 text-[15px] font-medium text-[#3a4a5a] no-underline hover:bg-ice"
+            >
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById("navToggle");
+  const menu = document.getElementById("mobileNav");
+  toggle?.addEventListener("click", () => {
+    const open = menu?.classList.toggle("hidden") === false;
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+  // Cerrar al elegir un enlace
+  menu?.querySelectorAll("a").forEach((a) =>
+    a.addEventListener("click", () => {
+      menu.classList.add("hidden");
+      toggle?.setAttribute("aria-expanded", "false");
+    }),
+  );
+</script>
