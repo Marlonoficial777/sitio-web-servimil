@@ -11,15 +11,16 @@ Landing page de **SERVIMIL**: servicios y beneficios para las **Fuerzas Armadas 
 
 **Producción = rama `main` → https://servimil.pages.dev**
 
-SIEMPRE desplegar a producción con `--branch=main`:
+Deploy a producción con un solo comando (ya fija `--branch=main`):
 
 ```
-npm run build
-npx wrangler pages deploy dist --project-name=servimil --branch=main --commit-dirty=true
+npm run deploy
 ```
 
-- **NO usar `master`** ni omitir `--branch`: eso publica a entorno **Preview** (URL `*.servimil.pages.dev` de preview), NO actualiza producción. Ese fue un error real ya cometido.
-- El script `npm run deploy` de `package.json` NO fija la rama → caería en Preview. Usar el comando de arriba.
+Equivale a: `astro build && wrangler pages deploy dist --project-name=servimil --branch=main --commit-dirty=true`
+
+- **`npm run deploy` despliega DIRECTO a producción (rama `main`).** No requiere flags extra.
+- **NO usar `master`** ni omitir `--branch` al correr wrangler a mano: eso publica a entorno **Preview** (URL `*.servimil.pages.dev` de preview), NO actualiza producción. Fue un error real ya cometido y corregido.
 - URL canónica (`astro.config.mjs`): `https://servimil.pages.dev`. Dominio de negocio (en contenido): `https://www.servimil.co` (pendiente conectar).
 
 ### Scripts (`package.json`)
@@ -28,7 +29,7 @@ npx wrangler pages deploy dist --project-name=servimil --branch=main --commit-di
 npm run dev      # astro dev
 npm run build    # astro build → dist/
 npm run preview  # astro preview
-npm run deploy   # build + deploy (OJO: sin --branch=main → Preview)
+npm run deploy   # build + deploy DIRECTO a producción (--branch=main ya incluido)
 ```
 
 ## Marca
