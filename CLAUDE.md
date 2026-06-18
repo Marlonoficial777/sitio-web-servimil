@@ -52,8 +52,8 @@ Clases: `bg-navy`, `text-orange`, `border-cyan`, `bg-ice`, etc.
 
 ## Estructura de secciones (orden en `src/pages/index.astro`)
 
-1. **Header** — overlay `fixed` transparente sobre el hero; al hacer scroll (>40px) gana clase `.is-scrolled` → fondo sólido `rgba(1,17,38,.92)` + sombra + blur (transición 0.3s, CSS en `global.css`). Logo/menú/WhatsApp en blanco. Hamburguesa en móvil. Altura `h-[80px] md:h-[88px]`. Entrada en cascada (stagger): logo → links → WhatsApp, vía `.h-stagger` + `animation-delay` escalonado (keyframe `headerIn`, respeta reduced-motion).
-2. **Hero** — video de fondo Cloudinary a pantalla completa.
+1. **Header** — overlay `fixed` transparente sobre el hero; al hacer scroll (>40px) gana clase `.is-scrolled` → fondo sólido `rgba(1,17,38,.92)` + sombra + blur (transición 0.3s, CSS en `global.css`). Logo/menú/WhatsApp en blanco. Hamburguesa en móvil. Altura `h-[80px] md:h-[88px]`. **Los tres alineados al mismo eje vertical** (`items-center`, sin `mt-7` en el logo). Menú `text-[17px]`, WhatsApp `text-[16px]`. Entrada en cascada (stagger): logo → links → WhatsApp, vía `.h-stagger` + `animation-delay` escalonado (keyframe `headerIn`, respeta reduced-motion). Links del menú: hover `scale-[1.06]` + cian (200ms ease-out, `inline-block`, sin layout shift, respeta reduced-motion).
+2. **Hero** — video de fondo Cloudinary a pantalla completa. Título en **2 líneas** ("Servimil te respalda" / "a ti y a tu familia", vía `<br>`). **Sin badge superior** ("PARA LAS FUERZAS ARMADAS…" eliminado). Único CTA = **"Contáctanos por WhatsApp"** alineado a la izquierda bajo el subtítulo (botón "Regístrate" **eliminado**).
 3. **Barra de confianza** (`TrustBar`).
 4. **Servicios actuales** (`Servicios`).
 5. **Bienestar y salud** (`Bienestar`).
@@ -89,12 +89,28 @@ public/  favicon.svg, _headers
 - Botón flotante naranja **"Analiza tu crédito"** (abajo-derecha, `z-50`) → abre modal accesible en la misma página (slider monto + select cuotas → cuota mensual estimada + total + CTA WhatsApp).
 - **FÓRMULA AÚN ES PLACEHOLDER:** amortización francesa con `monthlyRate = 0.015` (1.5%/mes) en `CREDIT_CONFIG` / `monthlyPayment()`. **Pendiente datos reales de Servimil.**
 
+## Animaciones y estados de interacción (UX)
+
+Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduced-motion` y usa `transform`/`opacity` (sin layout shift), ease-out 200-600ms. Definiciones en `global.css`.
+
+- **Estados de interacción:** `focus-visible:ring-2` (cian sobre fondos oscuros, naranja sobre claros, navy sobre botones naranja) en links header/footer, CTAs, botón flotante, slider monto y select cuotas. `active:scale-95` en botones + hamburguesa. `cursor-pointer` en cards. `disabled:opacity-50 + cursor-not-allowed` listo en botón flotante (la calculadora computa síncrono, sin async real hoy).
+- **Reveal on scroll:** `[data-reveal]` → fade + `translateY(38px)` + leve `scale`, con cascada por tarjeta vía `--reveal-delay` (asignado por índice en cada grid). Observer en `Base.astro`.
+- **Hover cards** (Servicios/Nuevos): `-translate-y-2` + `scale-[1.03]` + sombra fuerte; ícono `group-hover:scale-110` + color cyan→navy.
+- **Badge "NUEVO":** `.badge-nuevo` glow naranja sutil infinito lento (2.8s), discreto.
+- **CTA primarios:** `.btn-shine` (barrido de brillo con `::before`, `overflow-hidden` no recorta el focus-ring porque es box-shadow) + sombra naranja viva al hover.
+
+## Skill de diseño — `ui-ux-pro-max`
+
+- Instalada **global** en `C:/Users/marlo/.claude/skills/ui-ux-pro-max/` (cubre todos los proyectos; NO local). CLI: `npx uipro-cli init --ai claude` (sin flag `--global`: se corre desde el home para que caiga en `.claude/` del usuario).
+- Design system del proyecto persistido en **`design-system/servimil/MASTER.md`** (overrides por página en `design-system/servimil/pages/`).
+- ⚠️ **La skill propone paleta/fuente genéricas fintech (navy #1E3A8A, gold, IBM Plex) — IGNORAR.** La marca Servimil (navy `#011126`, naranja `#F34616`, Poppins) manda siempre. Usar la skill solo para espaciado, jerarquía, animaciones y estados.
+
 ## Logo (`Logo.astro`)
 
 - Imagen oficial Cloudinary PNG. **OJO:** el PNG original es 1200×1200 con mucho padding transparente (logo útil 968×170). Por eso la URL usa **`e_trim`** para recortar el espacio vacío — sin eso el logo se ve diminuto dentro de su caja.
 - URL: `https://res.cloudinary.com/dzh85ye7y/image/upload/e_trim/q_auto/f_auto/v1781730267/Logo-Horizontal-Original-2_ys22y9.png`
 - Blanco vía `filter:brightness(0) invert(1)` cuando `dark` (header + footer).
-- Tamaño actual (ajustado a ojo con el usuario): `h-8 md:h-9`, bajado con `mt-7` en el wrapper del Header. `w-auto` (sin deformar).
+- Tamaño actual (ajustado a ojo con el usuario): `h-8 md:h-9`, `w-auto` (sin deformar). **El `mt-7` se quitó** — el wrapper del logo ahora es `flex items-center` y se alinea al mismo eje que menú y WhatsApp.
 - Usado con `dark` en `Header.astro` y `Footer.astro`. Sigue siendo link a `#top`, con micro-hover.
 
 ## Lugares clave para editar
@@ -109,18 +125,22 @@ public/  favicon.svg, _headers
 - [ ] **Fotos reales de testimonios** (hoy sin foto / avatar decorativo).
 - [ ] **Conectar dominio `servimil.co`** a Cloudflare Pages.
 
-## Estado / último avance (al 2026-06-17)
+## Estado / último avance (al 2026-06-18)
 
-- ✅ Hero con video de fondo Cloudinary a pantalla completa (`min-h-[100svh]`, contenido centrado), overlay, poster, reduced-motion. Badge "+5.000 familias" **eliminado**.
-- ✅ Header overlay transparente → sólido al scroll, con entrada en cascada (stagger).
-- ✅ Logo oficial Cloudinary con `e_trim`, blanco, tamaño afinado (`h-8 md:h-9`, `mt-7`).
+- ✅ Hero con video de fondo Cloudinary a pantalla completa, overlay, poster, reduced-motion. Título en **2 líneas**, **sin badge superior**, único CTA WhatsApp a la izquierda (Regístrate eliminado).
+- ✅ Header alineado (logo/menú/WhatsApp mismo eje, sin `mt-7`), menú 17px + WhatsApp 16px, hover scale en links.
+- ✅ Logo oficial Cloudinary con `e_trim`, blanco, `h-8 md:h-9`.
+- ✅ **Skill `ui-ux-pro-max` instalada (global)** + design system persistido (`design-system/servimil/MASTER.md`).
+- ✅ **Estados de interacción** aplicados (focus-visible, active, cursor, disabled).
+- ✅ **Animaciones premium** aplicadas (reveal+stagger, hover cards, glow badge, shine CTA) — ver sección "Animaciones y estados".
 - ✅ `npm run deploy` despliega directo a producción (`--branch=main`).
 - ✅ Sitio vivo: https://servimil.pages.dev
-- Último commit: `8a7eccb` (logo h-8/md h-9 + mt-7).
+- Último commit: `f7340e1` (hero título 2 líneas + hover scale menú).
 
 ### Próximos pasos (mañana)
 
 - Revisar resto de secciones (TrustBar, Servicios, Bienestar, NuevosServicios, Testimonios, CtaFinal, Footer) — pulir contenido/estilo.
+- Considerar contadores ascendentes si se reintroducen cifras/stats (hoy no hay números en el contenido).
 - Atacar PENDIENTES de abajo (fórmula real calculadora, fotos testimonios, dominio).
 
 ## Notas
