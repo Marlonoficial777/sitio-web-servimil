@@ -19,12 +19,13 @@ import { SERVICIOS } from "../lib/site";
 
     <div class="grid grid-cols-1 gap-[22px] sm:grid-cols-2 lg:grid-cols-3">
       {
-        SERVICIOS.map((s) => (
+        SERVICIOS.map((s, i) => (
           <article
             data-reveal
-            class="group cursor-pointer rounded-[18px] border border-[#dbe7ef] bg-white p-7 transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-[5px] hover:border-cyan hover:shadow-[0_22px_46px_rgba(1,17,38,.10)]"
+            style={`--reveal-delay:${i * 90}ms`}
+            class="group cursor-pointer rounded-[18px] border border-[#dbe7ef] bg-white p-7 transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-2 hover:scale-[1.03] hover:border-cyan hover:shadow-[0_30px_60px_rgba(1,17,38,.16)]"
           >
-            <div class="mb-[18px] flex h-[54px] w-[54px] items-center justify-center rounded-[14px] bg-cyan text-navy">
+            <div class="mb-[18px] flex h-[54px] w-[54px] items-center justify-center rounded-[14px] bg-cyan text-navy transition-[transform,background-color,color] duration-300 ease-out group-hover:-translate-y-0.5 group-hover:scale-110 group-hover:bg-navy group-hover:text-cyan">
               <Icon name={s.icon} size={27} />
             </div>
             <h3 class="m-0 mb-2 text-[19px] font-semibold">{s.title}</h3>

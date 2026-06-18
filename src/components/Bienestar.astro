@@ -19,12 +19,13 @@ import { BIENESTAR } from "../lib/site";
 
     <div class="grid grid-cols-1 gap-[18px] sm:grid-cols-2 lg:grid-cols-3">
       {
-        BIENESTAR.map((b) => (
+        BIENESTAR.map((b, i) => (
           <article
             data-reveal
-            class="flex items-start gap-4 rounded-2xl border border-cyan/[.14] bg-white/5 p-[22px] transition-[background,border-color] duration-300 hover:border-cyan/50 hover:bg-cyan/[.12]"
+            style={`--reveal-delay:${i * 80}ms`}
+            class="group flex items-start gap-4 rounded-2xl border border-cyan/[.14] bg-white/5 p-[22px] transition-[transform,background,border-color] duration-300 ease-out hover:-translate-y-1 hover:border-cyan/50 hover:bg-cyan/[.12]"
           >
-            <div class="flex h-[46px] w-[46px] flex-none items-center justify-center rounded-xl bg-cyan/[.16] text-cyan">
+            <div class="flex h-[46px] w-[46px] flex-none items-center justify-center rounded-xl bg-cyan/[.16] text-cyan transition-transform duration-300 ease-out group-hover:scale-110">
               <Icon name={b.icon} size={24} />
             </div>
             <div>
