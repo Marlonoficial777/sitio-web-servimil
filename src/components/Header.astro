@@ -20,7 +20,7 @@ import { NAV_LINKS, WHATSAPP_URL } from "../lib/site";
         NAV_LINKS.map((l, i) => (
           <a
             href={l.href}
-            class="h-stagger rounded-sm text-[17px] font-medium text-white/90 no-underline transition-colors hover:text-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+            class="h-stagger inline-block rounded-sm text-[17px] font-medium text-white/90 no-underline transition-[color,transform] duration-200 ease-out hover:scale-[1.06] hover:text-cyan motion-reduce:transform-none motion-reduce:hover:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
             style={`animation-delay:${0.12 + i * 0.08}s`}
           >
             {l.label}
