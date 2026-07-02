@@ -171,16 +171,41 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 - **Fórmula del crédito:** `src/components/CreditWidget.astro` → `monthlyPayment()`.
 - **Paleta / fuente / estilos globales:** `src/styles/global.css`.
 
-## PENDIENTES
+## PENDIENTES ABIERTOS (al 2026-07-02)
 
-- [ ] **Imágenes reales** (placeholders marcados): fondo de `CierreEmocional.astro` → Cloudinary. (cards `Planes.astro` ya tienen fotos reales.)
-- [x] ~~Fotos reales servicios (zig-zag)~~ — **HECHO 2026-06-23/26** (`DETALLE.img`). **Las 8 fotos ya son reales** (Viajes + Crédito fácil cerrados 2026-06-26).
-- [ ] **Videos reales testimonios:** reemplazar los 6 placeholders VIDEO 16:9 de `components/Testimonios.astro` por `<iframe>` YouTube (estructura `aspect-video` ya lista, comentario TODO en cada uno).
+**Copy / textos:**
+- [ ] **Typos Home:** `"logralo"` → `"lograrlo"` y `"aquienes"` → `"a quienes"`.
+- [ ] **Nota legal planes:** hoy dice `"Aplican términos y condiciones"`; debe ser `"Aplican carencias y condiciones según cada servicio. Consulta términos completos"`.
+
+**Videos:**
+- [ ] **Videos reales testimonios:** reemplazar los 6 placeholders VIDEO 16:9 de `components/Testimonios.astro` por `<iframe>` YouTube (estructura `aspect-video` lista, comentario TODO en cada uno).
+- [ ] **Video real Testimonios Home** + botón "Conoce más" → `/testimonios`.
 - [ ] **Placeholder VIDEO en servicios** (sección Testimonios Trustindex) → video real.
+
+**Verificaciones / infra:**
+- [ ] **Verificar en vivo** que el WhatsApp nuevo (`573181626167`) se sirve en **producción** (posible caché CDN de Cloudflare tras el cambio).
 - [ ] **Fórmula real de la calculadora**: tasa real, montos mín/máx, plazos y condiciones (hoy placeholder 1.5%/mes).
 - [ ] **Conectar dominio `servimil.co`** a Cloudflare Pages.
+- [ ] **Imagen real** fondo `CierreEmocional.astro` (Home) → Cloudinary.
 
-## Estado / último avance (al 2026-06-24, sesión tarde)
+**Deuda técnica (arrastrada):**
+- Componentes huérfanos sin uso: `Servicios`, `Bienestar`, `NuevosServicios`, `ResumenServicios`, `TrustBar`. Limpiar.
+- Dep `three` en `package.json` sin uso (esfera 3D eliminada). Considerar quitar.
+- ⚠️ **Deploy Windows:** `npm run deploy` a veces crashea (`src\win\async.c, line 76`, bug libuv, NO del código). Workaround: `npm run build` y luego `npx wrangler pages deploy dist --project-name=servimil --branch=main --commit-dirty=true` por separado.
+
+- [x] ~~Fotos reales servicios (zig-zag)~~ — **HECHO** (`DETALLE.img`), 8/8 + Crédito fácil.
+
+## Estado / último avance (al 2026-07-02) — RESPALDO GIT + tanda "fuerza pública"
+
+- ✅ **RESPALDO REMOTO (por fin):** todo el trabajo commiteado (`67ef2f3`) y pusheado a **repo privado nuevo** `github.com/Marlonoficial777/sitio-web-servimil`, rama **`main`** (upstream configurado). Antes el working tree llevaba días sin commitear y sin remoto. ⚠️ El repo `mundo-servimil` es OTRO proyecto (OCR/nómina), NO tocar. Deploy prod sigue por `npm run deploy` (repo git ≠ Cloudflare).
+- ✅ **Copy "fuerza pública":** "militares"/"Fuerzas Armadas" → **"fuerza pública"** en todo el sitio (Footer, Servicios, Base, `site.ts`, conocenos, servicios) + SEO/meta.
+- ✅ **Conócenos:** nombres de las fuerzas en **verde militar** (Respaldo Institucional); **mapa de Colombia (SVG)** en la banda de stats; resaltados de copy ("peso del uniforme" en naranja, "GRACIAS" en mayúscula); sección Valores retitulada **"Lo que no se negocia"**.
+- ✅ **Home:** lista de servicios (`ValorContador`) **reordenada + enlazada**; contador con CTA "Escucha algunos testimonios"; **4 razones nuevas** en `PorQue.astro`; **menú desplegable en Hero** (`HeroMenu.astro`); **imagen de familia militar** reemplaza el video del escudo en `PorQue`.
+- ✅ **Servicios:** reorg **"Servicios en detalle"** → **9 bloques** (se añadió **"Crédito fácil"** de primero); **imágenes reales nuevas** (banco/jurídica/nómina/crédito/viajes, 8/8 + crédito); **logos de streaming** en Entretenimiento; **planes de mayor a menor** con "MÁS POPULAR" en **Élite**; rótulo de cobertura → **"PROTECCIÓN"**; cinta marquee con indicación de clickeable.
+- ✅ **WhatsApp:** número nuevo **`573181626167`** centralizado en `site.ts`.
+- ✅ **Testimonios (página):** fondo **beige** + grid de 6 videos placeholder.
+
+## Estado / avance previo (al 2026-06-24, sesión tarde)
 
 - ✅ **PorQue.astro (Home):** video del escudo (col. izq, mix-blend screen) → **video nuevo** `v1782331584` (escudo cian + familia abrazada). Solo cambió `ESCUDO_VIDEO` + `ESCUDO_POSTER`, todo lo demás igual.
 - ✅ **Planes.astro (Home, "Elige tu plan"):** (1) 3 **fotos nuevas** (`q_auto/f_auto`, `v1782332339/337/341`). (2) Destacado "MÁS POPULAR" + "El preferido por las familias" + borde/glow naranja + botón naranja **movido de Plus Superior → ELITE** (`popular: true` ahora en Élite). (3) **Hover/click sutil** en las 3 cards: `hover:border-orange/60` + glow naranja suave + `-translate-y-2`; `active:scale-[.99]` + `active:border-orange`; `cursor-pointer` + link estirado (`after:absolute after:inset-0`) → card entera navega a `/servicios#plan-...`.
