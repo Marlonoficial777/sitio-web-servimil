@@ -3,15 +3,19 @@ import Icon from "./Icon.astro";
 import { WHATSAPP_URL } from "../lib/site";
 ---
 <section class="relative isolate overflow-hidden bg-navy text-white">
-  {/* Fondo sólido (reemplazar luego con imagen Cloudinary) */}
-  <div
-    class="absolute inset-0 -z-20 bg-[#02182c]"
+  {/* Imagen de fondo real (Cloudinary) + Ken Burns sutil */}
+  <img
+    src="https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1783017681/hf_20260702_181512_ef53e369-ea85-4e01-88b5-5cea8b5a7e36_zz3avn.png"
+    alt=""
     aria-hidden="true"
-  ></div>
-  {/* Overlay cálido para legibilidad */}
+    class="ken-burns absolute inset-0 -z-20 h-full w-full object-cover"
+    loading="lazy"
+    decoding="async"
+  />
+  {/* Overlay oscuro para legibilidad del texto blanco (familia visible, texto manda) */}
   <div
     class="absolute inset-0 -z-10"
-    style="background:radial-gradient(900px 500px at 50% 120%,rgba(243,70,22,.22),transparent 60%),linear-gradient(180deg,rgba(1,17,38,.82),rgba(1,17,38,.92));"
+    style="background:radial-gradient(900px 500px at 50% 120%,rgba(243,70,22,.18),transparent 60%),linear-gradient(180deg,rgba(1,17,38,.6),rgba(1,17,38,.72) 55%,rgba(1,17,38,.82));"
     aria-hidden="true"
   ></div>
 
