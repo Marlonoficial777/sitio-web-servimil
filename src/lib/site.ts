@@ -88,18 +88,25 @@ export const TESTIMONIOS = [
 ];
 
 /* ============================================================
-   CALCULADORA DE CRÉDITO
-   Fórmula placeholder en UN solo lugar. Cuando se definan las
-   condiciones reales, editar CREDIT_CONFIG y/o monthlyPayment().
+   CALCULADORA DE CRÉDITO — DOS LÍNEAS
+   Línea 1 (convenio SERVIMIL, hasta $1.000.000): se CALCULA aquí
+   (francesa i=1.99% m.v. + aporte admin. por cuota).
+   Línea 2 (> $1.000.000, libre inversión / cartera / refi): NO se
+   calcula; depende de estudio con aliados → se muestra mensaje + CTA.
+   Ajustar tasa/aporte/plazos aquí; fórmula en CreditWidget.astro.
    ============================================================ */
 export const CREDIT_CONFIG = {
-  min: 1_000_000,
+  min: 200_000,
   max: 50_000_000,
-  step: 500_000,
-  defaultMonto: 8_000_000,
+  step: 100_000,
+  defaultMonto: 1_000_000,
   defaultCuotas: 24,
-  plazos: [6, 12, 18, 24, 36, 48],
-  monthlyRate: 0.015, // tasa mensual placeholder (1.5%)
+  // Línea 1 (convenio Servimil, hasta $1.000.000): plazos 12–36 en pasos de 2
+  plazos: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36],
+  // ===== Condiciones reales — LÍNEA 1 (convenio SERVIMIL) =====
+  line1Max: 1_000_000, // umbral: hasta este monto se calcula; por encima → Línea 2 (aliados)
+  monthlyRate: 0.0199, // 1.99% mensual vencido (m.v.)
+  aporteAdmin: 45_600, // aporte administrativo (cuota SICOD) sumado a CADA cuota
 };
 
 export const REQUISITOS = [
