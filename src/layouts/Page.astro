@@ -1,0 +1,22 @@
+---
+import Base from "./Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import CreditWidget from "../components/CreditWidget.astro";
+import HeroMenu from "../components/HeroMenu.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** true → header sólido desde arriba (páginas sin hero oscuro de fondo) */
+  solidHeader?: boolean;
+}
+const { title, description, solidHeader = false } = Astro.props;
+---
+<Base title={title} description={description}>
+  <Header solid={solidHeader} />
+  <HeroMenu />
+  <main><slot /></main>
+  <Footer />
+  <CreditWidget />
+</Base>

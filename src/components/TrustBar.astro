@@ -2,24 +2,33 @@
 import Icon from "./Icon.astro";
 
 const ITEMS = [
-  { icon: "clock", title: "Disponibilidad 24/7/365", desc: "Siempre que nos necesites, estamos." },
-  { icon: "eye", title: "Transparencia total", desc: "Cero descuentos no deseados." },
-  { icon: "users", title: "Confianza", desc: "Un equipo comprometido contigo." },
+  { icon: "clock", title: "24/7/365", desc: "Las 24 horas del día, los 365 días del año. Siempre para ti.", spin: true },
+  { icon: "shield-check", title: "Transparencia total", desc: "Cero sorpresas, cero descuentos ocultos." },
+  { icon: "users", title: "Confianza real", desc: "Un equipo que responde por ti y tu familia." },
 ];
 ---
 <section class="border-b border-[#dbe7ef] bg-white">
   <div
-    class="mx-auto grid max-w-[1200px] grid-cols-1 gap-5 px-6 py-11 sm:grid-cols-2 lg:grid-cols-3"
+    class="mx-auto grid max-w-[1200px] grid-cols-1 gap-6 px-6 py-14 sm:grid-cols-2 lg:grid-cols-3"
   >
     {
       ITEMS.map((it, i) => (
-        <div data-reveal style={`--reveal-delay:${i * 90}ms`} class="flex items-center gap-4">
-          <div class="flex h-[52px] w-[52px] flex-none items-center justify-center rounded-[13px] bg-cyan text-navy">
-            <Icon name={it.icon} size={26} stroke={1.9} />
+        <div
+          data-reveal
+          style={`--reveal-delay:${i * 120}ms`}
+          class="tb-card group flex flex-col items-start gap-4 rounded-2xl bg-ice p-7 shadow-[0_2px_14px_rgba(1,17,38,0.05)] ring-1 ring-[#dbe7ef]"
+        >
+          <div class="tb-icon flex h-[56px] w-[56px] flex-none items-center justify-center rounded-2xl bg-cyan text-navy">
+            <Icon
+              name={it.icon}
+              size={28}
+              stroke={1.9}
+              class={it.spin ? "tb-clock" : ""}
+            />
           </div>
           <div>
-            <div class="text-[16px] font-semibold">{it.title}</div>
-            <div class="text-[14px] text-[#6b7a88]">{it.desc}</div>
+            <div class="text-[18px] font-semibold text-navy">{it.title}</div>
+            <div class="mt-1 text-[14px] leading-relaxed text-[#6b7a88]">{it.desc}</div>
           </div>
         </div>
       ))

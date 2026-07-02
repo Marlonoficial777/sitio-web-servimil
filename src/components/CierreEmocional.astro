@@ -1,0 +1,45 @@
+---
+import Icon from "./Icon.astro";
+import { WHATSAPP_URL } from "../lib/site";
+---
+<section class="relative isolate overflow-hidden bg-navy text-white">
+  {/* Fondo sólido (reemplazar luego con imagen Cloudinary) */}
+  <div
+    class="absolute inset-0 -z-20 bg-[#02182c]"
+    aria-hidden="true"
+  ></div>
+  {/* Overlay cálido para legibilidad */}
+  <div
+    class="absolute inset-0 -z-10"
+    style="background:radial-gradient(900px 500px at 50% 120%,rgba(243,70,22,.22),transparent 60%),linear-gradient(180deg,rgba(1,17,38,.82),rgba(1,17,38,.92));"
+    aria-hidden="true"
+  ></div>
+
+  <div class="mx-auto max-w-[820px] px-6 py-[100px] text-center">
+    <h2
+      data-reveal
+      class="m-0 mb-5 text-[36px] font-bold leading-[1.08] tracking-[-1px] text-balance sm:text-[52px]"
+    >
+      Trabajamos hasta lograrlo
+    </h2>
+    <p
+      data-reveal
+      style="--reveal-delay:80ms"
+      class="mx-auto m-0 mb-9 max-w-[640px] text-[18px] leading-[1.6] text-[#cfdae6] sm:text-[20px]"
+    >
+      Comprometidos en usar todos los recursos disponibles para cuidar a
+      <span class="font-semibold text-orange">quienes más confían en nosotros</span>.
+    </p>
+    <a
+      data-reveal
+      style="--reveal-delay:140ms"
+      href={WHATSAPP_URL}
+      target="_blank"
+      rel="noopener"
+      class="btn-shine inline-flex items-center gap-[9px] rounded-full bg-orange px-[32px] py-[16px] text-[16px] font-semibold text-white no-underline shadow-[0_12px_32px_rgba(243,70,22,.45)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_48px_rgba(243,70,22,.62)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+    >
+      <Icon name="whatsapp" size={19} stroke={2} />
+      Habla con nosotros
+    </a>
+  </div>
+</section>

@@ -1,6 +1,6 @@
 ---
 import Icon from "./Icon.astro";
-import { WHATSAPP_URL, REGISTER_HREF } from "../lib/site";
+import { WHATSAPP_URL } from "../lib/site";
 ---
 <section
   id="registro"
@@ -16,12 +16,6 @@ import { WHATSAPP_URL, REGISTER_HREF } from "../lib/site";
         Tu familia merece el respaldo de Servimil. Empieza en minutos.
       </p>
       <div class="flex flex-wrap justify-center gap-[14px]">
-        <a
-          href={REGISTER_HREF}
-          class="btn-shine rounded-full bg-orange px-[30px] py-[15px] text-[16px] font-semibold text-white no-underline shadow-[0_12px_32px_rgba(243,70,22,.42)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_48px_rgba(243,70,22,.6)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
-        >
-          Regístrate
-        </a>
         <a
           href={WHATSAPP_URL}
           target="_blank"

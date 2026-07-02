@@ -1,0 +1,166 @@
+---
+import Icon from "./Icon.astro";
+
+const BENEFICIOS = [
+  { text: "Crédito fácil", href: "/servicios" },
+  { text: "Limpieza de nómina", href: "/servicios#administracion-nomina" },
+  { text: "Asistencia jurídica y financiera", href: "/servicios#asistencia-juridica" },
+  { text: "Médico en casa", href: "/servicios#bienestar-salud" },
+  { text: "Refinanciación y compra de cartera", href: "/servicios#asistencia-financiera" },
+  { text: "Seguros por enfermedad y fallecimiento", href: "/servicios#seguros-auxilios" },
+  { text: "Streaming: Netflix, HBO, Disney+ y más", href: "/servicios#entretenimiento" },
+  { text: "Y muchos beneficios más para los tuyos", href: "/servicios" },
+];
+
+const MINI = [
+  { text: "24/7", label: "Siempre disponibles" },
+  { count: "100", prefix: "", suffix: "%", label: "Transparencia" },
+];
+---
+<section class="bg-ice">
+  <div class="mx-auto grid max-w-[1200px] items-center gap-10 px-6 py-[88px] lg:grid-cols-2 lg:gap-16">
+    {/* ---------- IZQUIERDA: título + lista de checks ---------- */}
+    <div>
+      <div data-reveal class="mb-3 text-[13px] font-bold uppercase tracking-[1.2px] text-navy/60">
+        Todo en un solo lugar
+      </div>
+      <h2 data-reveal style="--reveal-delay:60ms" class="m-0 mb-3 text-[32px] font-bold leading-[1.12] tracking-[-.8px] text-navy sm:text-[40px]">
+        Todo lo que tu familia necesita
+      </h2>
+      <p data-reveal style="--reveal-delay:120ms" class="m-0 mb-7 text-[18px] leading-[1.55] text-[#5a6a7a]">
+        En un solo lugar, sin complicaciones.
+      </p>
+
+      <ul class="mb-9 flex flex-col gap-1.5">
+        {
+          BENEFICIOS.map((b, i) => (
+            <li data-reveal style={`--reveal-delay:${180 + i * 80}ms`}>
+              <a
+                href={b.href}
+                class="group flex cursor-pointer items-center gap-3 rounded-xl px-2 py-2 no-underline transition-[background-color,transform] duration-200 hover:translate-x-1 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-ice"
+              >
+                <span class="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-cyan text-navy transition-transform duration-200 group-hover:scale-110">
+                  <Icon name="check" size={16} stroke={2.4} />
+                </span>
+                <span class="text-[16px] font-medium text-navy transition-colors duration-200 group-hover:text-orange">{b.text}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <a
+        data-reveal
+        href="/servicios"
+        class="btn-shine inline-flex items-center gap-2 rounded-full bg-orange px-[28px] py-[14px] text-[15px] font-semibold text-white no-underline shadow-[0_12px_32px_rgba(243,70,22,.42)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_48px_rgba(243,70,22,.6)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 focus-visible:ring-offset-ice"
+      >
+        Ver todos los servicios
+        <Icon name="arrowRight" size={18} stroke={2.2} />
+      </a>
+    </div>
+
+    {/* ---------- DERECHA: contador premium (glassmorphism + glow) ---------- */}
+    <div
+      data-reveal
+      style="--reveal-delay:120ms"
+      class="relative overflow-hidden rounded-[30px] border border-cyan/40 bg-white/55 px-10 py-14 text-center shadow-[0_28px_70px_rgba(1,17,38,.14)] backdrop-blur-xl sm:px-12 lg:scale-[1.04]"
+    >
+      {/* glow detrás del número */}
+      <div
+        class="pointer-events-none absolute left-1/2 top-[22%] h-[200px] w-[200px] -translate-x-1/2 rounded-full"
+        style="background:radial-gradient(circle,rgba(243,70,22,.28),transparent 70%);filter:blur(20px);"
+        aria-hidden="true"
+      ></div>
+
+      <div class="relative">
+        <div
+          class="m-0 font-bold leading-none tracking-[-1.5px] text-orange"
+          style="font-size:clamp(56px,8.5vw,86px);"
+        >
+          <span data-count="20664">0</span>
+        </div>
+        <div class="mt-4 text-[18px] font-medium text-navy">
+          Familias que ya confían en nosotros
+        </div>
+      </div>
+
+      {/* mini-stats */}
+      <div class="relative mx-auto mt-9 grid max-w-[320px] grid-cols-2 gap-3 border-t border-navy/10 pt-7">
+        {
+          MINI.map((m) => (
+            <div class="flex flex-col items-center">
+              <div class="text-[26px] font-bold leading-none tracking-[-.5px] text-navy sm:text-[30px]">
+                {m.text ? (
+                  m.text
+                ) : (
+                  <span data-count={m.count} data-prefix={m.prefix} data-suffix={m.suffix}>
+                    {m.prefix}0{m.suffix}
+                  </span>
+                )}
+              </div>
+              <div class="mt-1.5 text-[12px] font-medium leading-snug text-[#5a6a7a]">
+                {m.label}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      {/* CTA testimonios */}
+      <div class="relative mt-8 border-t border-navy/10 pt-7">
+        <a
+          href="/testimonios"
+          class="btn-shine inline-flex items-center gap-2 rounded-full bg-orange px-[26px] py-[13px] text-[15px] font-semibold text-white no-underline shadow-[0_12px_30px_rgba(243,70,22,.4)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(243,70,22,.58)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+        >
+          <Icon name="play" size={18} stroke={2.2} />
+          Escucha algunos testimonios
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const els = document.querySelectorAll("[data-count]");
+    if (!els.length) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const fmt = (n) => Math.round(n).toLocaleString("es-CO");
+
+    const run = (el) => {
+      const target = parseInt(el.dataset.count, 10) || 0;
+      const pre = el.dataset.prefix || "";
+      const suf = el.dataset.suffix || "";
+      if (reduce) {
+        el.textContent = pre + fmt(target) + suf;
+        return;
+      }
+      const dur = 2000;
+      const t0 = performance.now();
+      const tick = (now) => {
+        const p = Math.min((now - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+        el.textContent = pre + fmt(target * eased) + suf;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+
+    if (!("IntersectionObserver" in window)) {
+      els.forEach(run);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            run(e.target);
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.4 },
+    );
+    els.forEach((el) => io.observe(el));
+  })();
+</script>

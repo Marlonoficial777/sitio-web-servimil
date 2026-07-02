@@ -5,18 +5,18 @@
    ============================================================ */
 
 /** Contacto */
-export const WHATSAPP_NUMBER = "573157019885";
+export const WHATSAPP_NUMBER = "573181626167";
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
-export const WHATSAPP_DISPLAY = "+57 315 701 9885";
+export const WHATSAPP_DISPLAY = "+57 318 162 6167";
 export const WEBSITE = "https://www.servimil.co";
 export const REGISTER_HREF = "#registro";
 
 /* ---- Navegación ---- */
 export const NAV_LINKS = [
-  { label: "Home", href: "#top" },
-  { label: "Conócenos", href: "#conocenos" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "Testimonios", href: "#testimonios" },
+  { label: "Home", href: "/" },
+  { label: "Conócenos", href: "/conocenos" },
+  { label: "Servicios", href: "/servicios" },
+  { label: "Testimonios", href: "/testimonios" },
 ];
 
 /* ---- Servicios actuales (íconos por nombre — ver Icon.astro) ---- */
@@ -73,7 +73,7 @@ export const NUEVOS = [
     desc: "Defendemos tus derechos con abogados que conocen el sector.",
     items: [
       "Derechos de petición, tutelas y demandas",
-      "Trámites militares, subsidios y permisos",
+      "Trámites de la fuerza pública, subsidios y permisos",
       "Contratos, divorcios y asesoría legal integral",
     ],
   },
@@ -103,7 +103,7 @@ export const CREDIT_CONFIG = {
 };
 
 export const REQUISITOS = [
-  "Válido para Fuerzas Armadas / Min. Defensa",
+  "Válido para fuerza pública / Min. Defensa",
   "Carencia de 120 días",
   "Beneficiarios máximo 70 años",
 ];

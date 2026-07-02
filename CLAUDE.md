@@ -50,28 +50,80 @@ Clases: `bg-navy`, `text-orange`, `border-cyan`, `bg-ice`, etc.
 
 **Poppins** (`--font-sans`). Fallback `ui-sans-serif, system-ui, sans-serif`.
 
-## Estructura de secciones (orden en `src/pages/index.astro`)
+## Arquitectura — SITIO MULTIPÁGINA ⚠️
 
-1. **Header** — overlay `fixed` transparente sobre el hero; al hacer scroll (>40px) gana clase `.is-scrolled` → fondo sólido `rgba(1,17,38,.92)` + sombra + blur (transición 0.3s, CSS en `global.css`). Logo/menú/WhatsApp en blanco. Hamburguesa en móvil. Altura `h-[80px] md:h-[88px]`. **Los tres alineados al mismo eje vertical** (`items-center`, sin `mt-7` en el logo). Menú `text-[17px]`, WhatsApp `text-[16px]`. Entrada en cascada (stagger): logo → links → WhatsApp, vía `.h-stagger` + `animation-delay` escalonado (keyframe `headerIn`, respeta reduced-motion). Links del menú: hover `scale-[1.06]` + cian (200ms ease-out, `inline-block`, sin layout shift, respeta reduced-motion).
-2. **Hero** — video de fondo Cloudinary a pantalla completa. Título en **2 líneas** ("Servimil te respalda" / "a ti y a tu familia", vía `<br>`). **Sin badge superior** ("PARA LAS FUERZAS ARMADAS…" eliminado). Único CTA = **"Contáctanos por WhatsApp"** alineado a la izquierda bajo el subtítulo (botón "Regístrate" **eliminado**).
-3. **Barra de confianza** (`TrustBar`).
-4. **Servicios actuales** (`Servicios`).
-5. **Bienestar y salud** (`Bienestar`).
-6. **Nuevos servicios** (`NuevosServicios`) — Plan Mascota, Tecnología, Viajes Internacionales, Jurídica Especializada (badge naranja "NUEVO").
-7. **Testimonios** (`Testimonios`).
-8. **CTA final** (`CtaFinal`).
-9. **Footer**.
-10. **CreditWidget** — calculadora flotante (fuera de `<main>`).
+**Ya NO es one-page.** 4 páginas reales (Astro routing en `src/pages/`). El menú navega entre páginas, NO hace scroll a secciones.
+
+- `/` → **index.astro** (Home)
+- `/conocenos` → **conocenos.astro** (quiénes somos, misión, valores, CTA)
+- `/servicios` → **servicios.astro** (sección Ecosistema = esfera 3D + acordeón)
+- `/testimonios` → **testimonios.astro** (grid de videos + CTA, ver abajo)
+
+### Layout compartido — `layouts/Page.astro`
+Envuelve TODAS las páginas: `Base` + `Header` + `<main><slot/></main>` + `Footer` + `CreditWidget`. Prop `solidHeader` (bool) → header sólido desde arriba (páginas internas sin hero oscuro). Home NO lo pasa (header transparente sobre hero).
+
+### Header
+- `fixed` overlay. Transparente sobre hero; al scroll (>40px) gana `.is-scrolled` → fondo sólido `rgba(1,17,38,.92)` + sombra + blur. Prop `solid` (vía `data-solid`) → siempre sólido (lo usan páginas internas).
+- **Link activo:** `aria-current="page"` + color cian, según `Astro.url.pathname` (desktop + móvil).
+- Altura `h-[80px] md:h-[88px]`, 3 alineados (`items-center`). Stagger `.h-stagger`. Hover links `scale-[1.06]`+cian.
+
+### Home (`index.astro`) — orden
+1. **Hero** (`Hero`) — video Cloudinary full-screen. Título 2 líneas, sin badge, CTA WhatsApp izquierda. **Video sin `q_auto/f_auto`** (calidad original, pesa más).
+2. ~~TrustBar~~ — **QUITADO del Home** (2026-06-23). Componente sigue en `components/` sin uso. Orden ahora: Hero → ValorContador → PorQue → Planes → CierreEmocional → CtaFinal.
+3. **ValorContador** — "Todo lo que tu familia necesita" + lista de checks (stagger) izquierda; card glassmorphism con **contador animado** "20.664" (easeOutCubic ~2s, viewport) + mini-stats 24/7 y 100% derecha. **Lista de checks CLICKEABLE** (2026-06-23): cada ítem es `<a>` a `/servicios#ancla` (nómina→administracion-nomina, seguros→seguros-auxilios, refinanciación→asistencia-financiera, jurídica→asistencia-juridica, streaming→entretenimiento, "muchos más"→/servicios). Hover texto→naranja + `translate-x-1`.
+4. **PorQue** — 2 columnas. Título central "¿Por qué Servimil?" (blanco normal). Izquierda: **video escudo** Cloudinary con `mix-blend-mode:screen` + máscara radial (fondo negro desaparece, escudo flota) + glow cian + flotación. Derecha: "No somos una empresa más…" + 4 razones en lista (copy emocional). Sin logo sobrepuesto (se quitó).
+5. **Planes** — "Elige tu plan" (sin eyebrow). 3 cards con **fotos reales** Cloudinary, conteo animado en cobertura ($1M/$2M/$3M, ~2.5s stagger). Mensualidades: **PLUS $39.900 / PLUS SUPERIOR $49.900 (destacada, "El preferido por las familias") / ELITE $59.900**. Sin línea "al día". Botón "Más información" → **/servicios#plan-...** (deep-link a la card del plan, con highlight de llegada — ver Servicios). Cierre: "Sin letra pequeña engañosa. Estamos para cumplirte."
+6. **CierreEmocional** — banda oscura cálida "Trabajamos hasta lograrlo" (imagen de fondo placeholder).
+7. **CtaFinal** — "Afíliate hoy…" (Regístrate + WhatsApp + Solicita tu crédito).
+
+### Conócenos (`conocenos.astro`) — storytelling premium
+1. **Hero cinematográfico** — video Cloudinary full-screen (`100svh`, object-cover, autoplay/muted/loop, poster so_0). Overlay degradado navy (30%→75%) + viñeteado. Texto alineado izquierda con el logo (`max-w-[1200px]`), centrado vertical. Sin eyebrow. Entrada cascada al cargar (`.cn-in` + delays). Indicador scroll "Conoce nuestra historia" + bounce.
+2. **Quiénes somos** — "Más de 3 años caminando a tu lado", 2 col (texto + img placeholder).
+3. **Stats conteo** — 20.664 / +3 / 100% (banda navy).
+4. **Nuestro propósito** — banda cinematográfica. **Fondo VIDEO Cloudinary** (2026-06-23, antes imagen Ken Burns): `<video autoplay muted loop playsinline preload="metadata">` + `poster` = la imagen anterior, `object-cover -z-20`. Overlay navy + texto quietos encima.
+5. **Propuesta de valor** — clímax. **Fondo VIDEO Cloudinary** (2026-06-23, antes imagen Ken Burns): mismo patrón video+poster. Overlay navy radial naranja + cita grande + firma "El compromiso de Servimil". **Ken Burns y sway eliminados** en estas 2 (el video trae su movimiento). Encapsulado `{/* === FONDO VIDEO === */}`.
+6. **Valores** — 4 cards (Compromiso, Transparencia, Cercanía, Disponibilidad).
+7. **Para quiénes trabajamos** — frase Ministerio de Defensa.
+8. **CTA final** — "Escríbenos ahora" (WhatsApp) + "Conoce nuestros servicios" (/servicios).
+
+### Servicios (`servicios.astro`) — REDISEÑADO 2026-06-22 ⚠️
+**Ya NO usa esfera 3D ni acordeón.** Three.js quitado de `Ecosistema.astro` (peso muerto fuera; dep `three` sigue en package.json sin uso). Orden actual:
+1. **Hero** (`Ecosistema.astro`) — **video de fondo a pantalla completa** (`min-h-100svh`) de familia viendo película (Cloudinary, cálido). Capas: video `z-0` → overlay **NEGRO neutro** `rgba(0,0,0,~.55)` `z-[1]` (NO navy, para conservar tonos cálidos) → contenido `z-10`. Header **transparente** sobre el video (sin `solidHeader`). Texto centrado: eyebrow blanco "NUESTROS SERVICIOS" + título + subtítulo + flecha bounce decorativa. Video carga por JS solo si NO reduced-motion y NO móvil (`<768px` = solo poster `so_0`).
+2. **Cinta marquee** (en `servicios.astro`) — UNA sola banda recta naranja `#F34616`, texto blanco mayúsculas, separador ✦, loop R→L 48s, `mask-image` fade en bordes, hover pausa. Array `CINTA`. **CLICKEABLE** (2026-06-23): cada nombre con bloque equivalente es `<a href="#id">` (mapa `CINTA_LINK` nombre→id; ambos sets del loop tienen enlaces). Scroll suave (global) + `scroll-margin-top:100px` en bloques. "Tecnología" sin bloque = texto plano. `.marquee-link` hover subrayado/opacidad.
+3. **Nuestros planes** — 3 cards (array `PLANES`): Plus $39.900 / **Plus Superior $49.900 destacada "MÁS POPULAR"** / Élite $59.900. Precio grande, caja cobertura bono cian, checks, botón "Afíliate ahora" → `WHATSAPP` (wa.me/573181626167). Eyebrow blanco. **ids** `plan-plus / plan-plus-superior / plan-elite` + `scroll-margin-top:110px` (destino de los botones del Home). **Highlight de llegada**: script lee `location.hash` en `load`/`hashchange` → clase `.plan-highlight` (glow+borde naranja+scale, anim `planArrive` 2s una vez, autolimpia en `animationend`).
+4. **Servicios en detalle (zig-zag)** — 8 bloques alternados texto↔**foto real 4:3** (array `DETALLE`, campo `img` Cloudinary `q_auto/f_auto`): Bono, Asistencia financiera, Jurídica, Nómina, Seguros y auxilios, Entretenimiento, Bienestar y salud, Viajes. **Fotos reales puestas 2026-06-23.** Cada bloque con `id` (array `DETALLE_IDS`) + `scroll-margin-top:100px` (destino de cinta + lista Home). Reveal lateral opuesto (`data-reveal="left|right"`). **Animaciones premium**: stagger interno del texto (`.det-stagger` `--det-i`), hover imagen zoom `scale(1.05)` (`overflow-hidden`) + sombra ↑, parallax sutil del bloque decorativo (`.det-decor`), ícono entrada `scale`+rebote. Todo respeta reduced-motion. Eyebrow blanco.
+5. **Testimonios (Trustindex)** (2026-06-23) — tras "Servicios en detalle", antes del footer. Fondo **navy `#011126`**. Título único "TESTIMONIOS" blanco extrabold (32/40/46px). Debajo: **placeholder VIDEO 16:9** (`aspect-video`, `max-w-3xl`, bg blanco, comentario TODO iframe). Luego **widget Google Reviews Trustindex**: `<script is:inline defer async src=".../loader.js?5eb6c5b7485b953155662c28bb3">` antes de `</Page>` (sobrevive al build). El widget se inyecta solo (~1s). `max-w-[820px]`, sin caja/sombra (va directo sobre navy). ⚠️ Se intentó marquee auto-scroll de las cards → **revertido** (peleaba con el slider de Trustindex, se veía mal).
+
+- **Patrón eyebrow** (repetido a pedido del usuario): eyebrows de sección en **blanco** `text-[16px] sm:text-[18px]` (no cian, no 13px).
+- **Patrón reveal lateral**: `data-reveal="left"` / `"right"` (translateX ±48px) definido en `global.css` (junto al `data-reveal` base). Usado en conocenos ("Quiénes somos") y servicios (zig-zag).
+
+### Testimonios (`testimonios.astro` + `components/Testimonios.astro`) — REESCRITO 2026-06-23, FONDO BEIGE 2026-06-24 ⚠️
+**Ya NO es carrusel de citas en texto.** Se eliminó la card con comilla + cita + nombre/rol + controles ‹ N/N › y su script (y los imports `Icon`/`TESTIMONIOS`). Ahora:
+1. **Encabezado** — eyebrow "TESTIMONIOS" **naranja** `text-[16px] sm:text-[18px]` (agrandado 2026-06-24, antes 13px gris) + título grande "La voz de quienes ya nos eligieron" **navy** (`40/52/60px`).
+2. **Grid 6 placeholders de video** — `aspect-video`, 3 col desktop / 2 tablet / 1 móvil, `rounded-2xl`, **fondo BLANCO** + sombra suave de elevación + **borde superior 2px naranja** (`border-t-2 border-orange/70`), "VIDEO" naranja tenue (`text-orange/40`), reveal con stagger. Cada uno con comentario `{/* TODO: reemplazar por <iframe> de YouTube del testimonio N */}` + ejemplo iframe. → **pendiente videos reales**.
+3. **CTA cierre** — banda navy `#011126` (conecta sin corte con footer navy): "¿Listo para que tu familia también esté respaldada?" + subtítulo cian + botón naranja "Contáctanos por WhatsApp" (`wa.me/573181626167`, `btn-shine`).
+
+- **FONDO BEIGE (2026-06-24)** — sección encabezado+grid: fondo **beige `#EAE5DD`** con degradado vertical MUY sutil (`linear-gradient(170deg,#F0ECE4,#EAE5DD,#E5DFD5)`) + 2 blobs naranja `blur(130px)` opacidad 0.06/0.07 en esquinas (atmósfera casi imperceptible, peso cero, sin animación). Cards blancas resaltan sobre el beige. Empalme beige→CTA navy→footer navy = corte definido limpio. Todo en `<style>` scoped, encapsulado `/* === FONDO BEIGE TESTIMONIOS (reversible) === */ ... /* === FIN === */` (clases `.tst-hero` `.tst-mesh` `.tst-blob`). Antes se probó fondo navy+mesh cian/naranja → cambiado a beige a pedido.
 
 ```
 src/
-  layouts/Base.astro          # shell HTML, <head>, fuente, meta
-  pages/index.astro           # única página; compone las secciones
-  lib/site.ts                 # CONFIG CENTRAL: contacto, contenido, fórmula calculadora
-  styles/global.css           # @theme paleta + Poppins + animaciones + estilos header scroll
-  components/                 # Logo, Icon, Header, Hero, TrustBar, Servicios,
-                              # Bienestar, NuevosServicios, Testimonios, CtaFinal,
+  layouts/Base.astro          # shell HTML, <head>, fuente, meta, observer reveal
+  layouts/Page.astro          # Base + Header + main + Footer + CreditWidget (prop solidHeader)
+  pages/index.astro           # Home
+  pages/conocenos.astro
+  pages/servicios.astro       # usa Ecosistema
+  pages/testimonios.astro     # usa Testimonios
+  lib/site.ts                 # CONFIG CENTRAL: NAV_LINKS (rutas reales), contacto, contenido, calculadora
+  styles/global.css           # @theme paleta + Poppins + animaciones + header scroll
+  components/                 # Logo, Icon, Header, Hero, TrustBar, ValorContador, PorQue,
+                              # Planes, CierreEmocional, Ecosistema, Testimonios, CtaFinal,
                               # Footer, CreditWidget
+                              # (huérfanos sin uso: Servicios, Bienestar, NuevosServicios, ResumenServicios)
+
+# Patrón contador animado (reutilizado): span con data-count / data-prefix /
+# data-suffix / data-delay + script is:inline con IntersectionObserver +
+# easeOutCubic + toLocaleString("es-CO"). Está en ValorContador, Planes y conocenos.
+# Patrón "video sin caja": mix-blend-mode:screen + mask-image radial (PorQue).
 public/  favicon.svg, _headers
 ```
 
@@ -121,27 +173,59 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 
 ## PENDIENTES
 
+- [ ] **Imágenes reales** (placeholders marcados): fondo de `CierreEmocional.astro` → Cloudinary. (cards `Planes.astro` ya tienen fotos reales.)
+- [x] ~~Fotos reales servicios (zig-zag)~~ — **HECHO 2026-06-23/26** (`DETALLE.img`). **Las 8 fotos ya son reales** (Viajes + Crédito fácil cerrados 2026-06-26).
+- [ ] **Videos reales testimonios:** reemplazar los 6 placeholders VIDEO 16:9 de `components/Testimonios.astro` por `<iframe>` YouTube (estructura `aspect-video` ya lista, comentario TODO en cada uno).
+- [ ] **Placeholder VIDEO en servicios** (sección Testimonios Trustindex) → video real.
 - [ ] **Fórmula real de la calculadora**: tasa real, montos mín/máx, plazos y condiciones (hoy placeholder 1.5%/mes).
-- [ ] **Fotos reales de testimonios** (hoy sin foto / avatar decorativo).
 - [ ] **Conectar dominio `servimil.co`** a Cloudflare Pages.
 
-## Estado / último avance (al 2026-06-18)
+## Estado / último avance (al 2026-06-24, sesión tarde)
 
-- ✅ Hero con video de fondo Cloudinary a pantalla completa, overlay, poster, reduced-motion. Título en **2 líneas**, **sin badge superior**, único CTA WhatsApp a la izquierda (Regístrate eliminado).
-- ✅ Header alineado (logo/menú/WhatsApp mismo eje, sin `mt-7`), menú 17px + WhatsApp 16px, hover scale en links.
-- ✅ Logo oficial Cloudinary con `e_trim`, blanco, `h-8 md:h-9`.
-- ✅ **Skill `ui-ux-pro-max` instalada (global)** + design system persistido (`design-system/servimil/MASTER.md`).
-- ✅ **Estados de interacción** aplicados (focus-visible, active, cursor, disabled).
-- ✅ **Animaciones premium** aplicadas (reveal+stagger, hover cards, glow badge, shine CTA) — ver sección "Animaciones y estados".
-- ✅ `npm run deploy` despliega directo a producción (`--branch=main`).
-- ✅ Sitio vivo: https://servimil.pages.dev
-- Último commit: `f7340e1` (hero título 2 líneas + hover scale menú).
+- ✅ **PorQue.astro (Home):** video del escudo (col. izq, mix-blend screen) → **video nuevo** `v1782331584` (escudo cian + familia abrazada). Solo cambió `ESCUDO_VIDEO` + `ESCUDO_POSTER`, todo lo demás igual.
+- ✅ **Planes.astro (Home, "Elige tu plan"):** (1) 3 **fotos nuevas** (`q_auto/f_auto`, `v1782332339/337/341`). (2) Destacado "MÁS POPULAR" + "El preferido por las familias" + borde/glow naranja + botón naranja **movido de Plus Superior → ELITE** (`popular: true` ahora en Élite). (3) **Hover/click sutil** en las 3 cards: `hover:border-orange/60` + glow naranja suave + `-translate-y-2`; `active:scale-[.99]` + `active:border-orange`; `cursor-pointer` + link estirado (`after:absolute after:inset-0`) → card entera navega a `/servicios#plan-...`.
+- ✅ **servicios.astro ("Nuestros planes"):** (1) "MÁS POPULAR"/tagline/borde naranja/botón naranja **movido de Plus Superior → ELITE** (`popular`+`tagline` en Élite). (2) **Mismo patrón hover/click sutil** que Home (naranja `border-orange/50` + glow + active + cursor-pointer + link estirado `after:inset-0` → toda la card va a WhatsApp). (3) **Las 3 tarjetas ahora con lista COMPLETA** (12 ítems c/u, datos exactos del usuario) — se quitó el patrón "Todo lo del Plan X, y además:" (`intro` ya no se usa en ningún plan; el bloque `{p.intro && ...}` queda inerte). Igual altura: `items-stretch` + `ul flex-1` + botón `mt-auto`.
+- ✅ **servicios.astro (zig-zag "Servicios en detalle"):** **7 de 8 fotos** reemplazadas por imágenes más realistas (`v1782334xxx`, `q_auto/f_auto`). **Falta Viajes** (ver PENDIENTES).
+- ✅ **CtaFinal.astro (Home):** botón **"Regístrate" QUITADO** (quedan WhatsApp + "Solicita tu crédito"). Import `REGISTER_HREF` removido (sin uso). Const `REGISTER_HREF` sigue en `site.ts`.
+- ⚠️ **Deploy wrangler en Windows:** `npm run deploy` a veces crashea con `Assertion failed: !(handle->flags & UV_HANDLE_CLOSING), file src\win\async.c, line 76` (bug libuv/Node, NO del código) — el `astro build` ya pasó. **Workaround:** correr build y deploy por separado → `npm run build` y luego `npx wrangler pages deploy dist --project-name=servimil --branch=main --commit-dirty=true`. Funcionó siempre.
+- ⚠️ Git: sigue **SIN commitear** (working tree muy sucio, sin remoto). **Pendiente commit grande.**
 
-### Próximos pasos (mañana)
+## Estado / avance previo (al 2026-06-24)
 
-- Revisar resto de secciones (TrustBar, Servicios, Bienestar, NuevosServicios, Testimonios, CtaFinal, Footer) — pulir contenido/estilo.
-- Considerar contadores ascendentes si se reintroducen cifras/stats (hoy no hay números en el contenido).
-- Atacar PENDIENTES de abajo (fórmula real calculadora, fotos testimonios, dominio).
+- ✅ **Footer:** quitado el enlace `www.servimil.co` (la marca aún no tiene el dominio en vivo). Const `WEBSITE` sigue en `site.ts` sin uso (dejada por si se conecta el dominio).
+- ✅ **Footer redes:** íconos **Facebook** e **Instagram** ahora clickeables → `facebook.com/share/1UFsiqQa7w/` y `instagram.com/servimil.col` (`target="_blank"` + `rel="noopener noreferrer"`). Aplica a las 4 páginas (footer compartido).
+- ✅ **Testimonios (página):** fondo cambiado a **BEIGE `#EAE5DD`** (degradado sutil + blobs naranja tenues), eyebrow naranja agrandado, cards blancas con borde superior naranja. Ver sección Testimonios arriba.
+- ⚠️ **WhatsApp:** número VIGENTE ahora **573181626167** (`+57 318 162 6167`) — cambiado en todo el sitio 2026-06-25 (vía `site.ts` `WHATSAPP_NUMBER`/`WHATSAPP_DISPLAY` + hardcodes en `servicios.astro` y `Testimonios.astro`). Antes era 573157019885; quedó obsoleto.
+- ⚠️ **Hero Home:** se probó quitar el video y dejar fondo blanco (+ texto navy + `solidHeader`) y se **revirtió** a pedido → video Cloudinary + header transparente como antes. Sin cambios netos en Hero.
+- ⚠️ Git: sigue **SIN commitear** (working tree muy sucio, sin remoto). **Pendiente commit grande.**
+
+## Estado / avance previo (al 2026-06-23)
+
+- ✅ **Servicios — Servicios en detalle:** 8 placeholders → **fotos reales** Cloudinary + animaciones premium (stagger texto, zoom hover imagen, parallax decor, ícono rebote). Bloques con `id` + `scroll-margin`.
+- ✅ **Cinta marquee CLICKEABLE** → ancla a cada bloque zig-zag (mapa `CINTA_LINK`, ambos sets).
+- ✅ **Servicios — sección Testimonios (Trustindex)** nueva: fondo navy, título "TESTIMONIOS", placeholder VIDEO 16:9 + widget Google Reviews. (Intento de marquee de las cards → revertido.)
+- ✅ **Planes deep-link Home → Servicios:** botones "Más información" → `/servicios#plan-...` + **highlight de llegada** (`.plan-highlight`, glow naranja 2s).
+- ✅ **Home lista ValorContador CLICKEABLE** → `/servicios#ancla`. **TrustBar QUITADO** del Home.
+- ✅ **Conócenos:** "Nuestro propósito" y "Propuesta de valor" → **fondo VIDEO** Cloudinary (poster = imagen previa, `preload=metadata`). Ken Burns/sway fuera en esas 2.
+- ✅ **Testimonios (página) REESCRITA:** carrusel de citas fuera → grid 6 placeholders video + CTA navy "Contáctanos por WhatsApp".
+- ⚠️ Git: sigue **SIN commitear** (working tree muy sucio, sin remoto). **Pendiente commit grande.**
+
+## Estado / avance previo (al 2026-06-22)
+
+- ✅ **Conócenos rediseñado a fondo:** "Quiénes somos" con imagen real + bloque decorativo + reveal lateral; "Nuestro propósito" banda cinematográfica (imagen Cloudinary + **Ken Burns** + overlay navy); "Propuesta de valor" clímax (imagen épica + Ken Burns + glow naranja + firma "El compromiso de Servimil"); "Nuestros Valores" fondo **aurora CSS** (blobs + dots, sin fotos) + cards glassmorphism + íconos con micro-anim (heartbeat/tic-tac); "Respaldo institucional" banda navy + escudo marca de agua + 4 fuerzas (star/anchor/plane/shield). Stat "+3 años" quitado. Transiciones entre secciones afinadas (cortes limpios / fusiones a `#011126`).
+- ✅ **Servicios rediseñado** (ver sección Servicios arriba): hero video full-screen + cinta marquee + planes + zig-zag detalle. Esfera 3D y acordeón **eliminados**.
+- ✅ Íconos nuevos en `Icon.astro`: `activity`, `star`, `anchor`. Keyframes `kenBurns` + variantes `data-reveal="left|right"` en `global.css`.
+- ✅ Sitio vivo: https://servimil.pages.dev (deploy directo a prod `--branch=main`).
+- ⚠️ Git: cambios SIN commitear (working tree sucio). Repo local sin remoto. **Pendiente commitear avance grande.**
+- ⚠️ Deploy: la subida a Cloudflare a veces tarda ~5 min (correr en background).
+
+### Próximos pasos (mañana, 2026-06-24)
+
+- **Videos reales testimonios:** meter 6 `<iframe>` YouTube en `components/Testimonios.astro` + video real en placeholder VIDEO de servicios (Trustindex).
+- **Imagen real** fondo `CierreEmocional.astro` (Home).
+- Atacar PENDIENTES (fórmula calculadora, dominio `servimil.co`).
+- **Commitear** el avance grande (working tree muy sucio, sin remoto).
+- Limpiar componentes huérfanos (Servicios, Bienestar, NuevosServicios, ResumenServicios, **TrustBar** ya sin uso) + considerar quitar dep `three` (sin uso).
 
 ## Notas
 

@@ -1,0 +1,123 @@
+---
+/* Hero de Servicios: video de fondo cálido + texto de presentación.
+   El detalle de servicios vive en la sección siguiente (servicios.astro). */
+---
+<section id="servicios" class="eco-section relative flex min-h-[100svh] items-center overflow-hidden bg-navy">
+  {/* Video de fondo (carga por JS: no en reduced-motion ni móvil) */}
+  <video
+    id="ecoVideo"
+    class="eco-video pointer-events-none absolute inset-0 z-0 h-full w-full object-cover"
+    muted
+    loop
+    playsinline
+    preload="auto"
+    aria-hidden="true"
+    poster="https://res.cloudinary.com/dzh85ye7y/video/upload/so_0,f_jpg/v1782149894/hf_20260622_173549_80508d38-c84e-4ee9-861d-cbd73b51e3c3_weeoxb.jpg"
+    data-src="https://res.cloudinary.com/dzh85ye7y/video/upload/v1782149894/hf_20260622_173549_80508d38-c84e-4ee9-861d-cbd73b51e3c3_weeoxb.mp4"
+  ></video>
+  {/* Overlay negro neutro (conserva tonos cálidos del video) */}
+  <div class="eco-video-overlay pointer-events-none absolute inset-0 z-[1]" aria-hidden="true"></div>
+
+  <div class="relative z-10 mx-auto max-w-[820px] px-6 py-[140px] text-center">
+    <div data-reveal class="eco-eyebrow mb-4 text-[16px] font-bold uppercase tracking-[1.6px] sm:text-[18px]">
+      Nuestros servicios
+    </div>
+    <h2
+      data-reveal
+      style="--reveal-delay:120ms"
+      class="m-0 text-[34px] font-bold leading-[1.1] tracking-[-.8px] text-white sm:text-[48px]"
+    >
+      Un ecosistema de servicios para ti y tu familia
+    </h2>
+    <p
+      data-reveal
+      style="--reveal-delay:240ms"
+      class="eco-sub mx-auto mt-6 max-w-[640px] text-[18px] font-semibold leading-[1.5] text-white sm:text-[21px]"
+    >
+      Todo lo que tu familia y tú necesitan en un solo lugar.
+    </p>
+    <p
+      data-reveal
+      style="--reveal-delay:340ms"
+      class="eco-sub mx-auto mt-3 max-w-[600px] text-[15.5px] leading-[1.6] text-white/75 sm:text-[17px]"
+    >
+      Desde respaldo financiero y jurídico hasta salud, protección y bienestar.
+    </p>
+  </div>
+
+  {/* Indicador de scroll (clickeable → baja a la sección siguiente) */}
+  <a
+    href="#explorar"
+    data-reveal
+    style="--reveal-delay:420ms"
+    class="eco-scroll absolute bottom-7 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 rounded-full p-2 text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan"
+    aria-label="Bajar a la sección siguiente"
+  >
+    <svg class="eco-bounce h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  </a>
+</section>
+
+<style>
+  .eco-section {
+    background: #011126;
+  }
+  .eco-video {
+    background: #011126;
+  }
+  /* Overlay NEGRO neutro: oscurece sin teñir de azul, conserva tonos cálidos */
+  .eco-video-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.58) 0%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.62) 100%
+    );
+  }
+
+  /* Legibilidad del texto sobre el video */
+  .eco-section h2 {
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+  }
+  .eco-eyebrow {
+    color: #ffffff;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+  }
+  .eco-sub {
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Indicador de scroll: rebote suave */
+  .eco-bounce {
+    animation: ecoBounce 1.8s ease-in-out infinite;
+  }
+  @keyframes ecoBounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(6px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .eco-bounce {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  // Carga el video solo si no hay reduced-motion ni pantalla móvil (rendimiento)
+  const ecoVideo = document.getElementById("ecoVideo") as HTMLVideoElement | null;
+  if (ecoVideo) {
+    const reduceV = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const smallV = window.matchMedia("(max-width: 767px)").matches;
+    const src = ecoVideo.dataset.src;
+    if (!reduceV && !smallV && src) {
+      ecoVideo.src = src;
+      ecoVideo.play?.().catch(() => {});
+    }
+  }
+</script>

@@ -78,6 +78,17 @@ body {
   opacity: 1;
   transform: none;
 }
+/* Variantes laterales: entra desde izquierda / derecha + fade (premium) */
+[data-reveal="left"] {
+  transform: translateX(-48px);
+}
+[data-reveal="right"] {
+  transform: translateX(48px);
+}
+[data-reveal="left"].in,
+[data-reveal="right"].in {
+  transform: none;
+}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -87,6 +98,59 @@ body {
     transform: none;
     transition: none;
     transition-delay: 0ms;
+  }
+}
+
+/* ---- TrustBar: cards premium (hover eleva + ícono crece, reloj gira) ---- */
+.tb-card {
+  transition:
+    transform 0.25s ease-out,
+    box-shadow 0.25s ease-out;
+  will-change: transform;
+}
+.tb-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 38px rgba(1, 17, 38, 0.12);
+}
+.tb-icon {
+  transition: transform 0.25s ease-out;
+}
+.tb-card:hover .tb-icon {
+  transform: scale(1.1);
+}
+/* Reloj: una vuelta lenta al entrar en viewport (reveal añade .in) y al hover */
+@keyframes tbClockSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.tb-clock {
+  transform-origin: 50% 50%;
+}
+.tb-card.in .tb-clock {
+  animation: tbClockSpin 1.4s cubic-bezier(0.22, 0.61, 0.36, 1) 0.2s 1;
+}
+.tb-card:hover .tb-clock {
+  animation: tbClockSpin 1.4s cubic-bezier(0.22, 0.61, 0.36, 1) 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tb-card,
+  .tb-icon {
+    transition: none;
+  }
+  .tb-card:hover {
+    transform: none;
+    box-shadow: 0 2px 14px rgba(1, 17, 38, 0.05);
+  }
+  .tb-card:hover .tb-icon {
+    transform: none;
+  }
+  .tb-card.in .tb-clock,
+  .tb-card:hover .tb-clock {
+    animation: none;
   }
 }
 
@@ -170,6 +234,117 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .sm-pulse {
+    animation: none;
+  }
+}
+
+/* ---- Ken Burns: zoom/paneo lento cinematográfico (fondos de imagen) ---- */
+@keyframes kenBurns {
+  0% {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: scale(1.08) translate3d(-1.5%, -1%, 0);
+  }
+}
+.ken-burns {
+  animation: kenBurns 20s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ken-burns {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* ---- Sección Valores: fondo aurora (blobs CSS) + textura puntos ---- */
+.val-blob {
+  position: absolute;
+  z-index: -10;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.5;
+  will-change: transform;
+  pointer-events: none;
+}
+.val-blob-1 {
+  top: -120px;
+  left: -80px;
+  width: 460px;
+  height: 460px;
+  background: #96dded;
+  animation: blobFloat 26s ease-in-out infinite alternate;
+}
+.val-blob-2 {
+  bottom: -160px;
+  right: -60px;
+  width: 520px;
+  height: 520px;
+  background: #96dded;
+  opacity: 0.38;
+  animation: blobFloat 32s ease-in-out infinite alternate-reverse;
+}
+.val-blob-3 {
+  top: 30%;
+  right: 22%;
+  width: 300px;
+  height: 300px;
+  background: #f34616;
+  opacity: 0.12;
+  animation: blobFloat 38s ease-in-out infinite alternate;
+}
+@keyframes blobFloat {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(40px, -30px, 0) scale(1.12);
+  }
+}
+.val-dots {
+  opacity: 0.5;
+  background-image: radial-gradient(rgba(1, 17, 38, 0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, #000 35%, transparent 80%);
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, #000 35%, transparent 80%);
+}
+/* Micro-animaciones de íconos en hover de card */
+.group:hover .val-beat {
+  display: inline-block;
+  animation: iconBeat 0.9s ease-in-out infinite;
+}
+.group:hover .val-tick {
+  display: inline-block;
+  animation: iconTick 1.6s ease-in-out infinite;
+}
+@keyframes iconBeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.18);
+  }
+  45% {
+    transform: scale(1);
+  }
+}
+@keyframes iconTick {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(12deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .val-blob {
+    animation: none;
+  }
+  .group:hover .val-beat,
+  .group:hover .val-tick {
     animation: none;
   }
 }

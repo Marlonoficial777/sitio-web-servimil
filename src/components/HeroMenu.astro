@@ -1,0 +1,106 @@
+---
+/* Menú vertical de 3 rayitas (sup. izq.) sobre el header. Reversible: borrar este
+   componente y su uso en Page.astro. Fixed para quedar por encima del header. */
+---
+{/* === MENÚ VERTICAL HERO (sup. izq., reversible) — fixed sobre el header === */}
+<div
+  id="heroMenu"
+  class="fixed top-[22px] left-6 z-50 md:top-[26px] md:left-10"
+>
+  {/* Botón 3 rayitas */}
+  <button
+    id="heroMenuBtn"
+    type="button"
+    aria-label="Abrir menú"
+    aria-expanded="false"
+    aria-controls="heroMenuPanel"
+    class="flex h-[42px] w-[44px] flex-col items-center justify-center gap-[6px] text-white transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+  >
+    <span class="hm-bar"></span>
+    <span class="hm-bar"></span>
+    <span class="hm-bar"></span>
+  </button>
+  {/* Lista desplegable */}
+  <nav
+    id="heroMenuPanel"
+    class="pointer-events-none mt-3 flex -translate-y-2 flex-col opacity-0 transition-all duration-300 ease-out"
+    aria-label="Navegación rápida"
+    aria-hidden="true"
+  >
+    <a href="/" class="hm-item">Home</a>
+    <a href="/conocenos" class="hm-item">Conócenos</a>
+    <a href="/servicios" class="hm-item">Servicios</a>
+    <a href="/testimonios" class="hm-item">Testimonios</a>
+    <a
+      href="https://wa.me/573181626167"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="hm-item"
+    >Contáctanos</a>
+  </nav>
+</div>
+{/* === FIN === */}
+
+<script is:inline>
+  (() => {
+    const wrap = document.getElementById("heroMenu");
+    const btn = document.getElementById("heroMenuBtn");
+    const panel = document.getElementById("heroMenuPanel");
+    if (!wrap || !btn || !panel) return;
+    let isOpen = false;
+    const setOpen = (v) => {
+      isOpen = v;
+      wrap.classList.toggle("is-open", v);
+      btn.setAttribute("aria-expanded", String(v));
+      btn.setAttribute("aria-label", v ? "Cerrar menú" : "Abrir menú");
+      panel.setAttribute("aria-hidden", String(!v));
+      panel.classList.toggle("pointer-events-none", !v);
+      panel.classList.toggle("opacity-0", !v);
+      panel.classList.toggle("-translate-y-2", !v);
+    };
+    btn.addEventListener("click", (e) => { e.stopPropagation(); setOpen(!isOpen); });
+    document.addEventListener("click", (e) => { if (isOpen && !wrap.contains(e.target)) setOpen(false); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && isOpen) setOpen(false); });
+  })();
+</script>
+
+<style>
+  /* === MENÚ VERTICAL HERO === */
+  .hm-bar {
+    display: block;
+    width: 26px;
+    height: 2.5px;
+    border-radius: 2px;
+    background: #fff;
+    transition: transform 0.3s ease, opacity 0.2s ease;
+  }
+  #heroMenu.is-open .hm-bar:nth-child(1) {
+    transform: translateY(8.5px) rotate(45deg);
+  }
+  #heroMenu.is-open .hm-bar:nth-child(2) {
+    opacity: 0;
+  }
+  #heroMenu.is-open .hm-bar:nth-child(3) {
+    transform: translateY(-8.5px) rotate(-45deg);
+  }
+  .hm-item {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 1;
+    padding: 14px 24px 14px 0;
+    width: fit-content;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    transition: color 0.2s ease, padding-left 0.2s ease;
+  }
+  .hm-item:first-child {
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  .hm-item:hover,
+  .hm-item:focus-visible {
+    color: #96dded;
+    padding-left: 10px;
+    outline: none;
+  }
+</style>

@@ -1,0 +1,468 @@
+---
+import Page from "../layouts/Page.astro";
+import Icon from "../components/Icon.astro";
+import { WHATSAPP_URL } from "../lib/site";
+
+// Hero — video Cloudinary. Poster = fotograma 0 (so_0,f_jpg).
+const HERO_VIDEO =
+  "https://res.cloudinary.com/dzh85ye7y/video/upload/v1781989446/hf_20260620_205800_cbf925a2-0bb5-4b1a-aba4-59862401d3b8_nhuthx.mp4";
+const HERO_POSTER =
+  "https://res.cloudinary.com/dzh85ye7y/video/upload/so_0,q_auto,f_jpg/v1781989446/hf_20260620_205800_cbf925a2-0bb5-4b1a-aba4-59862401d3b8_nhuthx.jpg";
+
+const STATS = [
+  { count: "20664", prefix: "", suffix: "", label: "Familias beneficiadas a nivel nacional" },
+  { count: "100", prefix: "", suffix: "%", label: "Cobertura nacional" },
+];
+
+const FUERZAS = [
+  { icon: "star", label: "Ejército" },
+  { icon: "anchor", label: "Armada" },
+  { icon: "plane", label: "Fuerza Aérea" },
+  { icon: "shield", label: "Policía Nacional" },
+];
+const VALORES = [
+  { icon: "heart", accent: "orange", title: "Compromiso", desc: "Estamos contigo en cada paso, en los buenos y en los difíciles momentos." },
+  { icon: "shield", accent: "cyan", title: "Transparencia", desc: "Sin letra pequeña, sin sorpresas. Lo que prometemos, lo cumplimos." },
+  { icon: "chat", accent: "cyan", title: "Cercanía", desc: "Hablamos tu idioma y entendemos tu realidad. No eres un número, eres familia." },
+  { icon: "clock", accent: "orange", title: "Disponibilidad", desc: "24/7, los 365 días del año. Cuando nos necesites, aquí estamos." },
+];
+---
+<Page
+  title="Conócenos — Servimil"
+  description="Detrás de cada miembro de la fuerza pública hay una familia, y detrás de cada familia estamos nosotros. Conoce a Servimil: respaldo para las fuerzas públicas de Colombia y sus familias."
+>
+  {/* ---------- 1. HERO cinematográfico ---------- */}
+  <section class="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-navy text-white">
+    {/* Video de fondo */}
+    <video
+      id="cnVideo"
+      poster={HERO_POSTER}
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      aria-hidden="true"
+      tabindex="-1"
+      class="absolute inset-0 -z-20 h-full w-full object-cover"
+      style="background:#011126;"
+    >
+      <source data-src={HERO_VIDEO} type="video/mp4" />
+    </video>
+
+    {/* Overlay degradado navy (más oscuro abajo) + viñeteado */}
+    <div
+      class="absolute inset-0 -z-10"
+      style="background:linear-gradient(180deg,rgba(1,17,38,.30) 0%,rgba(1,17,38,.45) 45%,rgba(1,17,38,.75) 100%),radial-gradient(120% 90% at 50% 40%,transparent 55%,rgba(1,17,38,.55) 100%);"
+      aria-hidden="true"
+    ></div>
+
+    {/* Contenido */}
+    <div class="relative z-10 mx-auto w-full max-w-[1200px] px-6 pt-20">
+      <div class="max-w-[820px]">
+        <h1 class="cn-in cn-d1 m-0 mb-6 text-[34px] font-bold leading-[1.08] tracking-[-1px] text-balance drop-shadow-[0_2px_18px_rgba(1,17,38,.6)] sm:text-[52px]">
+          Detrás de cada miembro de la fuerza pública, hay una familia. Y detrás de cada familia, estamos nosotros.
+        </h1>
+        <p class="cn-in cn-d2 m-0 max-w-[640px] text-[18px] leading-[1.6] text-[#dbe6f0] drop-shadow-[0_1px_10px_rgba(1,17,38,.5)] sm:text-[21px]">
+          Somos Servimil. Existimos por una sola razón: cuidar a quienes lo dan
+          todo por Colombia.
+        </p>
+      </div>
+    </div>
+
+    {/* Indicador de scroll */}
+    <div class="cn-in cn-d4 absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-white/80">
+      <span class="text-[12px] font-medium uppercase tracking-[1.4px]">Conoce nuestra historia</span>
+      <svg class="cn-bounce h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m6 9 6 6 6-6" />
+      </svg>
+    </div>
+  </section>
+
+  {/* ---------- 2. QUIÉNES SOMOS ---------- */}
+  <section class="bg-ice">
+    <div class="mx-auto grid max-w-[1100px] items-center gap-10 px-6 py-[88px] lg:grid-cols-2 lg:gap-16">
+      <div data-reveal="left">
+        <div class="mb-3 text-[16px] font-bold uppercase tracking-[1.2px] text-cyan sm:text-[18px]">
+          ¿Quiénes somos?
+        </div>
+        <h2 class="m-0 mb-5 text-[30px] font-bold leading-[1.14] tracking-[-.7px] text-navy sm:text-[38px]">
+          Más de 3 años caminando a tu lado
+        </h2>
+        <p class="m-0 text-[17px] leading-[1.7] text-[#5a6a7a]">
+          Servimil nació para acompañar a los miembros de la fuerza pública de
+          Colombia y a sus familias. En más de 3 años hemos estado presentes a
+          nivel nacional, con servicios ágiles, oportunos y hechos a la medida de
+          quienes nos necesitan. No somos una empresa más: somos la mano amiga
+          que da la cara cuando de verdad importa.
+        </p>
+      </div>
+      <div data-reveal="right" style="--reveal-delay:120ms" class="relative isolate">
+        {/* Bloque decorativo desplazado detrás (profundidad premium) */}
+        <div
+          class="absolute -bottom-4 -right-4 -z-10 h-full w-full rounded-3xl border-2 border-cyan/60 bg-orange/10"
+          aria-hidden="true"
+        ></div>
+        <img
+          src="https://res.cloudinary.com/dzh85ye7y/image/upload/v1782137172/hf_20260622_140159_f4e9673f-a7df-42c5-b5f8-e8617d96ca4b_ezcs0p.png"
+          alt="Equipo de Servimil acompañando a las familias de la fuerza pública"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[4/3] w-full rounded-3xl object-cover shadow-[0_24px_60px_-18px_rgba(1,17,38,.45)]"
+        />
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- 3. STATS (conteo animado) ---------- */}
+  <section class="relative overflow-hidden bg-navy text-white" style="background:linear-gradient(180deg,#06223a 0%,#011126 100%);">
+    {/* === MAPA COLOMBIA STATS (reversible) === */}
+    <svg
+      viewBox="0 0 1024 1024"
+      class="pointer-events-none absolute right-3 top-3 z-0 w-[84px] opacity-[.82] sm:right-6 sm:w-[128px] md:right-10 md:top-6 md:w-[160px]"
+      style="filter:drop-shadow(0 0 14px rgba(0,0,0,.35));"
+      aria-hidden="true"
+    >
+      {/* Degradado bandera Colombia: amarillo 50% / azul 25% / rojo 25% */}
+      <defs>
+        <linearGradient id="coFlag" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#FCD116" />
+          <stop offset="50%" stop-color="#FCD116" />
+          <stop offset="50%" stop-color="#003893" />
+          <stop offset="75%" stop-color="#003893" />
+          <stop offset="75%" stop-color="#CE1126" />
+          <stop offset="100%" stop-color="#CE1126" />
+        </linearGradient>
+      </defs>
+      <g transform="translate(0,1024) scale(0.1,-0.1)" fill="url(#coFlag)" stroke="none">
+        <path d="M5871 10207 c-10 -28 -18 -36 -46 -41 -21 -4 -32 -11 -29 -19 5 -15 -107 -57 -153 -57 -40 0 -46 -9 -48 -84 -1 -40 -9 -78 -24 -109 -25 -54 -55 -73 -186 -117 -101 -35 -295 -151 -360 -217 -84 -85 -85 -85 -268 -91 l-163 -5 -55 32 c-54 30 -105 39 -155 25 -21 -5 -54 -78 -54 -117 0 -11 -7 -34 -16 -53 -13 -28 -26 -37 -67 -49 -51 -15 -52 -15 -174 26 l-123 41 -49 -39 c-27 -21 -57 -50 -67 -64 -9 -14 -44 -41 -76 -58 -40 -22 -63 -42 -71 -62 -8 -21 -29 -38 -67 -57 -52 -26 -55 -30 -61 -72 -3 -26 -19 -66 -37 -94 -17 -27 -36 -64 -42 -82 -6 -18 -22 -40 -36 -49 -20 -13 -23 -19 -13 -31 10 -12 18 -8 53 23 40 36 41 37 44 14 2 -12 -3 -28 -11 -34 -13 -11 -22 -47 -43 -187 -4 -23 -17 -44 -37 -62 l-31 -26 47 -7 c52 -8 54 -14 41 -96 -8 -46 -33 -59 -120 -59 -52 0 -76 -6 -124 -30 -54 -27 -62 -36 -104 -112 -58 -107 -110 -168 -142 -168 -17 0 -24 -6 -24 -20 0 -12 -21 -33 -60 -60 -33 -22 -64 -49 -70 -60 -8 -14 -26 -21 -71 -26 -50 -6 -66 -12 -90 -38 l-29 -31 41 -20 c51 -26 79 -69 79 -120 0 -22 7 -65 15 -95 16 -61 19 -118 6 -138 -5 -9 -18 -11 -37 -7 -16 3 -39 8 -51 11 -28 5 -31 34 -4 34 14 0 20 9 23 33 3 17 9 40 13 51 7 16 5 17 -23 11 -29 -6 -32 -3 -52 34 -11 23 -27 41 -35 41 -8 0 -26 22 -39 48 -19 38 -33 52 -65 64 -23 9 -44 25 -47 35 -23 72 -44 79 -92 30 -39 -40 -40 -60 -7 -99 14 -16 28 -42 32 -56 3 -15 23 -52 43 -82 20 -30 46 -81 58 -113 l22 -58 -28 -10 c-15 -5 -33 -12 -39 -14 -7 -2 -20 -31 -29 -64 -18 -63 -47 -99 -116 -140 l-37 -22 -12 23 c-19 38 -61 78 -82 78 -17 0 -18 -5 -12 -52 7 -48 5 -54 -18 -72 -16 -14 -32 -45 -45 -88 l-20 -67 27 -24 c14 -13 41 -33 59 -43 31 -18 33 -23 31 -64 -5 -93 -1 -107 29 -113 27 -6 62 -57 62 -92 0 -9 10 -15 25 -15 15 0 25 6 25 15 0 12 4 13 25 3 14 -6 25 -16 25 -21 0 -6 10 -21 23 -35 21 -22 21 -24 5 -36 -10 -7 -18 -20 -18 -29 0 -9 -8 -20 -17 -26 -17 -9 -17 -11 1 -24 18 -13 18 -17 6 -47 l-14 -33 -17 22 c-9 11 -19 21 -22 21 -2 0 -2 -21 0 -47 4 -34 19 -69 49 -117 30 -48 44 -81 44 -105 1 -20 7 -47 15 -61 12 -23 11 -27 -13 -52 -19 -21 -35 -28 -64 -28 -33 0 -41 -5 -63 -40 -34 -55 -33 -80 4 -80 48 0 55 -19 62 -179 3 -86 12 -161 20 -183 11 -28 13 -66 8 -158 -7 -131 -11 -141 -76 -181 -28 -18 -33 -26 -33 -60 0 -31 10 -53 51 -109 28 -39 54 -70 58 -70 4 0 18 23 31 51 23 47 25 49 34 29 8 -17 6 -24 -7 -31 -22 -13 -33 -75 -16 -95 13 -16 39 -15 109 2 20 5 16 0 -17 -26 -35 -25 -43 -38 -43 -63 0 -36 -74 -137 -159 -217 -39 -37 -49 -55 -60 -102 -11 -51 -15 -58 -36 -58 -30 0 -45 -26 -45 -80 0 -23 -10 -64 -22 -92 -18 -42 -29 -53 -66 -69 -24 -10 -54 -19 -67 -19 -15 0 -26 -7 -30 -20 -4 -14 -15 -20 -35 -20 -22 0 -30 6 -38 30 l-11 30 -33 -19 c-18 -10 -63 -29 -100 -41 -58 -18 -74 -29 -116 -78 -27 -31 -59 -83 -72 -115 -21 -50 -22 -62 -12 -90 7 -19 12 -46 12 -61 0 -14 7 -29 15 -32 8 -4 15 -12 15 -19 0 -7 7 -15 15 -19 18 -6 19 -26 4 -60 -9 -19 -16 -23 -28 -17 -9 5 -42 12 -73 15 -54 7 -60 6 -103 -25 -43 -31 -85 -84 -85 -106 0 -6 27 -20 60 -32 33 -12 60 -28 60 -35 0 -20 132 -146 152 -146 10 0 22 -9 28 -20 7 -13 21 -20 40 -20 22 0 37 -11 66 -45 26 -32 44 -45 62 -45 15 0 45 -16 74 -41 30 -25 62 -43 86 -46 20 -4 58 -16 85 -28 36 -17 56 -21 86 -15 44 8 71 -6 71 -38 0 -26 60 -78 99 -87 30 -6 31 -9 31 -59 0 -52 0 -52 45 -74 26 -13 65 -22 90 -22 38 0 46 -4 61 -29 11 -19 28 -31 48 -35 77 -13 351 -26 374 -18 6 2 12 21 12 41 0 62 67 106 100 66 7 -8 28 -15 46 -15 19 0 34 -4 34 -10 0 -5 10 -10 23 -10 16 0 32 -16 61 -60 21 -33 57 -74 80 -91 37 -28 46 -30 94 -25 51 6 55 5 98 -32 53 -47 116 -68 157 -53 37 14 84 14 93 0 3 -6 33 -28 65 -49 51 -33 64 -37 103 -33 l45 5 3 -43 c3 -40 6 -44 37 -52 82 -21 201 -148 201 -214 0 -21 9 -36 31 -52 20 -15 27 -26 20 -30 -8 -6 -7 -17 4 -44 17 -40 74 -77 120 -77 28 0 58 -17 124 -69 30 -24 52 -35 70 -33 34 4 121 -44 121 -67 0 -9 14 -38 30 -65 24 -38 28 -51 20 -67 -6 -10 -8 -35 -4 -54 9 -50 81 -100 131 -92 45 8 82 -10 89 -42 3 -14 14 -56 24 -93 l18 -66 -24 -23 c-44 -41 -21 -109 36 -109 14 0 39 -14 57 -32 33 -31 36 -33 106 -30 58 3 75 7 90 24 l17 21 61 -28 c42 -19 71 -25 92 -22 86 15 124 24 144 35 12 7 40 12 61 12 35 0 45 6 79 44 47 53 113 96 113 73 0 -17 21 -27 54 -27 13 0 42 -13 64 -30 23 -16 46 -30 52 -30 5 0 14 -9 20 -20 11 -21 50 -26 122 -14 28 5 38 12 40 28 2 16 11 22 35 24 17 2 37 10 43 18 7 8 29 14 50 14 38 0 84 -29 173 -107 21 -19 48 -33 63 -33 14 0 38 -7 53 -15 16 -8 47 -17 69 -21 33 -5 43 -13 61 -45 19 -33 27 -39 55 -39 21 0 40 -8 55 -24 l22 -23 -211 -319 -210 -319 47 -22 c50 -23 98 -30 107 -14 3 5 27 12 52 16 46 6 48 6 96 -42 28 -27 53 -64 60 -85 14 -49 78 -111 109 -106 22 3 27 25 170 808 82 443 148 822 148 842 1 29 7 41 26 54 21 14 25 24 25 66 0 35 -6 58 -20 75 -11 14 -20 37 -20 51 0 13 -15 45 -34 71 -48 66 -68 108 -64 139 1 15 -1 52 -5 83 -8 53 -10 57 -39 63 -17 3 -55 24 -83 46 -29 22 -56 40 -61 40 -5 1 -30 20 -55 44 l-47 42 10 215 c5 118 11 219 13 226 2 7 37 22 77 34 40 12 91 35 114 50 58 39 136 43 182 9 26 -19 48 -25 104 -28 66 -4 71 -3 64 14 -4 10 -11 48 -16 84 -4 36 -15 82 -24 103 -19 43 -60 65 -88 48 -12 -7 -33 -8 -69 -1 -28 6 -73 10 -98 10 -26 0 -52 5 -57 10 -8 8 -19 7 -39 0 -15 -6 -29 -9 -30 -8 -1 2 0 92 3 200 l5 197 46 6 c25 3 68 10 95 14 28 5 62 5 80 0 36 -11 323 -12 600 -2 l197 6 -32 33 c-31 32 -32 35 -18 60 7 15 19 29 26 31 25 10 60 -7 71 -33 16 -34 74 -104 87 -104 42 0 85 24 110 61 34 53 98 121 147 161 l39 30 44 -17 c40 -15 45 -20 45 -47 0 -22 15 -49 53 -97 30 -36 64 -93 76 -126 21 -55 22 -70 16 -184 -7 -117 -6 -123 11 -118 11 3 40 8 67 12 52 7 54 11 33 70 -8 22 -26 92 -40 156 -15 63 -41 144 -58 180 -16 35 -30 78 -30 95 1 23 -8 40 -33 64 -39 38 -47 87 -19 110 13 12 3 26 -82 111 -54 54 -108 100 -121 104 -15 3 -30 19 -38 39 -12 27 -22 35 -59 45 -25 6 -59 11 -75 11 -17 0 -31 4 -31 8 0 15 237 242 253 242 21 0 76 58 84 89 5 19 0 30 -23 49 -16 14 -45 57 -64 96 -29 58 -40 72 -63 76 -23 4 -32 15 -50 60 -13 30 -46 99 -75 153 -49 95 -51 100 -37 127 24 47 19 85 -15 113 -30 25 -30 26 -14 63 25 59 31 282 10 362 -19 77 -15 87 61 159 l55 51 -7 57 c-9 76 5 107 77 175 l58 55 -30 48 c-25 39 -28 49 -15 53 8 4 15 16 15 29 0 19 -12 28 -74 54 -83 35 -135 39 -210 16 -27 -8 -65 -15 -85 -15 -20 0 -56 -10 -80 -21 -38 -17 -57 -19 -126 -13 -69 5 -86 4 -109 -11 -26 -17 -31 -17 -124 3 -163 35 -155 35 -200 -3 -44 -38 -90 -46 -113 -19 -9 11 -22 14 -44 10 -30 -6 -36 -1 -199 199 -92 113 -171 205 -176 205 -5 0 -25 14 -44 31 -33 29 -39 30 -90 24 -66 -9 -181 24 -191 54 -4 14 -20 20 -67 25 -88 9 -146 7 -153 -4 -12 -19 -85 -51 -141 -61 -46 -8 -59 -8 -72 4 -10 8 -46 17 -82 20 -235 21 -213 22 -257 -6 l-41 -26 -59 25 c-53 23 -63 32 -91 84 -18 31 -32 69 -32 84 0 34 -50 66 -106 66 -33 0 -44 5 -62 30 -20 26 -22 41 -22 154 0 100 4 133 19 169 11 25 24 48 30 51 13 8 13 79 2 149 -7 42 -18 58 -93 135 l-84 87 -33 123 c-47 182 -42 172 -101 172 -50 0 -50 0 -50 33 0 17 -3 42 -6 54 -6 22 -7 22 -86 -18 -64 -32 -88 -39 -125 -37 l-45 3 45 60 c24 33 52 76 60 96 8 20 29 46 46 58 42 30 111 167 111 219 0 21 9 64 19 94 11 31 22 102 26 163 8 107 8 109 62 204 30 52 62 114 73 137 10 23 28 47 39 53 12 7 21 20 21 30 0 46 123 136 177 129 27 -3 32 4 111 160 76 150 85 162 110 162 15 0 95 19 177 42 140 40 153 45 192 85 22 24 50 43 61 43 11 0 31 9 46 21 34 27 34 71 1 115 -14 18 -25 44 -25 57 0 20 -10 30 -52 51 -29 14 -62 26 -74 26 -13 0 -29 8 -36 18 -18 26 -32 32 -86 41 -26 5 -54 12 -63 15 -13 6 -20 -1 -28 -27z" />
+      </g>
+    </svg>
+    {/* === FIN === */}
+    <div class="relative z-10 mx-auto grid max-w-[720px] grid-cols-1 gap-8 px-6 py-[72px] text-center sm:grid-cols-2">
+      {
+        STATS.map((s, i) => (
+          <div data-reveal style={`--reveal-delay:${i * 110}ms`}>
+            <div class="text-[44px] font-bold leading-none tracking-[-1px] text-orange sm:text-[54px]">
+              <span data-count={s.count} data-prefix={s.prefix} data-suffix={s.suffix} data-delay={i * 160}>
+                {s.prefix}0{s.suffix}
+              </span>
+            </div>
+            <div class="mx-auto mt-3 max-w-[220px] text-[15px] font-medium text-white/75">
+              {s.label}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* ---------- 4. NUESTRO PROPÓSITO (banda cinematográfica) ---------- */}
+  <section class="relative isolate flex min-h-[520px] items-center overflow-hidden bg-navy text-white">
+    {/* === FONDO VIDEO (reemplaza imagen, reversible) === */}
+    <video
+      class="absolute inset-0 -z-20 h-full w-full object-cover"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782138372/hf_20260622_142422_62b1fd70-1673-4e0e-9f51-ae3658448f68_tfvbz4.png"
+      aria-hidden="true"
+    >
+      <source
+        src="https://res.cloudinary.com/dzh85ye7y/video/upload/q_auto/f_auto/v1782250192/hf_20260623_212538_a6f18756-4c43-47b1-96b1-84d83358a5f8_jxez8c.mp4"
+        type="video/mp4"
+      />
+    </video>
+    {/* === FIN FONDO VIDEO === */}
+    {/* Overlay navy degradado para legibilidad */}
+    <div
+      class="absolute inset-0 -z-10"
+      aria-hidden="true"
+      style="background:linear-gradient(180deg,rgba(1,17,38,1) 0%,rgba(1,17,38,.7) 18%,rgba(1,17,38,.68) 45%,rgba(1,17,38,1) 100%);"
+    ></div>
+
+    <div class="mx-auto max-w-[760px] px-6 py-[104px] text-center sm:py-[120px]">
+      <h2 data-reveal class="m-0 mb-6 text-[32px] font-bold leading-[1.14] tracking-[-.7px] sm:text-[42px]">
+        Nuestro propósito
+      </h2>
+      <p data-reveal style="--reveal-delay:140ms" class="m-0 text-[18px] leading-[1.75] text-white/85 sm:text-[20px]">
+        Queremos ser la empresa número uno en asistencia y acompañamiento para
+        los miembros del Ministerio de Defensa y sus familias. Porque entendemos
+        <span class="font-semibold text-orange">el peso del uniforme y el valor del sacrificio</span>. Cada servicio que ofrecemos es
+        <span class="font-semibold text-orange">nuestra forma de decir GRACIAS</span>
+        a quienes hacen tanto por nuestro país.
+      </p>
+    </div>
+  </section>
+
+  {/* ---------- 5. PROPUESTA DE VALOR (clímax emotivo) ---------- */}
+  <section class="relative isolate flex min-h-[560px] items-center overflow-hidden bg-navy text-white">
+    {/* === FONDO VIDEO (reemplaza imagen, reversible) === */}
+    <video
+      class="absolute inset-0 -z-20 h-full w-full object-cover"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782139329/hf_20260622_143926_a0f80310-7eba-4fad-9f57-e1eac48d35e2_pn7ggd.png"
+      aria-hidden="true"
+    >
+      <source
+        src="https://res.cloudinary.com/dzh85ye7y/video/upload/q_auto/f_auto/v1782250296/hf_20260623_212926_491a8eb3-87b6-4825-b76b-0f6fbdfcad11_w8zc8a.mp4"
+        type="video/mp4"
+      />
+    </video>
+    {/* === FIN FONDO VIDEO === */}
+    {/* Overlay navy cinematográfico */}
+    <div
+      class="absolute inset-0 -z-10"
+      aria-hidden="true"
+      style="background:radial-gradient(900px 500px at 50% 120%,rgba(243,70,22,.18),transparent 60%),linear-gradient(180deg,rgba(1,17,38,1) 0%,rgba(1,17,38,.7) 22%,rgba(1,17,38,.7) 78%,rgba(1,17,38,1) 100%);"
+    ></div>
+
+    <div class="relative mx-auto max-w-[900px] px-6 py-[112px] text-center sm:py-[128px]">
+      <p class="m-0 text-[26px] font-bold leading-[1.32] tracking-[-.5px] text-balance sm:text-[38px]">
+        <span data-reveal class="inline">Así como tú proteges a Colombia, nosotros</span>
+        <span data-reveal style="--reveal-delay:200ms" class="inline text-orange drop-shadow-[0_0_26px_rgba(243,70,22,.55)]"> protegemos, respaldamos y acompañamos</span>
+        <span data-reveal style="--reveal-delay:380ms" class="inline"> a nuestras fuerzas públicas y a sus familias cuando más lo necesitan.</span>
+      </p>
+
+      {/* Atribución / firma */}
+      <div data-reveal style="--reveal-delay:560ms" class="mt-9 text-center">
+        <span class="text-[16px] font-semibold uppercase tracking-[1.6px] text-white sm:text-[18px]">El compromiso de Servimil</span>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- 6. VALORES ---------- */}
+  <section
+    class="relative isolate overflow-hidden"
+    style="background:linear-gradient(180deg,#E8F3F9 0%,#eef6fb 50%,#dff0fa 100%);"
+  >
+    {/* Blobs aurora difusos (CSS, sin imágenes) */}
+    <div class="val-blob val-blob-1" aria-hidden="true"></div>
+    <div class="val-blob val-blob-2" aria-hidden="true"></div>
+    <div class="val-blob val-blob-3" aria-hidden="true"></div>
+    {/* Textura de puntos muy tenue */}
+    <div class="val-dots absolute inset-0 -z-10" aria-hidden="true"></div>
+    {/* Fundido inferior: uniformiza el color claro (tapa blobs) para corte limpio */}
+    <div
+      class="pointer-events-none absolute inset-x-0 bottom-0 -z-[1] h-40"
+      style="background:linear-gradient(180deg,rgba(223,240,250,0) 0%,#dff0fa 100%);"
+      aria-hidden="true"
+    ></div>
+
+    <div class="relative z-[2] mx-auto max-w-[1100px] px-6 py-[96px]">
+      <div data-reveal class="mx-auto mb-12 max-w-[760px] text-center">
+        <h2 class="m-0 mb-3 text-[30px] font-bold leading-[1.14] tracking-[-.7px] text-navy sm:text-[40px] lg:text-[44px]">
+          Nuestros valores
+        </h2>
+        <div class="text-[13px] font-extrabold uppercase tracking-[1.2px] text-navy/60">
+          Lo que no se negocia
+        </div>
+      </div>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          VALORES.map((v, i) => (
+            <div
+              data-reveal
+              style={`--reveal-delay:${i * 90}ms`}
+              class="group relative overflow-hidden rounded-2xl border border-white/70 bg-white/65 p-7 pt-8 text-center shadow-[0_12px_30px_rgba(1,17,38,.08)] backdrop-blur-md transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_34px_64px_rgba(1,17,38,.16)]"
+            >
+              {/* Acento superior */}
+              <span
+                class={`absolute inset-x-0 top-0 h-[3px] ${v.accent === "orange" ? "bg-orange" : "bg-cyan"}`}
+                aria-hidden="true"
+              />
+              <div
+                class={`mx-auto mb-4 flex h-[56px] w-[56px] items-center justify-center rounded-2xl text-navy transition-[transform,box-shadow] duration-300 ease-out group-hover:scale-110 ${
+                  v.accent === "orange"
+                    ? "bg-orange/15 text-orange group-hover:shadow-[0_0_22px_rgba(243,70,22,.4)]"
+                    : "bg-cyan/30 text-navy group-hover:shadow-[0_0_22px_rgba(150,221,237,.6)]"
+                }`}
+              >
+                <span class={v.icon === "heart" ? "val-beat" : v.icon === "clock" ? "val-tick" : ""}>
+                  <Icon name={v.icon} size={28} stroke={1.9} />
+                </span>
+              </div>
+              <h3 class="m-0 mb-2 text-[18px] font-semibold text-navy">{v.title}</h3>
+              <p class="m-0 text-[14.5px] leading-[1.6] text-[#5a6a7a]">{v.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- 7. RESPALDO INSTITUCIONAL ---------- */}
+  <section
+    class="relative isolate overflow-hidden bg-navy text-white"
+    style="background:radial-gradient(800px 420px at 50% 42%,rgba(150,221,237,.10),transparent 60%),#011126;"
+  >
+    {/* Escudo marca de agua */}
+    <div class="pointer-events-none absolute left-1/2 top-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 text-cyan/[.05]" aria-hidden="true">
+      <Icon name="shield" size={460} stroke={0.6} />
+    </div>
+
+    <div class="mx-auto max-w-[760px] px-6 py-[88px] text-center">
+      <div data-reveal class="mb-5 text-[13px] font-bold uppercase tracking-[1.6px] text-cyan">
+        Respaldo institucional
+      </div>
+      <div data-reveal style="--reveal-delay:80ms" class="mx-auto mb-6 flex h-[68px] w-[68px] items-center justify-center rounded-2xl bg-cyan/10 text-cyan ring-1 ring-cyan/25">
+        <Icon name="shield-check" size={36} stroke={1.7} />
+      </div>
+      <p data-reveal style="--reveal-delay:160ms" class="m-0 text-[20px] leading-[1.6] text-white/90 sm:text-[24px]">
+        Somos el centro de soluciones y servicios para los integrantes del
+        <span class="font-semibold text-cyan"> Ministerio de Defensa</span>, con
+        servicios diseñados a la medida de nuestra fuerza pública.
+      </p>
+
+      {/* Fuerzas */}
+      <div class="mx-auto mt-12 grid max-w-[560px] grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4 sm:gap-x-2">
+        {
+          FUERZAS.map((f, i) => (
+            <div
+              data-reveal
+              style={`--reveal-delay:${240 + i * 90}ms`}
+              class="group flex flex-col items-center gap-3 sm:border-l sm:border-white/10 sm:first:border-l-0"
+            >
+              <span class="transition-transform duration-300 ease-out group-hover:scale-110 group-hover:text-white" style="color:#9CB04A;">
+                <Icon name={f.icon} size={30} stroke={1.7} />
+              </span>
+              <span class="text-[13px] font-semibold" style="color:#9CB04A;">{f.label}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- 8. CTA FINAL ---------- */}
+  <section class="bg-navy text-white" style="background:radial-gradient(900px 420px at 50% 0%,rgba(150,221,237,.2),transparent 60%),#011126;">
+    <div class="mx-auto max-w-[760px] px-6 py-[88px] text-center">
+      <h2 data-reveal class="m-0 mb-7 text-[30px] font-bold leading-[1.12] tracking-[-.8px] text-balance sm:text-[40px]">
+        Tu tranquilidad empieza con una conversación
+      </h2>
+      <div data-reveal style="--reveal-delay:80ms" class="flex flex-wrap justify-center gap-[14px]">
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener"
+          class="btn-shine inline-flex items-center gap-[9px] rounded-full bg-orange px-[30px] py-[15px] text-[16px] font-semibold text-white no-underline shadow-[0_12px_32px_rgba(243,70,22,.42)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_48px_rgba(243,70,22,.6)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+        >
+          <Icon name="whatsapp" size={19} stroke={2} />
+          Escríbenos ahora
+        </a>
+        <a
+          href="/servicios"
+          class="inline-flex items-center gap-2 rounded-full border-[1.5px] border-cyan/40 bg-transparent px-7 py-[15px] text-[16px] font-medium text-white no-underline transition-colors hover:border-cyan hover:bg-cyan/10 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+        >
+          Conoce nuestros servicios
+          <Icon name="arrowRight" size={18} stroke={2.2} />
+        </a>
+      </div>
+    </div>
+  </section>
+</Page>
+
+<style>
+  /* Entrada del hero en cascada (al cargar) */
+  @keyframes cnUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to { opacity: 1; transform: none; }
+  }
+  .cn-in {
+    opacity: 0;
+    animation: cnUp 0.7s cubic-bezier(0.16, 0.84, 0.32, 1) both;
+  }
+  .cn-d1 { animation-delay: 0.1s; }
+  .cn-d2 { animation-delay: 0.25s; }
+  .cn-d3 { animation-delay: 0.42s; }
+  .cn-d4 { animation-delay: 0.7s; }
+
+  /* Bounce sutil del indicador de scroll */
+  @keyframes cnBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+  .cn-bounce {
+    animation: cnBounce 1.8s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cn-in {
+      opacity: 1;
+      animation: none;
+    }
+    .cn-bounce {
+      animation: none;
+    }
+  }
+
+</style>
+
+<script is:inline>
+  // Hero: cargar video solo si no hay reduced-motion (si no, solo poster)
+  (() => {
+    const v = document.getElementById("cnVideo");
+    if (!v) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+    const s = v.querySelector("source");
+    if (s && s.dataset.src) {
+      s.src = s.dataset.src;
+      v.load();
+      v.play().catch(() => {});
+    }
+  })();
+</script>
+
+<script is:inline>
+  (() => {
+    const els = document.querySelectorAll("[data-count]");
+    if (!els.length) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const fmt = (n) => Math.round(n).toLocaleString("es-CO");
+    const run = (el) => {
+      const target = parseInt(el.dataset.count, 10) || 0;
+      const pre = el.dataset.prefix || "";
+      const suf = el.dataset.suffix || "";
+      const delay = parseInt(el.dataset.delay, 10) || 0;
+      if (reduce) {
+        el.textContent = pre + fmt(target) + suf;
+        return;
+      }
+      const dur = 2200;
+      const start = () => {
+        const t0 = performance.now();
+        const tick = (now) => {
+          const p = Math.min((now - t0) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = pre + fmt(target * eased) + suf;
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+      setTimeout(start, delay);
+    };
+    if (!("IntersectionObserver" in window)) {
+      els.forEach(run);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            run(e.target);
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.4 },
+    );
+    els.forEach((el) => io.observe(el));
+  })();
+</script>

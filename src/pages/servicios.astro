@@ -1,0 +1,757 @@
+---
+import Page from "../layouts/Page.astro";
+import Ecosistema from "../components/Ecosistema.astro";
+import Icon from "../components/Icon.astro";
+
+/* Cinta marquee (una sola, recta) */
+const CINTA = [
+  "Bono de Condolencia", "Asistencia Financiera", "Asistencia Jurídica",
+  "Administración de Nómina", "Seguros", "Entretenimiento",
+  "Médico en Casa", "Telemedicina", "Asistencia Psicológica",
+  "Plan Mascota", "Viajes Internacionales", "Tecnología",
+  "Declaración de Renta", "Transporte a Citas", "Tutorías Académicas",
+  "Cine", "Streaming", "Recargas",
+];
+
+const WHATSAPP = "https://wa.me/573181626167";
+
+/* ids de las 3 cards de planes (mismo orden que PLANES) */
+const PLAN_IDS = ["plan-elite", "plan-plus-superior", "plan-plus"];
+
+/* ids de los 9 bloques zig-zag (mismo orden que DETALLE) */
+const DETALLE_IDS = [
+  "credito-facil",
+  "bono-condolencia",
+  "asistencia-financiera",
+  "asistencia-juridica",
+  "bienestar-salud",
+  "seguros-auxilios",
+  "entretenimiento",
+  "administracion-nomina",
+  "viajes",
+];
+
+/* nombre en la cinta → id del bloque (los que no estén aquí van sin enlace) */
+const CINTA_LINK: Record<string, string> = {
+  "Bono de Condolencia": "bono-condolencia",
+  "Asistencia Financiera": "asistencia-financiera",
+  "Asistencia Jurídica": "asistencia-juridica",
+  "Administración de Nómina": "administracion-nomina",
+  "Seguros": "seguros-auxilios",
+  "Entretenimiento": "entretenimiento",
+  "Médico en Casa": "bienestar-salud",
+  "Telemedicina": "bienestar-salud",
+  "Asistencia Psicológica": "bienestar-salud",
+  "Plan Mascota": "bono-condolencia",
+  "Viajes Internacionales": "viajes",
+  "Declaración de Renta": "asistencia-financiera",
+  "Transporte a Citas": "bienestar-salud",
+  "Tutorías Académicas": "bienestar-salud",
+  "Cine": "entretenimiento",
+  "Streaming": "entretenimiento",
+  "Recargas": "entretenimiento",
+};
+
+/* === ETIQUETA INDICATIVA INTERCALADA EN LA CINTA (reversible) === */
+const HINT = "👆 TOCA PARA VER MÁS";
+/* Inserta el hint cada 4 servicios. Se duplica con la cinta → aparece en ambos sets. */
+const CINTA_TRACK: string[] = CINTA.flatMap((s, i) =>
+  i > 0 && i % 4 === 0 ? [HINT, s] : [s],
+);
+/* === FIN === */
+
+type Plan = {
+  name: string;
+  price: string;
+  cobertura: string;
+  popular?: boolean;
+  tagline?: string;
+  intro?: string;
+  items: string[];
+};
+
+/* === LOGOS STREAMING (bloque Entretenimiento, reversible) === */
+const STREAMING = [
+  { name: "Netflix", url: "https://cdn.simpleicons.org/netflix" },
+  { name: "HBO Max", url: "https://cdn.simpleicons.org/hbomax" },
+  { name: "Disney+", url: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" },
+  { name: "Paramount+", url: "https://cdn.simpleicons.org/paramountplus" },
+];
+/* === FIN === */
+
+type Detalle = { icon: string; title: string; copy: string; img: string; alt?: string; placeholder?: boolean; streaming?: boolean; items?: string[] };
+const DETALLE: Detalle[] = [
+  {
+    icon: "money",
+    title: "Crédito fácil",
+    copy: "Soluciones de crédito pensadas para ti y tu familia, con el respaldo y el acompañamiento que mereces.",
+    img: "https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782482816/hf_20260626_140140_15e49f89-7797-47a7-b22a-a4b8347295a8_ap1a97.png",
+    alt: "Militar con respaldo financiero de Servimil",
+  },
+  {
+    icon: "heart",
+    title: "Bono de condolencia",
+    copy: "En los momentos más difíciles, no estás solo. Si fallece un miembro de tu Grupo Básico Familiar, te entregamos un auxilio económico de libre disposición, según tu plan.",
+    img: "https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782334293/hf_20260624_204806_5c829cbd-d21e-422b-b8af-506ce07b7c1d_jalqre.png",
+    items: [
+      "Desde $1.000.000 hasta $3.000.000 según tu plan",
+      "Cubre a tu grupo básico familiar (hijos, hermanos, padres, suegros y pareja)",
+      "Incluye protección para tu mascota",
+      "Entrega en 15 días hábiles. Carencia de 120 días",
+    ],
+  },
+  {
+    icon: "money",
+    title: "Asistencia financiera",
+    copy: "Pon tus finanzas en manos de un experto. Te asesoramos para tomar las mejores decisiones en créditos, retanqueos, refinanciaciones y compras de cartera. Además, te ayudamos con tu declaración de renta y evitas sanciones de la DIAN.",
+    img: "https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782408642/hf_20260625_172958_2108a6fa-5576-468c-a6df-5366a2005eb3_y8dtye.png",
+    alt: "Militar recibiendo asistencia financiera en un banco",
+  },
+  {
+    icon: "scale",
+    title: "Asistencia jurídica",
+    copy: "Un abogado para ti y tu familia, 24/7 los 365 días del año. Acompañamiento personalizado, ilimitado y sin cargos adicionales.",
+    img: "https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782409309/hf_20260625_174056_39b13b52-52fd-4462-8bd7-c4559f36d618_naz2w4.png",
+    alt: "Militar recibiendo asistencia jurídica de un abogado",
+    items: [
+      "Derechos de petición, tutelas y demandas",
+      "Trámites de traslados, vacaciones, subsidios y permisos",
+      "Contratos de compraventa",
+      "Divorcios y disoluciones",
+      "Asesoría en todas las ramas del derecho",
+      "Cubre titular + primer grado de consanguinidad",
+    ],
+  },
+  {
+    icon: "activity",
+    title: "Bienestar y salud",
+    copy: "Cuidamos tu salud y la de los tuyos con acompañamiento real.",
+    img: "https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782334340/hf_20260624_204917_12b834f1-71c5-46a0-be47-cf11bbdbbaa6_zxkzmq.jpg",
+    items: [
+      "Telemedicina para tu grupo básico familiar",
+      "Asistencia psicológica",
+      "Médico en casa (ciudades principales)",
+      "Transporte a citas médicas y ambulancia",
+      "Aseo en el hogar por incapacidad",
+      "Tutorías virtuales para hijos y nietos",
+    ],
+  },
+  {
+    icon: "shield",
+    title: "Seguros y auxilios",
+    copy: "Protección integral para tu tranquilidad y la de tu familia.",
+    img: "https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782334323/hf_20260624_204855_f3f07973-c5d4-4431-a2aa-90371df5725e_armdiy.jpg",
+    items: [
+      "Bono canasta: $1.000.000 durante 4 meses en caso de fallecimiento del titular",
+      "Auxilio por hospitalización: $50.000 por día (hasta 5 días)",
+      "Auxilio por incapacidad: $10.000 por día (hasta 15 días)",
+    ],
+  },
+  {
+    icon: "play",
+    title: "Entretenimiento",
+    copy: "Tu tiempo de calidad también importa. Disfruta en familia según tu plan.",
+    img: "https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782334331/hf_20260624_204906_f527e233-961c-404c-a20f-99b9a9d383c2_amogiz.jpg",
+    streaming: true,
+    items: [
+      "Pantallas de streaming",
+      "Boletas de cine (según plan)",
+      "Recargas de celular (según plan)",
+    ],
+  },
+  {
+    icon: "file",
+    title: "Administración de nómina",
+    copy: "Tu nómina, libre de descuentos innecesarios. Nuestro experto te explica cada deducción de tu desprendible y, si aplica, te ayuda a eliminarlos.",
+    img: "https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782409781/hf_20260625_174902_bb1c8c41-00ee-45db-9597-640c85ccdb1e_spfvov.png",
+    alt: "Militar revisando su desprendible de nómina",
+  },
+  {
+    icon: "plane",
+    title: "Viajes",
+    copy: "Viaja más, paga menos. Beneficios exclusivos con nuestros aliados.",
+    img: "https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782334348/hf_20260624_204929_8fb15096-efb8-4a1a-9d88-500e58960ab7_n0pmr0.jpg",
+    alt: "Familia de la fuerza pública lista para viajar",
+    items: [
+      "20% de devolución en compras de tiquetes Pinbus (trayectos nacionales)",
+      "Paquetes turísticos con tarifas preferenciales mediante nuestro convenio con Mundo Tours",
+    ],
+  },
+];
+
+const PLANES: Plan[] = [
+  {
+    name: "Plan Élite",
+    price: "$59.900",
+    cobertura: "$3.000.000",
+    popular: true,
+    tagline: "El preferido por las familias",
+    items: [
+      "Bono de condolencia hasta $3.000.000 (titular + 8 personas)",
+      "Mascota incluida: $300.000 en caso de fallecimiento",
+      "1 persona hasta 75 años: $1.000.000 en caso de fallecimiento",
+      "Entretenimiento máximo: streaming + cine (hasta 10 boletas/año) + recargas celular (hasta 12/año)",
+      "Asistencia jurídica (titular + primer grado de consanguinidad)",
+      "Asistencia financiera y declaración de renta",
+      "Administración de nómina",
+      "Bono canasta: $1.000.000 por 4 meses",
+      "Auxilio por hospitalización $50.000/día (máx 5 días) o incapacidad $10.000/día (máx 15 días)",
+      "Salud: telemedicina, psicología, médico en casa, transporte a citas, ambulancia, aseo en hogar",
+      "Académico: tutorías virtuales para hijos/nietos",
+      "Viajes: 20% devolución en Pinbus + convenio Mundo Tours",
+    ],
+  },
+  {
+    name: "Plan Plus Superior",
+    price: "$49.900",
+    cobertura: "$2.000.000",
+    items: [
+      "Bono de condolencia hasta $2.000.000 (titular + 7 personas)",
+      "Mascota incluida: $250.000 en caso de fallecimiento",
+      "1 persona hasta 75 años: $900.000 en caso de fallecimiento",
+      "Entretenimiento ampliado: streaming + cine (hasta 8 boletas/año) + recargas celular (hasta 6/año)",
+      "Asistencia jurídica (titular + primer grado de consanguinidad)",
+      "Asistencia financiera y declaración de renta",
+      "Administración de nómina",
+      "Bono canasta: $1.000.000 por 4 meses",
+      "Auxilio por hospitalización $50.000/día (máx 5 días) o incapacidad $10.000/día (máx 15 días)",
+      "Salud: telemedicina, psicología, médico en casa, transporte a citas, ambulancia, aseo en hogar",
+      "Académico: tutorías virtuales para hijos/nietos",
+      "Viajes: 20% devolución en Pinbus + convenio Mundo Tours",
+    ],
+  },
+  {
+    name: "Plan Plus",
+    price: "$39.900",
+    cobertura: "$1.000.000",
+    items: [
+      "Bono de condolencia hasta $1.000.000 (titular + 6 personas del grupo básico familiar)",
+      "Mascota incluida: $200.000 en caso de fallecimiento",
+      "1 persona hasta 75 años: $800.000 en caso de fallecimiento",
+      "Entretenimiento: pantallas de streaming",
+      "Asistencia jurídica (titular + primer grado de consanguinidad)",
+      "Asistencia financiera y declaración de renta",
+      "Administración de nómina",
+      "Bono canasta: $1.000.000 por 4 meses",
+      "Auxilio por hospitalización $50.000/día (máx 5 días) o incapacidad $10.000/día (máx 15 días)",
+      "Salud: telemedicina, psicología, médico en casa, transporte a citas, ambulancia, aseo en hogar",
+      "Académico: tutorías virtuales para hijos/nietos",
+      "Viajes: 20% devolución en Pinbus + convenio Mundo Tours",
+    ],
+  },
+];
+---
+<Page
+  title="Servicios — Servimil"
+  description="Conoce todos los servicios de Servimil para la fuerza pública y sus familias: financiero, salud y bienestar, familia y protección, y nuevos servicios."
+>
+  <Ecosistema />
+
+  {/* ---------- CINTA ANIMADA (una sola, recta) ---------- */}
+  <div class="marquee-band">
+    <div class="marquee-track">
+      {[...CINTA_TRACK, ...CINTA_TRACK].map((s) => {
+        const id = CINTA_LINK[s];
+        const isHint = s === HINT;
+        return (
+          <span class="marquee-item">
+            {isHint ? (
+              <span class="marquee-hint-pill">{s}</span>
+            ) : id ? (
+              <a href={`#${id}`} class="marquee-link">{s}</a>
+            ) : (
+              s
+            )}
+            <span class="marquee-sep" aria-hidden="true">✦</span>
+          </span>
+        );
+      })}
+    </div>
+  </div>
+
+  {/* ---------- NUESTROS PLANES ---------- */}
+  <section
+    id="explorar"
+    class="relative isolate overflow-hidden bg-navy text-white"
+    style="scroll-margin-top:80px;background:radial-gradient(1000px 520px at 50% -5%,rgba(150,221,237,.14),transparent 60%),linear-gradient(180deg,#02182c 0%,#011126 100%);"
+  >
+    <div class="mx-auto max-w-[1180px] px-6 py-[88px]">
+      <div data-reveal class="mx-auto mb-14 max-w-[720px] text-center">
+        <div class="mb-3 text-[16px] font-bold uppercase tracking-[1.6px] text-white sm:text-[18px]">
+          Nuestros planes
+        </div>
+        <h2 class="m-0 mb-4 text-[30px] font-bold leading-[1.12] tracking-[-.7px] sm:text-[40px]">
+          Elige el plan perfecto para tu familia
+        </h2>
+        <p class="m-0 text-[16px] leading-[1.6] text-white/75 sm:text-[17px]">
+          Todos nuestros planes incluyen respaldo jurídico, financiero,
+          administración de nómina, salud y bienestar. Elige el nivel de
+          cobertura que más se ajusta a ti.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-3">
+        {
+          PLANES.map((p, i) => (
+            <article
+              id={PLAN_IDS[i]}
+              data-plan-card
+              data-reveal
+              style={`--reveal-delay:${i * 110}ms;scroll-margin-top:110px`}
+              class={`group relative flex cursor-pointer flex-col rounded-3xl border p-7 backdrop-blur-md transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-2 active:scale-[.99] sm:p-8 ${
+                p.popular
+                  ? "border-orange/60 bg-white/[.07] shadow-[0_30px_64px_rgba(0,0,0,.45)] lg:-mt-4 lg:mb-0 ring-1 ring-orange/30 hover:shadow-[0_40px_80px_rgba(243,70,22,.35)]"
+                  : "border-white/12 bg-white/[.045] shadow-[0_18px_44px_rgba(0,0,0,.28)] hover:border-orange/50 hover:shadow-[0_26px_56px_rgba(243,70,22,.20)] active:border-orange"
+              }`}
+            >
+              {p.popular && (
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-orange px-4 py-1 text-[11px] font-bold uppercase tracking-[1.2px] text-white shadow-lg">
+                  Más popular
+                </div>
+              )}
+
+              <h3 class="m-0 text-[20px] font-bold tracking-[-.3px]">{p.name}</h3>
+              {p.tagline && (
+                <p class="m-0 mt-1 text-[13px] font-medium text-orange">{p.tagline}</p>
+              )}
+
+              <div class="mt-5 flex items-end gap-1.5">
+                <span class="text-[40px] font-extrabold leading-none tracking-[-1.5px] sm:text-[46px]">{p.price}</span>
+                <span class="mb-1.5 text-[14px] font-medium text-white/60">/mes</span>
+              </div>
+
+              <div class="mt-4 rounded-2xl border border-cyan/20 bg-cyan/[.07] px-4 py-3 text-center">
+                <div class="text-[11px] font-bold uppercase tracking-[1px] text-cyan">Bono de condolencia</div>
+                <div class="mt-0.5 text-[22px] font-bold text-white">{p.cobertura}</div>
+              </div>
+
+              {p.intro && (
+                <p class="mt-5 mb-0 text-[13.5px] font-semibold text-cyan">{p.intro}</p>
+              )}
+
+              <ul class="mt-4 mb-7 flex flex-1 list-none flex-col gap-2.5 p-0">
+                {p.items.map((it) => (
+                  <li class="flex items-start gap-2.5 text-[13.5px] leading-[1.5] text-white/85">
+                    <span class={`mt-0.5 shrink-0 ${p.popular ? "text-orange" : "text-cyan"}`}>
+                      <Icon name="check" size={17} stroke={2.6} />
+                    </span>
+                    <span>{it}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href={WHATSAPP}
+                target="_blank"
+                rel="noopener"
+                class={`btn-shine mt-auto block rounded-full px-6 py-3.5 text-center text-[15px] font-bold transition-[transform,box-shadow] duration-200 ease-out active:scale-95 focus-visible:outline-none focus-visible:ring-2 after:absolute after:inset-0 after:content-[''] ${
+                  p.popular
+                    ? "bg-orange text-white focus-visible:ring-navy hover:shadow-[0_14px_34px_rgba(243,70,22,.5)]"
+                    : "bg-cyan text-navy focus-visible:ring-navy hover:shadow-[0_14px_34px_rgba(150,221,237,.4)]"
+                }`}
+              >
+                Afíliate ahora
+              </a>
+            </article>
+          ))
+        }
+      </div>
+
+      <p data-reveal class="mx-auto mt-10 max-w-[640px] text-center text-[12.5px] leading-[1.5] text-white/45">
+        Aplican carencias y condiciones según cada servicio. Consulta términos completos.
+      </p>
+    </div>
+  </section>
+
+  {/* ---------- SERVICIOS EN DETALLE (zig-zag) ---------- */}
+  <section class="relative overflow-hidden bg-navy text-white" style="background:#011126;">
+    <div class="mx-auto max-w-[1140px] px-6 py-[88px]">
+      <div data-reveal class="mx-auto mb-16 max-w-[720px] text-center">
+        <div class="mb-3 text-[16px] font-bold uppercase tracking-[1.6px] text-white sm:text-[18px]">
+          Servicios en detalle
+        </div>
+        <h2 class="m-0 text-[30px] font-bold leading-[1.12] tracking-[-.7px] sm:text-[40px]">
+          Todo lo que hacemos por ti
+        </h2>
+      </div>
+
+      <div class="flex flex-col gap-20 sm:gap-24">
+        {
+          DETALLE.map((d, i) => {
+            const even = i % 2 === 0;
+            return (
+              <div
+                id={DETALLE_IDS[i]}
+                style="scroll-margin-top:100px"
+                class="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-14"
+              >
+                {/* Texto */}
+                <div
+                  data-reveal={even ? "left" : "right"}
+                  class={`order-2 ${even ? "lg:order-1" : "lg:order-2"} det-text`}
+                >
+                  <div class="det-stagger mb-4 flex items-center gap-3.5" style="--det-i:0">
+                    <span class="det-icon flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-2xl bg-cyan/12 text-cyan ring-1 ring-cyan/25">
+                      <Icon name={d.icon} size={26} stroke={1.8} />
+                    </span>
+                    <h3 class="m-0 text-[22px] font-bold tracking-[-.3px] sm:text-[24px]">{d.title}</h3>
+                  </div>
+                  <p class="det-stagger m-0 text-[15.5px] leading-[1.65] text-white/80" style="--det-i:1">{d.copy}</p>
+                  {d.items && (
+                    <ul class="det-stagger mt-5 flex list-none flex-col gap-2.5 p-0" style="--det-i:2">
+                      {d.items.map((it) => (
+                        <li class="flex items-start gap-2.5 text-[14px] leading-[1.55] text-white/85">
+                          <span class="mt-0.5 shrink-0 text-cyan">
+                            <Icon name="check" size={17} stroke={2.5} />
+                          </span>
+                          <span>{it}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                {/* Imagen */}
+                <div
+                  data-reveal={even ? "right" : "left"}
+                  class={`order-1 ${even ? "lg:order-2" : "lg:order-1"} det-media group relative isolate`}
+                >
+                  <div
+                    class={`det-decor absolute -bottom-4 ${even ? "-right-4 border-cyan/50 bg-cyan/10" : "-left-4 border-orange/50 bg-orange/10"} -z-10 h-full w-full rounded-3xl border-2`}
+                    aria-hidden="true"
+                  ></div>
+                  <div class="det-frame aspect-[4/3] overflow-hidden rounded-3xl border border-white/12 shadow-[0_24px_60px_-18px_rgba(0,0,0,.55)]">
+                    <img
+                      src={d.img}
+                      alt={d.alt || d.title}
+                      loading="lazy"
+                      decoding="async"
+                      class="det-img h-full w-full object-cover"
+                    />
+                    {/* === FILA LOGOS STREAMING (reversible) === */}
+                    {d.streaming && (
+                      <div class="strm-bar absolute inset-x-0 bottom-0 z-10 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 bg-black/45 px-4 py-3 backdrop-blur-sm">
+                        {STREAMING.map((s) => (
+                          <span
+                            class="strm-logo"
+                            role="img"
+                            aria-label={s.name}
+                            title={s.name}
+                            style={`--logo:url('${s.url}')`}
+                          />
+                        ))}
+                      </div>
+                    )}
+                    {/* === FIN === */}
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
+
+      <p data-reveal class="mx-auto mt-16 max-w-[640px] text-center text-[12.5px] leading-[1.5] text-white/45">
+        Aplican carencias y condiciones según cada servicio. Consulta términos completos.
+      </p>
+    </div>
+  </section>
+
+  {/* ---------- TESTIMONIOS DE GOOGLE (Trustindex) ---------- */}
+  <section class="relative isolate overflow-hidden bg-navy text-white" style="background:#011126;">
+    <div class="mx-auto max-w-[1180px] px-6 py-[88px]">
+      <div data-reveal class="mb-12 text-center sm:mb-14">
+        <h2 class="m-0 text-[32px] font-extrabold uppercase leading-[1.05] tracking-[-.5px] text-white sm:text-[40px] lg:text-[46px]">
+          Testimonios
+        </h2>
+      </div>
+
+      {/* TODO: reemplazar placeholder por video de testimonio cuando esté listo */}
+      <div data-reveal class="mx-auto mb-14 w-full max-w-3xl">
+        <div class="flex aspect-video items-center justify-center rounded-2xl bg-white shadow-[0_18px_50px_-20px_rgba(1,17,38,.3)]">
+          <span class="text-[14px] font-semibold uppercase tracking-[2px] text-navy/30">
+            Video
+          </span>
+        </div>
+      </div>
+
+      <div data-reveal class="mx-auto w-full max-w-[820px]">
+        <div id="trustindex-widget"></div>
+      </div>
+    </div>
+  </section>
+
+  <script
+    is:inline
+    defer
+    async
+    src="https://cdn.trustindex.io/loader.js?5eb6c5b7485b953155662c28bb3"
+  ></script>
+
+  {/* Highlight de la card de plan al aterrizar con #plan-... en la URL */}
+  <script is:inline>
+    (() => {
+      const PLAN_IDS = ["plan-plus", "plan-plus-superior", "plan-elite"];
+      const flash = () => {
+        const id = (location.hash || "").replace("#", "");
+        if (!PLAN_IDS.includes(id)) return;
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.remove("plan-highlight");
+        void el.offsetWidth; // reinicia la animación
+        el.classList.add("plan-highlight");
+        el.addEventListener(
+          "animationend",
+          () => el.classList.remove("plan-highlight"),
+          { once: true },
+        );
+      };
+      // pequeño delay para dar tiempo al scroll del ancla
+      window.addEventListener("load", () => setTimeout(flash, 400));
+      window.addEventListener("hashchange", flash);
+    })();
+  </script>
+</Page>
+
+<style>
+  /* ---- Fila logos streaming (bloque Entretenimiento) ---- */
+  .strm-logo {
+    width: 78px;
+    height: 24px;
+    background: #fff;
+    -webkit-mask: var(--logo) center / contain no-repeat;
+    mask: var(--logo) center / contain no-repeat;
+    transition: transform 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
+    opacity: 0.92;
+  }
+  .strm-logo:hover {
+    transform: scale(1.12);
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.55));
+  }
+  @media (max-width: 480px) {
+    .strm-logo {
+      width: 64px;
+      height: 20px;
+    }
+  }
+
+  /* ---- Cinta animada recta (marquee) ---- */
+  .marquee-band {
+    overflow: hidden;
+    width: 100%;
+    background: #f34616;
+    padding-block: 20px;
+    white-space: nowrap;
+    /* fade premium en los extremos */
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      #000 8%,
+      #000 92%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      #000 8%,
+      #000 92%,
+      transparent 100%
+    );
+  }
+  .marquee-track {
+    display: inline-flex;
+    align-items: center;
+    width: max-content;
+    will-change: transform;
+    animation: marqueeLeft 48s linear infinite;
+  }
+  .marquee-band:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  .marquee-item {
+    display: inline-flex;
+    align-items: center;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding-inline: 4px;
+  }
+  /* Etiqueta indicativa intercalada (no clickeable, se distingue de los servicios) */
+  .marquee-hint-pill {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #011126;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    box-shadow: 0 4px 14px rgba(1, 17, 38, 0.22);
+    cursor: default;
+    user-select: none;
+  }
+
+  .marquee-link {
+    display: inline-block;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 999px;
+    padding: 2px 10px;
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s ease,
+      text-underline-offset 0.2s ease;
+  }
+  .marquee-link:hover {
+    background: rgba(0, 0, 0, 0.22);
+    transform: scale(1.07);
+    text-decoration: underline;
+    text-underline-offset: 5px;
+    text-decoration-thickness: 2px;
+  }
+  .marquee-link:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 3px;
+    border-radius: 999px;
+  }
+  .marquee-sep {
+    margin-inline: 26px;
+    opacity: 0.6;
+    font-size: 14px;
+  }
+  @keyframes marqueeLeft {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @media (max-width: 640px) {
+    .marquee-item {
+      font-size: 15px;
+    }
+    .marquee-sep {
+      margin-inline: 18px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+  }
+
+  /* ---- Highlight de llegada a una card de plan (~2s, una vez) ---- */
+  .plan-highlight {
+    animation: planArrive 2s ease-out 1;
+  }
+  @keyframes planArrive {
+    0% {
+      box-shadow:
+        0 0 0 0 rgba(243, 70, 22, 0),
+        0 18px 44px rgba(0, 0, 0, 0.28);
+      border-color: rgba(243, 70, 22, 0);
+    }
+    18% {
+      box-shadow:
+        0 0 0 4px rgba(243, 70, 22, 0.55),
+        0 0 38px 6px rgba(243, 70, 22, 0.45);
+      border-color: #f34616;
+      transform: scale(1.025);
+    }
+    100% {
+      box-shadow:
+        0 0 0 0 rgba(243, 70, 22, 0),
+        0 18px 44px rgba(0, 0, 0, 0.28);
+      border-color: inherit;
+      transform: scale(1);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .plan-highlight {
+      animation: none;
+    }
+  }
+
+  /* ---- Servicios en detalle: animaciones premium ---- */
+
+  /* Imagen: zoom suave al hover + sombra intensificada */
+  .det-frame {
+    transition: box-shadow 0.45s ease;
+  }
+  .det-media:hover .det-frame {
+    box-shadow: 0 34px 80px -16px rgba(0, 0, 0, 0.7);
+  }
+  .det-img {
+    transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+    will-change: transform;
+  }
+  .det-media:hover .det-img {
+    transform: scale(1.05);
+  }
+
+  /* Bloque decorativo: desplazamiento parallax sutil al hover */
+  .det-decor {
+    transition:
+      transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1),
+      opacity 0.55s ease;
+  }
+  .det-media:hover .det-decor {
+    transform: translate(6px, 6px) scale(1.015);
+  }
+
+  /* Stagger interno del texto al revelarse */
+  .det-stagger {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: calc(120ms + var(--det-i, 0) * 120ms);
+  }
+  .det-text.in .det-stagger {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Ícono: micro-anim de entrada + leve realce al hover */
+  .det-icon {
+    transform: scale(0.85);
+    opacity: 0;
+    transition:
+      transform 0.5s cubic-bezier(0.2, 1.4, 0.4, 1),
+      opacity 0.5s ease,
+      background-color 0.3s ease;
+    transition-delay: 200ms;
+  }
+  .det-text.in .det-icon {
+    transform: scale(1);
+    opacity: 1;
+  }
+  .det-text:hover .det-icon {
+    transform: scale(1.08) rotate(-3deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .det-img,
+    .det-decor,
+    .det-stagger,
+    .det-icon,
+    .det-frame {
+      transition: none;
+    }
+    .det-stagger,
+    .det-icon {
+      opacity: 1;
+      transform: none;
+    }
+    .det-media:hover .det-img,
+    .det-media:hover .det-decor,
+    .det-text:hover .det-icon {
+      transform: none;
+    }
+  }
+</style>

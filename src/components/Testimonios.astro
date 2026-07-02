@@ -1,96 +1,109 @@
 ---
-import Icon from "./Icon.astro";
-import { TESTIMONIOS } from "../lib/site";
+const VIDEOS = [1, 2, 3, 4, 5, 6];
 ---
-<section id="testimonios" class="border-t border-[#dbe7ef] bg-white">
-  <div class="mx-auto max-w-[980px] px-6 py-[88px] text-center">
+<section id="testimonios" class="tst-hero relative overflow-hidden">
+  {/* === FONDO BEIGE TESTIMONIOS (reversible) === */}
+  <div class="tst-mesh" aria-hidden="true">
+    <span class="tst-blob tst-blob--a"></span>
+    <span class="tst-blob tst-blob--b"></span>
+  </div>
+  {/* === FIN === */}
+
+  <div class="relative z-10 mx-auto max-w-[1180px] px-6 py-[88px] text-center">
     <div data-reveal>
-      <div class="mb-3 text-[13px] font-bold uppercase tracking-[1.2px] text-navy/60">
+      <div class="mb-3 text-[16px] font-bold uppercase tracking-[1.6px] text-orange sm:text-[18px]">
         Testimonios
       </div>
-      <h2 class="m-0 mb-11 text-[32px] font-bold leading-[1.12] tracking-[-.8px] sm:text-[40px]">
+      <h2 class="m-0 mb-14 text-[40px] font-bold leading-[1.1] tracking-[-.8px] text-navy sm:text-[52px] lg:text-[60px]">
         La voz de quienes ya nos eligieron
       </h2>
     </div>
 
-    <div
-      data-reveal
-      class="relative rounded-[24px] border border-[#dbe7ef] bg-ice px-6 py-10 sm:px-11 sm:py-12"
-    >
-      <!-- Diapositiva activa (rellenada por JS) -->
-      <div id="tCard" class="sm-fade">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="#96DDED" class="mx-auto mb-[18px] block" aria-hidden="true">
-          <path d="M9.5 6C6.5 7 5 9.5 5 13v5h6v-7H8c0-2 .8-3.3 2.4-3.8L9.5 6zm9 0c-3 1-4.5 3.5-4.5 7v5h6v-7h-3c0-2 .8-3.3 2.4-3.8L18.5 6z"/>
-        </svg>
-        <p
-          id="tQuote"
-          class="mx-auto m-0 mb-7 max-w-[720px] text-[20px] font-medium leading-[1.5] text-balance text-navy sm:text-[23px]"
-        ></p>
-        <div class="flex items-center justify-center gap-[14px]">
+    {/* Grid de placeholders de video (3×2 desktop, 2 tablet, 1 móvil) */}
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        VIDEOS.map((n, i) => (
           <div
-            class="flex h-[52px] w-[52px] items-center justify-center rounded-full font-mono text-[9px] text-[#7e94a8]"
-            style="background:repeating-linear-gradient(45deg,#d3e4ef,#d3e4ef 6px,#c7dbe9 6px,#c7dbe9 12px);"
-          >foto</div>
-          <div class="text-left">
-            <div id="tName" class="text-[16px] font-semibold text-navy"></div>
-            <div id="tRole" class="text-[14px] font-medium text-[#6b8794]"></div>
+            data-reveal
+            style={`--reveal-delay:${i * 90}ms`}
+            class="aspect-video overflow-hidden rounded-2xl border-t-2 border-orange/70 bg-white shadow-[0_18px_44px_-18px_rgba(1,17,38,.28)]"
+          >
+            {/* TODO: reemplazar por <iframe> de YouTube del testimonio {n}
+                Ej:
+                <iframe class="h-full w-full" src="https://www.youtube.com/embed/VIDEO_ID"
+                  title="Testimonio {n}" frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen></iframe>
+            */}
+            <div class="flex h-full w-full items-center justify-center">
+              <span class="text-[13px] font-bold uppercase tracking-[2px] text-orange/40">
+                Video
+              </span>
+            </div>
           </div>
-        </div>
-      </div>
-
-      <!-- Controles -->
-      <div class="mt-[34px] flex items-center justify-center gap-[18px]">
-        <button
-          id="tPrev"
-          type="button"
-          aria-label="Testimonio anterior"
-          class="flex h-[46px] w-[46px] cursor-pointer items-center justify-center rounded-full border border-[#c5d6e3] bg-white text-navy transition-colors hover:border-navy hover:bg-navy hover:text-white active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-        >
-          <Icon name="arrowLeft" size={20} stroke={2.2} />
-        </button>
-        <span id="tLabel" class="min-w-[54px] text-[15px] font-semibold text-[#6b7a88]"></span>
-        <button
-          id="tNext"
-          type="button"
-          aria-label="Siguiente testimonio"
-          class="flex h-[46px] w-[46px] cursor-pointer items-center justify-center rounded-full border border-[#c5d6e3] bg-white text-navy transition-colors hover:border-navy hover:bg-navy hover:text-white active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-        >
-          <Icon name="arrowRight" size={20} stroke={2.2} />
-        </button>
-      </div>
+        ))
+      }
     </div>
   </div>
 </section>
 
-<script is:inline define:vars={{ TESTIMONIOS }}>
-  (() => {
-    const data = TESTIMONIOS;
-    let i = 0;
-    const card = document.getElementById("tCard");
-    const q = document.getElementById("tQuote");
-    const n = document.getElementById("tName");
-    const r = document.getElementById("tRole");
-    const label = document.getElementById("tLabel");
+{/* CTA de cierre — banda navy que conecta con el footer navy */}
+<section class="bg-navy text-white" style="background:#011126;">
+  <div class="mx-auto max-w-[820px] px-6 pt-[96px] pb-[104px] text-center">
+    <h2
+      data-reveal
+      class="m-0 text-balance text-[32px] font-bold leading-[1.12] tracking-[-.6px] sm:text-[44px] lg:text-[52px]"
+    >
+      ¿Listo para que tu familia también esté respaldada?
+    </h2>
+    <p data-reveal class="m-0 mt-5 text-[16px] font-medium text-cyan sm:text-[18px]">
+      Únete a las más de 20.000 familias que ya confían en Servimil.
+    </p>
+    <div data-reveal class="mt-9">
+      <a
+        href="https://wa.me/573181626167"
+        target="_blank"
+        rel="noopener"
+        class="btn-shine inline-block rounded-full bg-orange px-8 py-4 text-[16px] font-bold text-white shadow-[0_16px_38px_-10px_rgba(243,70,22,.55)] transition-[transform,box-shadow] duration-200 ease-out hover:scale-[1.04] hover:shadow-[0_20px_46px_-8px_rgba(243,70,22,.7)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+      >
+        Contáctanos por WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
 
-    function render() {
-      const t = data[i];
-      q.textContent = `"${t.q}"`;
-      n.textContent = t.n;
-      r.textContent = t.r;
-      label.textContent = `${i + 1} / ${data.length}`;
-      // reinicia la animación de fade
-      card.classList.remove("sm-fade");
-      void card.offsetWidth;
-      card.classList.add("sm-fade");
-    }
-    document.getElementById("tPrev").addEventListener("click", () => {
-      i = (i - 1 + data.length) % data.length;
-      render();
-    });
-    document.getElementById("tNext").addEventListener("click", () => {
-      i = (i + 1) % data.length;
-      render();
-    });
-    render();
-  })();
-</script>
+{/* === FONDO BEIGE TESTIMONIOS (reversible) === */}
+<style>
+  .tst-hero {
+    /* degradado MUY sutil beige → crema apenas más claro */
+    background: linear-gradient(170deg, #F0ECE4 0%, #EAE5DD 55%, #E5DFD5 100%);
+  }
+  .tst-mesh {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .tst-blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(130px);
+    background: #F34616;
+  }
+  .tst-blob--a {
+    top: -160px;
+    left: -120px;
+    width: 500px;
+    height: 500px;
+    opacity: 0.06;
+  }
+  .tst-blob--b {
+    bottom: -180px;
+    right: -140px;
+    width: 460px;
+    height: 460px;
+    opacity: 0.07;
+  }
+</style>
+{/* === FIN === */}

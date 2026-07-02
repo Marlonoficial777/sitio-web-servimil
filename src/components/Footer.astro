@@ -1,7 +1,7 @@
 ---
 import Logo from "./Logo.astro";
 import Icon from "./Icon.astro";
-import { WHATSAPP_URL, WHATSAPP_DISPLAY, WEBSITE } from "../lib/site";
+import { WHATSAPP_URL, WHATSAPP_DISPLAY } from "../lib/site";
 ---
 <footer class="bg-navy text-[#92a3b5]">
   <div
@@ -13,7 +13,7 @@ import { WHATSAPP_URL, WHATSAPP_DISPLAY, WEBSITE } from "../lib/site";
       </div>
       <p class="m-0 text-[14px] font-normal leading-[1.6]">
         Beneficios y servicios para los integrantes del Ministerio de Defensa y
-        las Fuerzas Armadas.
+        la fuerza pública.
       </p>
     </div>
 
@@ -28,21 +28,15 @@ import { WHATSAPP_URL, WHATSAPP_DISPLAY, WEBSITE } from "../lib/site";
         <Icon name="whatsapp" size={16} stroke={2} class="text-cyan" />
         {WHATSAPP_DISPLAY}
       </a>
-      <a
-        href={WEBSITE}
-        target="_blank"
-        rel="noopener"
-        class="rounded-sm text-[14px] text-[#92a3b5] no-underline transition-colors hover:text-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
-      >
-        www.servimil.co
-      </a>
     </div>
 
     <div class="flex flex-col gap-3">
       <div class="mb-0.5 text-[15px] font-semibold text-white">Síguenos</div>
       <div class="flex gap-3">
         <a
-          href="#"
+          href="https://www.facebook.com/share/1UFsiqQa7w/"
+          target="_blank"
+          rel="noopener noreferrer"
           aria-label="Facebook"
           class="flex h-10 w-10 items-center justify-center rounded-[10px] bg-cyan/10 text-cyan transition-colors hover:bg-cyan hover:text-navy active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
         >
@@ -51,7 +45,9 @@ import { WHATSAPP_URL, WHATSAPP_DISPLAY, WEBSITE } from "../lib/site";
           </svg>
         </a>
         <a
-          href="#"
+          href="https://www.instagram.com/servimil.col"
+          target="_blank"
+          rel="noopener noreferrer"
           aria-label="Instagram"
           class="flex h-10 w-10 items-center justify-center rounded-[10px] bg-cyan/10 text-cyan transition-colors hover:bg-cyan hover:text-navy active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
         >
@@ -67,7 +63,7 @@ import { WHATSAPP_URL, WHATSAPP_DISPLAY, WEBSITE } from "../lib/site";
 
   <div class="border-t border-cyan/[.12]">
     <div class="mx-auto max-w-[1200px] px-6 py-5 text-[13px] text-[#647689]">
-      © 2024 Servimil. Todos los derechos reservados.
+      © 2026 Servimil. Todos los derechos reservados.
     </div>
   </div>
 </footer>

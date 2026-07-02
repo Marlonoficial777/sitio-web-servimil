@@ -1,0 +1,156 @@
+---
+const PLANES = [
+  {
+    name: "Plan ELITE",
+    cobertura: 3000000,
+    mensualidad: "$59.900",
+    img: "https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782332341/hf_20260624_201708_394419e7-e5bd-443c-aead-4ff751a011b3_hjjkfy.png",
+    popular: true,
+    anchor: "plan-elite",
+  },
+  {
+    name: "Plan PLUS SUPERIOR",
+    cobertura: 2000000,
+    mensualidad: "$49.900",
+    img: "https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782332337/hf_20260624_201659_0bcde99e-7e7b-4343-bf52-53e05e19b2a6_h4hzio.png",
+    popular: false,
+    anchor: "plan-plus-superior",
+  },
+  {
+    name: "Plan PLUS",
+    cobertura: 1000000,
+    mensualidad: "$39.900",
+    img: "https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782332339/hf_20260624_201648_37e01ed5-99fa-433d-bf4e-ae24aa54fdc8_tiwio2.png",
+    popular: false,
+    anchor: "plan-plus",
+  },
+];
+---
+<section class="bg-white">
+  <div class="mx-auto max-w-[1200px] px-6 py-[88px]">
+    <div data-reveal class="mx-auto mb-12 max-w-[640px] text-center">
+      <h2 class="m-0 text-[32px] font-bold leading-[1.12] tracking-[-.8px] text-navy sm:text-[40px]">
+        Elige tu plan
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 items-stretch gap-6 md:grid-cols-3">
+      {
+        PLANES.map((p, i) => (
+          <div
+            data-reveal
+            style={`--reveal-delay:${i * 110}ms`}
+            class:list={[
+              "group relative flex cursor-pointer flex-col overflow-hidden rounded-[24px] border bg-white transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-2 active:scale-[.99]",
+              p.popular
+                ? "border-orange shadow-[0_30px_70px_rgba(243,70,22,.22)] md:-translate-y-3 md:scale-[1.03] hover:shadow-[0_40px_80px_rgba(243,70,22,.32)]"
+                : "border-[#dbe7ef] shadow-[0_12px_36px_rgba(1,17,38,.07)] hover:border-orange/60 hover:shadow-[0_26px_56px_rgba(243,70,22,.18)] active:border-orange",
+            ]}
+          >
+            {p.popular && (
+              <div class="absolute left-1/2 top-4 z-10 flex -translate-x-1/2 flex-col items-center">
+                <span class="badge-nuevo rounded-full bg-orange px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
+                  Más popular
+                </span>
+                <span class="mt-1.5 text-[11px] font-medium text-white drop-shadow-[0_1px_4px_rgba(1,17,38,.6)]">
+                  El preferido por las familias
+                </span>
+              </div>
+            )}
+
+            {/* Imagen del plan */}
+            <div class="aspect-[16/10] w-full overflow-hidden">
+              <img
+                src={p.img}
+                alt={p.name}
+                class="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+
+            <div class="flex flex-1 flex-col p-7 text-center">
+              <h3 class="m-0 mb-4 text-[20px] font-bold text-navy">{p.name}</h3>
+
+              <div class="mb-1 text-[12px] font-semibold uppercase tracking-[1px] text-navy/55">
+                Protección
+              </div>
+              <div class="mb-4 text-[36px] font-bold leading-none tracking-[-1px] text-orange">
+                $<span data-count-plan={p.cobertura} data-delay={i * 180}>0</span>
+              </div>
+
+              <div class="mb-7 text-[15px] text-[#5a6a7a]">
+                Mensualidad <span class="font-semibold text-navy">{p.mensualidad}</span>
+              </div>
+
+              <a
+                href={`/servicios#${p.anchor}`}
+                class:list={[
+                  "btn-shine mt-auto inline-flex items-center justify-center gap-2 rounded-full px-6 py-[13px] text-[15px] font-semibold no-underline transition-[transform,box-shadow] duration-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white after:absolute after:inset-0 after:content-['']",
+                  p.popular
+                    ? "bg-orange text-white shadow-[0_12px_32px_rgba(243,70,22,.42)] hover:-translate-y-0.5 hover:shadow-[0_20px_48px_rgba(243,70,22,.6)] focus-visible:ring-navy"
+                    : "border-[1.5px] border-navy/20 bg-white text-navy hover:border-navy hover:bg-navy hover:text-white focus-visible:ring-navy",
+                ]}
+              >
+                Más información
+              </a>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <p data-reveal class="mt-7 text-center text-[13px] text-[#8aa0b2]">
+      Aplican carencias y condiciones según cada servicio. Consulta términos completos.
+    </p>
+    <p data-reveal class="mt-1.5 text-center text-[15px] font-semibold text-navy">
+      Sin letra pequeña engañosa. Estamos para cumplirte.
+    </p>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const els = document.querySelectorAll("[data-count-plan]");
+    if (!els.length) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const fmt = (n) => Math.round(n).toLocaleString("es-CO");
+
+    const run = (el) => {
+      const target = parseInt(el.dataset.countPlan, 10) || 0;
+      const delay = parseInt(el.dataset.delay, 10) || 0;
+      if (reduce) {
+        el.textContent = fmt(target);
+        return;
+      }
+      const dur = 2500;
+      const start = () => {
+        const t0 = performance.now();
+        const tick = (now) => {
+          const p = Math.min((now - t0) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+          el.textContent = fmt(target * eased);
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+      setTimeout(start, delay);
+    };
+
+    if (!("IntersectionObserver" in window)) {
+      els.forEach(run);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            run(e.target);
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.3 },
+    );
+    els.forEach((el) => io.observe(el));
+  })();
+</script>
