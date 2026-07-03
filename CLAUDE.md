@@ -139,7 +139,19 @@ public/  favicon.svg, _headers
 ## Calculadora de crédito (`CreditWidget.astro`)
 
 - Botón flotante naranja **"Analiza tu crédito"** (abajo-derecha, `z-50`) → abre modal accesible en la misma página (slider monto + select cuotas → cuota mensual estimada + total + CTA WhatsApp).
-- **FÓRMULA AÚN ES PLACEHOLDER:** amortización francesa con `monthlyRate = 0.015` (1.5%/mes) en `CREDIT_CONFIG` / `monthlyPayment()`. **Pendiente datos reales de Servimil.**
+- **FÓRMULA REAL (HECHA, commit `7da2aee`) — DOS LÍNEAS:**
+  - **Línea 1** (monto ≤ `line1Max` = $1.000.000, convenio Servimil): amortización francesa `cuota_credito = P·i(1+i)^n / [(1+i)^n − 1]` con `i = monthlyRate = 0.0199` (1.99% m.v.), **+ `aporteAdmin = $45.600`** (cuota SICOD) sumado a CADA cuota. `total = cuota_total · n`. Formato COP `Intl.NumberFormat("es-CO")`. Función `line1Payment(P,n)` en `CreditWidget.astro`.
+  - **Línea 2** (monto > $1.000.000): NO calcula; muestra `line2Box` (mensaje aliados: compra de cartera / libre inversión / refinanciación) + CTA WhatsApp destacado.
+  - **Plazos** (`CREDIT_CONFIG.plazos`): `12,14,…,36` (de 2 en 2). Aviso legal "Cálculo de referencia…" visible.
+  - Condiciones en `src/lib/site.ts` → `CREDIT_CONFIG` (`monthlyRate`, `aporteAdmin`, `line1Max`, `plazos`). **Único lugar a tocar si cambian.**
+  - ⚠️ **Pendiente validar** los números con un ejemplo verificado de Julián (comparar contra su `cotizar.py`) antes de dar por cerrada la fórmula con el cliente.
+- **Números verificados en vivo (dev, 2026-07-03)** — para validar con cliente:
+  | Monto | Plazo | Cuota mensual total | Total a pagar |
+  |-------|-------|---------------------|---------------|
+  | $1.000.000 | 12 | **$140.102** | $1.681.218 |
+  | $1.000.000 | 24 | **$98.411**  | $2.361.869 |
+  | $500.000   | 12 | **$92.851**  | $1.114.209 |
+  | $5.000.000 | — | Línea 2 (no calcula, mensaje aliados) | — |
 
 ## Animaciones y estados de interacción (UX)
 
@@ -168,14 +180,17 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 ## Lugares clave para editar
 
 - **Contenido / contacto / datos calculadora:** `src/lib/site.ts` (`SERVICIOS`, `BIENESTAR`, `NUEVOS`, `TESTIMONIOS`, `REQUISITOS`, `CREDIT_CONFIG`, WhatsApp).
-- **Fórmula del crédito:** `src/components/CreditWidget.astro` → `monthlyPayment()`.
+- **Fórmula del crédito:** `src/components/CreditWidget.astro` → `line1Payment()` (+ condiciones en `CREDIT_CONFIG` de `site.ts`).
 - **Paleta / fuente / estilos globales:** `src/styles/global.css`.
 
-## PENDIENTES ABIERTOS (al 2026-07-02)
+## PENDIENTES ABIERTOS (al 2026-07-03)
 
 **Copy / textos:**
-- [ ] **Typos Home:** `"logralo"` → `"lograrlo"` y `"aquienes"` → `"a quienes"`.
-- [ ] **Nota legal planes:** hoy dice `"Aplican términos y condiciones"`; debe ser `"Aplican carencias y condiciones según cada servicio. Consulta términos completos"`.
+- [x] ~~**Typos Home:** `"logralo"` → `"lograrlo"` y `"aquienes"` → `"a quienes"`~~ — **HECHO** (ya resuelto; `CierreEmocional.astro` dice "lograrlo", copy usa "a/para quienes").
+- [x] ~~**Nota legal planes**~~ — **HECHO**: ya dice `"Aplican carencias y condiciones según cada servicio. Consulta términos completos."` en `Planes.astro` y `servicios.astro` (2 planes).
+
+**Calculadora:**
+- [ ] **Validar la cuota con un ejemplo verificado de Julián** — comparar el resultado de la web contra su `cotizar.py` (misma fórmula 1.99% m.v. + $45.600). Fórmula YA implementada (commit `7da2aee`); falta el visto bueno numérico del cliente. Casos ya calculados en la sección "Calculadora de crédito".
 
 **Videos:**
 - [ ] **Videos reales testimonios:** reemplazar los 6 placeholders VIDEO 16:9 de `components/Testimonios.astro` por `<iframe>` YouTube (estructura `aspect-video` lista, comentario TODO en cada uno).
@@ -184,7 +199,7 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 
 **Verificaciones / infra:**
 - [ ] **Verificar en vivo** que el WhatsApp nuevo (`573181626167`) se sirve en **producción** (posible caché CDN de Cloudflare tras el cambio).
-- [ ] **Fórmula real de la calculadora**: tasa real, montos mín/máx, plazos y condiciones (hoy placeholder 1.5%/mes).
+- [x] ~~**Fórmula real de la calculadora**~~ — **HECHO** (commit `7da2aee`): 1.99% m.v. + aporte $45.600, dos líneas, plazos 12–36 paso 2. Verificada en dev 2026-07-03 (ver tabla de números arriba). Queda solo la validación con Julián (arriba).
 - [ ] **Conectar dominio `servimil.co`** a Cloudflare Pages.
 - [ ] **Imagen real** fondo `CierreEmocional.astro` (Home) → Cloudinary.
 
