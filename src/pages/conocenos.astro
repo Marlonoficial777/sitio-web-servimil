@@ -270,7 +270,7 @@ const VALORES = [
             <div
               data-reveal
               style={`--reveal-delay:${i * 90}ms`}
-              class="group relative overflow-hidden rounded-2xl border border-white/70 bg-white/65 p-7 pt-8 text-center shadow-[0_12px_30px_rgba(1,17,38,.08)] backdrop-blur-md transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_34px_64px_rgba(1,17,38,.16)]"
+              class="val-card group relative overflow-hidden rounded-2xl border border-white/70 bg-white/65 p-7 pt-8 text-center shadow-[0_12px_30px_rgba(1,17,38,.08)] backdrop-blur-md transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-2"
             >
               {/* Acento superior */}
               <span
@@ -401,6 +401,24 @@ const VALORES = [
       animation: none;
     }
   }
+
+  /* === BORDE NARANJA HOVER/ACTIVE — cards "Nuestros valores" (reversible) ===
+     Al pasar el mouse / hacer click: contorno naranja en los 4 lados
+     (border-color) + leve glow. Conserva la elevación y la rayita superior
+     (esa es un <span> aparte, no se toca). Ajustar aquí color/intensidad. */
+  .val-card {
+    cursor: pointer;
+  }
+  .val-card:hover,
+  .val-card:active,
+  .val-card:focus-within {
+    border-color: #F34616;
+    box-shadow:
+      0 34px 64px rgba(1, 17, 38, 0.16),   /* elevación (igual que antes) */
+      0 0 0 1px rgba(243, 70, 22, 0.55),   /* refuerza el contorno naranja */
+      0 10px 34px rgba(243, 70, 22, 0.22); /* glow naranja sutil */
+  }
+  /* === FIN borde naranja valores === */
 
 </style>
 
