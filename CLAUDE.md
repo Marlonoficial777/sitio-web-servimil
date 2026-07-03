@@ -82,7 +82,7 @@ Envuelve TODAS las páginas: `Base` + `Header` + `<main><slot/></main>` + `Foote
 3. **Stats conteo** — 20.664 / +3 / 100% (banda navy).
 4. **Nuestro propósito** — banda cinematográfica. **Fondo VIDEO Cloudinary** (2026-06-23, antes imagen Ken Burns): `<video autoplay muted loop playsinline preload="metadata">` + `poster` = la imagen anterior, `object-cover -z-20`. Overlay navy + texto quietos encima.
 5. **Propuesta de valor** — clímax. **Fondo VIDEO Cloudinary** (2026-06-23, antes imagen Ken Burns): mismo patrón video+poster. Overlay navy radial naranja + cita grande + firma "El compromiso de Servimil". **Ken Burns y sway eliminados** en estas 2 (el video trae su movimiento). Encapsulado `{/* === FONDO VIDEO === */}`.
-6. **Valores** — 4 cards (Compromiso, Transparencia, Cercanía, Disponibilidad).
+6. **Valores** — 4 cards (Compromiso, Transparencia, Cercanía, Disponibilidad). Rayita superior naranja/cian (`<span>` accent). **Borde naranja + glow al hover/active/focus-within** (2026-07-03): clase `.val-card` (estilo scoped `/* === BORDE NARANJA HOVER/ACTIVE ... === */`), `border-color:#F34616` + box-shadow (elevación + contorno `0 0 0 1px` + glow `.22`), `cursor:pointer`, transición `.3s`. Conserva la rayita superior y la elevación `-translate-y-2`.
 7. **Para quiénes trabajamos** — frase Ministerio de Defensa.
 8. **CTA final** — "Escríbenos ahora" (WhatsApp) + "Conoce nuestros servicios" (/servicios).
 
@@ -92,7 +92,10 @@ Envuelve TODAS las páginas: `Base` + `Header` + `<main><slot/></main>` + `Foote
 2. **Cinta marquee** (en `servicios.astro`) — UNA sola banda recta naranja `#F34616`, texto blanco mayúsculas, separador ✦, loop R→L 48s, `mask-image` fade en bordes, hover pausa. Array `CINTA`. **CLICKEABLE** (2026-06-23): cada nombre con bloque equivalente es `<a href="#id">` (mapa `CINTA_LINK` nombre→id; ambos sets del loop tienen enlaces). Scroll suave (global) + `scroll-margin-top:100px` en bloques. "Tecnología" sin bloque = texto plano. `.marquee-link` hover subrayado/opacidad.
 3. **Nuestros planes** — 3 cards (array `PLANES`): Plus $39.900 / **Plus Superior $49.900 destacada "MÁS POPULAR"** / Élite $59.900. Precio grande, caja cobertura bono cian, checks, botón "Afíliate ahora" → `WHATSAPP` (wa.me/573181626167). Eyebrow blanco. **ids** `plan-plus / plan-plus-superior / plan-elite` + `scroll-margin-top:110px` (destino de los botones del Home). **Highlight de llegada**: script lee `location.hash` en `load`/`hashchange` → clase `.plan-highlight` (glow+borde naranja+scale, anim `planArrive` 2s una vez, autolimpia en `animationend`).
 4. **Servicios en detalle (zig-zag)** — 8 bloques alternados texto↔**foto real 4:3** (array `DETALLE`, campo `img` Cloudinary `q_auto/f_auto`): Bono, Asistencia financiera, Jurídica, Nómina, Seguros y auxilios, Entretenimiento, Bienestar y salud, Viajes. **Fotos reales puestas 2026-06-23.** Cada bloque con `id` (array `DETALLE_IDS`) + `scroll-margin-top:100px` (destino de cinta + lista Home). Reveal lateral opuesto (`data-reveal="left|right"`). **Animaciones premium**: stagger interno del texto (`.det-stagger` `--det-i`), hover imagen zoom `scale(1.05)` (`overflow-hidden`) + sombra ↑, parallax sutil del bloque decorativo (`.det-decor`), ícono entrada `scale`+rebote. Todo respeta reduced-motion. Eyebrow blanco.
-5. **Testimonios (Trustindex)** (2026-06-23) — tras "Servicios en detalle", antes del footer. Fondo **navy `#011126`**. Título único "TESTIMONIOS" blanco extrabold (32/40/46px). Debajo: **placeholder VIDEO 16:9** (`aspect-video`, `max-w-3xl`, bg blanco, comentario TODO iframe). Luego **widget Google Reviews Trustindex**: `<script is:inline defer async src=".../loader.js?5eb6c5b7485b953155662c28bb3">` antes de `</Page>` (sobrevive al build). El widget se inyecta solo (~1s). `max-w-[820px]`, sin caja/sombra (va directo sobre navy). ⚠️ Se intentó marquee auto-scroll de las cards → **revertido** (peleaba con el slider de Trustindex, se veía mal).
+5. **Testimonios (badge + reseñas propias)** (rehecho 2026-07-03) — tras "Servicios en detalle", antes del footer. Fondo **navy `#011126`**. Título único "TESTIMONIOS" blanco extrabold (32/40/46px). Debajo: **placeholder VIDEO 16:9** (`aspect-video`, `max-w-3xl`, bg blanco, comentario TODO iframe). ⚠️ **Trustindex ELIMINADO** (prueba de 7 días vencida → mostraba mensaje rojo "trial period has expired"). Reemplazado por:
+   - **Badge Google propio** (HTML/CSS, sin servicios externos, `max-w-[440px]`): card blanca + logo Google (SVG oficial 4 colores) + "Reseñas de Google" + **4.7** grande navy + estrellas (capa naranja recortada al **94%**=4.7/5 sobre grises) + "Reseñas reales de nuestras familias" + botón naranja `btn-shine` **"Ver reseñas en Google"** → `https://www.google.com/maps/place/SERVIMIL+COLOMBIA` (`target=_blank`). Encapsulado `{/* === BADGE RESEÑAS DE GOOGLE ... === */ ... /* === FIN === */ }`.
+   - **Grid de 4 reseñas reales** (array `RESENAS` en frontmatter, `max-w-[920px]`, `grid-cols-1 md:grid-cols-2` = 2×2): cada card blanca (`h-full flex-col`, altura pareja, sombra) con **avatar circular inicial+color**, nombre, 5 estrellas naranja, ícono Google + "Google", y texto exacto de la reseña. Reviewers: Davinson Banguera, Carlos Murillo, Juancarlos Campo, Nicolas Davila. Encapsulado `{/* === GRID DE RESEÑAS DE GOOGLE ... === */ }`.
+   - ⚠️ (histórico) Se intentó marquee auto-scroll de las cards del viejo Trustindex → **revertido**.
 
 - **Patrón eyebrow** (repetido a pedido del usuario): eyebrows de sección en **blanco** `text-[16px] sm:text-[18px]` (no cian, no 13px).
 - **Patrón reveal lateral**: `data-reveal="left"` / `"right"` (translateX ±48px) definido en `global.css` (junto al `data-reveal` base). Usado en conocenos ("Quiénes somos") y servicios (zig-zag).
@@ -139,19 +142,18 @@ public/  favicon.svg, _headers
 ## Calculadora de crédito (`CreditWidget.astro`)
 
 - Botón flotante naranja **"Analiza tu crédito"** (abajo-derecha, `z-50`) → abre modal accesible en la misma página (slider monto + select cuotas → cuota mensual estimada + total + CTA WhatsApp).
-- **FÓRMULA REAL (HECHA, commit `7da2aee`) — DOS LÍNEAS:**
-  - **Línea 1** (monto ≤ `line1Max` = $1.000.000, convenio Servimil): amortización francesa `cuota_credito = P·i(1+i)^n / [(1+i)^n − 1]` con `i = monthlyRate = 0.0199` (1.99% m.v.), **+ `aporteAdmin = $45.600`** (cuota SICOD) sumado a CADA cuota. `total = cuota_total · n`. Formato COP `Intl.NumberFormat("es-CO")`. Función `line1Payment(P,n)` en `CreditWidget.astro`.
-  - **Línea 2** (monto > $1.000.000): NO calcula; muestra `line2Box` (mensaje aliados: compra de cartera / libre inversión / refinanciación) + CTA WhatsApp destacado.
-  - **Plazos** (`CREDIT_CONFIG.plazos`): `12,14,…,36` (de 2 en 2). Aviso legal "Cálculo de referencia…" visible.
-  - Condiciones en `src/lib/site.ts` → `CREDIT_CONFIG` (`monthlyRate`, `aporteAdmin`, `line1Max`, `plazos`). **Único lugar a tocar si cambian.**
-  - ⚠️ **Pendiente validar** los números con un ejemplo verificado de Julián (comparar contra su `cotizar.py`) antes de dar por cerrada la fórmula con el cliente.
+- **FÓRMULA REAL (HECHA) — UNA SOLA LÍNEA** ⚠️ **Servimil presta ÚNICAMENTE hasta $1.000.000** (corregido 2026-07-03, commit `01a2b27`; la "Línea 2 / aliados" fue **eliminada**):
+  - **Slider monto:** `min $200.000 → max $1.000.000` (antes $50M, mal). `defaultMonto $500.000`. Etiqueta tope "$1.000.000".
+  - **Cálculo (SIEMPRE, todo monto ≤ $1M):** amortización francesa `cuota_credito = P·i(1+i)^n / [(1+i)^n − 1]` con `i = monthlyRate = 0.0199` (1.99% m.v.), **+ `aporteAdmin = $45.600`** (cuota SICOD) sumado a CADA cuota. `total = cuota_total · n`. Formato COP `Intl.NumberFormat("es-CO")`. Función **`payment(P,n)`** en `CreditWidget.astro` (antes `line1Payment`).
+  - **Plazos** (`CREDIT_CONFIG.plazos`): `12,14,…,36` (de 2 en 2). Aviso legal "Cálculo de referencia…" + nota "Incluye aporte administrativo de $45.600" visibles.
+  - Condiciones en `src/lib/site.ts` → `CREDIT_CONFIG` (`min`, `max`=1M, `monthlyRate`, `aporteAdmin`, `plazos`). **Único lugar a tocar si cambian.** `line1Max`/`line2Box`/`lineaTag`/`PILL_L1/L2`/`esLinea1` **eliminados** (sin código muerto).
+  - ⚠️ **Pendiente validar** los números con un ejemplo verificado de Julián (comparar contra su `cotizar.py`).
 - **Números verificados en vivo (dev, 2026-07-03)** — para validar con cliente:
   | Monto | Plazo | Cuota mensual total | Total a pagar |
   |-------|-------|---------------------|---------------|
   | $1.000.000 | 12 | **$140.102** | $1.681.218 |
   | $1.000.000 | 24 | **$98.411**  | $2.361.869 |
   | $500.000   | 12 | **$92.851**  | $1.114.209 |
-  | $5.000.000 | — | Línea 2 (no calcula, mensaje aliados) | — |
 
 ## Animaciones y estados de interacción (UX)
 
@@ -180,7 +182,7 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 ## Lugares clave para editar
 
 - **Contenido / contacto / datos calculadora:** `src/lib/site.ts` (`SERVICIOS`, `BIENESTAR`, `NUEVOS`, `TESTIMONIOS`, `REQUISITOS`, `CREDIT_CONFIG`, WhatsApp).
-- **Fórmula del crédito:** `src/components/CreditWidget.astro` → `line1Payment()` (+ condiciones en `CREDIT_CONFIG` de `site.ts`).
+- **Fórmula del crédito:** `src/components/CreditWidget.astro` → `payment()` (+ condiciones en `CREDIT_CONFIG` de `site.ts`).
 - **Paleta / fuente / estilos globales:** `src/styles/global.css`.
 
 ## PENDIENTES ABIERTOS (al 2026-07-03)
@@ -195,7 +197,10 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 **Videos:**
 - [ ] **Videos reales testimonios:** reemplazar los 6 placeholders VIDEO 16:9 de `components/Testimonios.astro` por `<iframe>` YouTube (estructura `aspect-video` lista, comentario TODO en cada uno).
 - [ ] **Video real Testimonios Home** + botón "Conoce más" → `/testimonios`.
-- [ ] **Placeholder VIDEO en servicios** (sección Testimonios Trustindex) → video real.
+- [ ] **Placeholder VIDEO en servicios** (sección Testimonios, arriba del badge Google) → video real.
+
+**Google reseñas:**
+- [ ] **Confirmar URL de la ficha de Google** — hoy el botón apunta a `https://www.google.com/maps/place/SERVIMIL+COLOMBIA` (búsqueda por nombre, no la ficha canónica). Cuando el cliente pase el link exacto de su Google Business, cambiarlo en el badge de `servicios.astro`.
 
 **Verificaciones / infra:**
 - [ ] **Verificar en vivo** que el WhatsApp nuevo (`573181626167`) se sirve en **producción** (posible caché CDN de Cloudflare tras el cambio).
@@ -210,7 +215,25 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 
 - [x] ~~Fotos reales servicios (zig-zag)~~ — **HECHO** (`DETALLE.img`), 8/8 + Crédito fácil.
 
-## Estado / último avance (al 2026-07-02) — RESPALDO GIT + tanda "fuerza pública"
+## Estado / último avance (al 2026-07-03) — calculadora solo $1M + testimonios Google + hover valores
+
+Todo commiteado y pusheado a `main` (`github.com/Marlonoficial777/sitio-web-servimil`). Working tree limpio. Cada cambio con `npm run build` + `npx wrangler pages deploy dist --project-name=servimil --branch=main --commit-dirty=true` (workaround libuv). Commits del día, en orden:
+
+- ✅ **`96a961b`** docs: calculadora marcada HECHA + sync pendientes (typos Home + nota legal planes ya estaban resueltos).
+- ✅ **`01a2b27`** **Calculadora: SOLO presta hasta $1.000.000.** Slider `max` $50M → **$1M**, `defaultMonto $500k`. **Línea 2 eliminada** (ya no hay montos > $1M): fuera `line1Max`, `line2Box`, `lineaTag`, `PILL_L1/L2`, lógica `esLinea1`; `line1Payment`→`payment`. Siempre calcula (francesa 1.99% m.v. + $45.600). Mantiene aviso legal + nota aporte + requisitos + CTA.
+- ✅ **`f4506d8`** **Conócenos/Valores:** las 4 cards → **borde naranja + glow al hover/active/focus-within** (`.val-card`, scoped, reversible). Conserva rayita superior, elevación, contenido.
+- ✅ **`3dd5974`** **Servicios/Testimonios:** **quita widget Trustindex** (prueba de 7 días vencida → mensaje rojo) → **badge Google propio** (SVG logo + 4.7 + estrellas + botón).
+- ✅ **`95db0e9`** Badge Google: **enlace real** `https://www.google.com/maps/place/SERVIMIL+COLOMBIA` + estrellas 4.7 (capa naranja al 94%) + subtexto "Reseñas reales de nuestras familias".
+- ✅ **`c4acae7`** **Grid de 4 reseñas reales de Google** (array `RESENAS`) debajo del badge: avatar inicial+color, nombre, 5★ naranja, ícono Google, texto exacto. 2×2 desktop / 1 col móvil, altura pareja.
+
+### Para retomar (2026-07-04)
+- **Validar cuota calculadora** contra `cotizar.py` de Julián (números en tabla de la sección "Calculadora de crédito").
+- **URL real ficha Google** cuando el cliente la pase (hoy es búsqueda por nombre).
+- **Videos reales** testimonios (página `/testimonios` 6 placeholders + Home + placeholder video servicios).
+- **Dominio `servimil.co`** a Cloudflare Pages.
+- **Limpieza:** componentes huérfanos (`Servicios`, `Bienestar`, `NuevosServicios`, `ResumenServicios`, `TrustBar`) + dep `three` sin uso.
+
+## Estado / avance previo (al 2026-07-02) — RESPALDO GIT + tanda "fuerza pública"
 
 - ✅ **RESPALDO REMOTO (por fin):** todo el trabajo commiteado (`67ef2f3`) y pusheado a **repo privado nuevo** `github.com/Marlonoficial777/sitio-web-servimil`, rama **`main`** (upstream configurado). Antes el working tree llevaba días sin commitear y sin remoto. ⚠️ El repo `mundo-servimil` es OTRO proyecto (OCR/nómina), NO tocar. Deploy prod sigue por `npm run deploy` (repo git ≠ Cloudflare).
 - ✅ **Copy "fuerza pública":** "militares"/"Fuerzas Armadas" → **"fuerza pública"** en todo el sitio (Footer, Servicios, Base, `site.ts`, conocenos, servicios) + SEO/meta.
