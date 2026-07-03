@@ -476,8 +476,8 @@ const PLANES: Plan[] = [
       </div>
 
       {/* === BADGE RESEÑAS DE GOOGLE (propio, sin servicios externos) — reversible ===
-           Reemplaza al widget Trustindex (prueba vencida). Ajustar aquí nota/estrellas.
-           TODO: poner URL real de la ficha de Google Business en el enlace de abajo. */}
+           Reemplaza al widget Trustindex (prueba vencida). Ajustar aquí nota/estrellas/URL.
+           Estrellas: capa naranja recortada al 94% (=4.7/5) sobre estrellas grises. */}
       <div data-reveal class="mx-auto w-full max-w-[440px]">
         <div class="flex flex-col items-center rounded-2xl bg-white px-8 py-9 text-center shadow-[0_22px_60px_-24px_rgba(0,0,0,.55)]">
           {/* Logo Google (SVG oficial 4 colores) + label */}
@@ -491,21 +491,21 @@ const PLANES: Plan[] = [
             <span class="text-[17px] font-semibold text-[#5f6368]">Reseñas de Google</span>
           </div>
 
-          {/* Nota + estrellas */}
+          {/* Nota + estrellas (4.7 → capa naranja recortada al 94%) */}
           <div class="flex items-center gap-3">
             <span class="text-[40px] font-bold leading-none text-navy">4.7</span>
             <div class="flex flex-col items-start">
-              <div class="flex gap-[2px] text-[20px] leading-none text-orange" aria-hidden="true">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              <div class="relative inline-block text-[20px] leading-none" aria-label="4.7 de 5 estrellas">
+                <div class="text-[#d8dee6]" aria-hidden="true">★★★★★</div>
+                <div class="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap text-orange" style="width:94%" aria-hidden="true">★★★★★</div>
               </div>
-              <span class="mt-[5px] text-[12.5px] text-[#5a6a7a]">Basado en reseñas reales de Google</span>
+              <span class="mt-[5px] text-[12.5px] text-[#5a6a7a]">Reseñas reales de nuestras familias</span>
             </div>
           </div>
 
-          {/* Enlace a la ficha de Google (placeholder) */}
-          {/* TODO: reemplazar href="#" por la URL real de la ficha de Google Business */}
+          {/* Enlace a la ficha de Google */}
           <a
-            href="#"
+            href="https://www.google.com/maps/place/SERVIMIL+COLOMBIA"
             target="_blank"
             rel="noopener noreferrer"
             class="btn-shine mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-orange px-6 py-[13px] text-[15px] font-semibold text-white no-underline shadow-[0_10px_26px_rgba(243,70,22,.32)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(243,70,22,.5)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 focus-visible:ring-offset-white"
