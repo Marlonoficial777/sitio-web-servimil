@@ -3,6 +3,30 @@ import Page from "../layouts/Page.astro";
 import Ecosistema from "../components/Ecosistema.astro";
 import Icon from "../components/Icon.astro";
 
+/* Reseñas reales de Google (texto exacto, escritas en código). avatar = color del círculo */
+const RESENAS = [
+  {
+    name: "Davinson Banguera",
+    avatar: "#011126",
+    text: "Pues la verdad muy agradecido con esta empresa de SERVIMIL que nos brinda a nosotros los militares un buen servicio. Yo no soy de estar recomendando estas empresas pero esta empresa se lo merece. En menos de un mes me sacó de unas empresas que me estaban haciendo descuentos y la verdad la recomiendo mucho.",
+  },
+  {
+    name: "Carlos Murillo",
+    avatar: "#F34616",
+    text: "Excelente servicio, me apoyaron con el bono de incapacidad, el auxilio de transporte en las citas médicas y asesoría jurídica a los beneficiarios. Una empresa que sí cumple y la recomiendo por su atención y cumplimiento.",
+  },
+  {
+    name: "Juancarlos Campo",
+    avatar: "#1c7a3e",
+    text: "Gracias servimil por el apoyo que ha brindado al perder un familiar, tiene un excelente servicio, se los recomiendo.",
+  },
+  {
+    name: "Nicolas Davila",
+    avatar: "#3a72c4",
+    text: "Aun estando en misión desde Estados Unidos, Servimil me prestó los servicios jurídicos. Al principio no tenía confianza pero tomé el plan y me ha ido muy bien luego de 4 meses con ellos.",
+  },
+];
+
 /* Cinta marquee (una sola, recta) */
 const CINTA = [
   "Bono de Condolencia", "Asistencia Financiera", "Asistencia Jurídica",
@@ -515,6 +539,48 @@ const PLANES: Plan[] = [
         </div>
       </div>
       {/* === FIN badge reseñas de Google === */}
+
+      {/* === GRID DE RESEÑAS DE GOOGLE (cards escritas en código) — reversible ===
+           4 reseñas reales, 2x2 en desktop / 1 col en móvil. Editar textos en RESENAS. */}
+      <div class="mx-auto mt-12 grid w-full max-w-[920px] grid-cols-1 gap-6 sm:mt-14 md:grid-cols-2">
+        {
+          RESENAS.map((r, i) => (
+            <div
+              data-reveal
+              style={`--reveal-delay:${i * 90}ms`}
+              class="flex h-full flex-col rounded-2xl bg-white p-6 text-left shadow-[0_18px_50px_-24px_rgba(0,0,0,.5)] sm:p-7"
+            >
+              {/* Cabecera: avatar inicial + nombre + estrellas */}
+              <div class="mb-3 flex items-center gap-[14px]">
+                <div
+                  class="flex h-[46px] w-[46px] flex-none items-center justify-center rounded-full text-[19px] font-bold text-white"
+                  style={`background:${r.avatar};`}
+                  aria-hidden="true"
+                >
+                  {r.name.charAt(0)}
+                </div>
+                <div class="min-w-0">
+                  <div class="truncate text-[15.5px] font-semibold text-navy">{r.name}</div>
+                  <div class="mt-[2px] flex items-center gap-[6px]">
+                    <span class="text-[14px] leading-none text-orange" aria-label="5 de 5 estrellas">★★★★★</span>
+                    {/* Ícono Google (SVG oficial 4 colores) */}
+                    <svg width="14" height="14" viewBox="0 0 48 48" aria-hidden="true">
+                      <path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/>
+                      <path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/>
+                      <path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"/>
+                      <path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/>
+                    </svg>
+                    <span class="text-[11px] font-medium text-[#8a97a5]">Google</span>
+                  </div>
+                </div>
+              </div>
+              {/* Texto de la reseña */}
+              <p class="m-0 text-[14px] leading-[1.65] text-[#4a5a6a]">{r.text}</p>
+            </div>
+          ))
+        }
+      </div>
+      {/* === FIN grid de reseñas de Google === */}
     </div>
   </section>
 
