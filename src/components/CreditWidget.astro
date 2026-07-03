@@ -68,10 +68,8 @@ const c = CREDIT_CONFIG;
           style="accent-color:#F34616;"
         />
         <div class="mt-[6px] flex justify-between text-[12px] text-[#94a6b8]">
-          <span>$200.000</span><span>$50.000.000</span>
+          <span>$200.000</span><span>$1.000.000</span>
         </div>
-        <!-- Indicador de línea (convenio directo vs. estudio con aliados) -->
-        <div id="lineaTag" class="mt-3 inline-flex items-center gap-2 rounded-full px-3 py-1 text-[12px] font-semibold"></div>
       </div>
 
       <!-- Cuotas -->
@@ -89,7 +87,7 @@ const c = CREDIT_CONFIG;
         </select>
       </div>
 
-      <!-- Resultado LÍNEA 1 (monto ≤ $1.000.000, convenio directo) -->
+      <!-- Resultado — cuota estimada (convenio Servimil, hasta $1.000.000) -->
       <div
         id="resultBox"
         class="mb-[22px] rounded-2xl px-6 py-[22px] text-white"
@@ -103,22 +101,6 @@ const c = CREDIT_CONFIG;
         <div class="mt-[10px] text-[11px] text-[#8ea3b8]">
           Incluye aporte administrativo de $45.600 por cuota.
         </div>
-      </div>
-
-      <!-- Resultado LÍNEA 2 (monto > $1.000.000, estudio con aliados) -->
-      <div
-        id="line2Box"
-        hidden
-        class="mb-[22px] rounded-2xl border border-orange/30 bg-[#fff4ee] px-6 py-[22px]"
-      >
-        <div class="mb-[6px] text-[13px] font-semibold uppercase tracking-[.5px] text-orange">
-          Estudio personalizado
-        </div>
-        <p class="m-0 text-[14px] leading-[1.55] text-navy">
-          Para montos mayores a $1.000.000, tu crédito se estudia con nuestros
-          aliados (compra de cartera, libre inversión y refinanciación).
-          Contáctanos para una cotización personalizada.
-        </p>
       </div>
 
       <!-- Requisitos -->
@@ -162,16 +144,8 @@ const c = CREDIT_CONFIG;
     const montoFmt = document.getElementById("montoFmt");
     const cuotaFmt = document.getElementById("cuotaFmt");
     const totalFmt = document.getElementById("totalFmt");
-    const lineaTag = document.getElementById("lineaTag");
-    const resultBox = document.getElementById("resultBox");
-    const line2Box = document.getElementById("line2Box");
     const cta = document.getElementById("creditCta");
     let lastFocus = null;
-
-    const PILL_L1 =
-      "mt-3 inline-flex items-center gap-2 rounded-full bg-[#e8f6ec] px-3 py-1 text-[12px] font-semibold text-[#1c7a3e] border border-[#bfe3cb]";
-    const PILL_L2 =
-      "mt-3 inline-flex items-center gap-2 rounded-full bg-[#fff1e8] px-3 py-1 text-[12px] font-semibold text-orange border border-orange/40";
 
     const fmt = (v) =>
       new Intl.NumberFormat("es-CO", {
@@ -180,14 +154,14 @@ const c = CREDIT_CONFIG;
         maximumFractionDigits: 0,
       }).format(Math.round(v));
 
-    /* ================= FÓRMULA REAL — LÍNEA 1 (convenio SERVIMIL) =================
+    /* ================= FÓRMULA REAL (convenio SERVIMIL, hasta $1.000.000) =========
        Amortización francesa (cuota fija) + aporte administrativo por cuota.
          i = cfg.monthlyRate (1.99% m.v.)   n = nº de cuotas
          cuota_credito = P * [ i(1+i)^n ] / [ (1+i)^n - 1 ]
          cuota_total   = cuota_credito + cfg.aporteAdmin
        Único lugar a tocar si cambian las condiciones (tasa/aporte en site.ts).
        ============================================================================ */
-    function line1Payment(P, n) {
+    function payment(P, n) {
       const i = cfg.monthlyRate;
       const f = Math.pow(1 + i, n);
       const cuotaCredito = i > 0 ? (P * i * f) / (f - 1) : P / n;
@@ -198,27 +172,10 @@ const c = CREDIT_CONFIG;
       const P = +montoEl.value;
       const n = +cuotasEl.value;
       montoFmt.textContent = fmt(P);
-
-      const esLinea1 = P <= cfg.line1Max;
-      lineaTag.className = esLinea1 ? PILL_L1 : PILL_L2;
-      lineaTag.textContent = esLinea1
-        ? "Línea 1 · Convenio Servimil (hasta $1.000.000)"
-        : "Línea 2 · Libre inversión / cartera (estudio con aliados)";
-
-      if (esLinea1) {
-        // LÍNEA 1: calcula y muestra la cuota
-        const cuota = line1Payment(P, n);
-        cuotaFmt.textContent = fmt(cuota);
-        totalFmt.textContent = fmt(cuota * n);
-        resultBox.hidden = false;
-        line2Box.hidden = true;
-        cta.classList.remove("sm-pulse");
-      } else {
-        // LÍNEA 2: sin cálculo; mensaje + CTA destacado
-        resultBox.hidden = true;
-        line2Box.hidden = false;
-        cta.classList.add("sm-pulse");
-      }
+      // Servimil presta solo hasta $1.000.000 → siempre calcula
+      const cuota = payment(P, n);
+      cuotaFmt.textContent = fmt(cuota);
+      totalFmt.textContent = fmt(cuota * n);
     }
 
     function open() {

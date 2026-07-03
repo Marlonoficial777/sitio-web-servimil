@@ -97,14 +97,13 @@ export const TESTIMONIOS = [
    ============================================================ */
 export const CREDIT_CONFIG = {
   min: 200_000,
-  max: 50_000_000,
+  max: 1_000_000, // Servimil presta ÚNICAMENTE hasta $1.000.000 (convenio)
   step: 100_000,
-  defaultMonto: 1_000_000,
+  defaultMonto: 500_000,
   defaultCuotas: 24,
-  // Línea 1 (convenio Servimil, hasta $1.000.000): plazos 12–36 en pasos de 2
+  // Plazos: 12–36 en pasos de 2
   plazos: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36],
-  // ===== Condiciones reales — LÍNEA 1 (convenio SERVIMIL) =====
-  line1Max: 1_000_000, // umbral: hasta este monto se calcula; por encima → Línea 2 (aliados)
+  // ===== Condiciones reales (convenio SERVIMIL) =====
   monthlyRate: 0.0199, // 1.99% mensual vencido (m.v.)
   aporteAdmin: 45_600, // aporte administrativo (cuota SICOD) sumado a CADA cuota
 };
