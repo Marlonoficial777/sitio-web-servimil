@@ -1,5 +1,21 @@
 ---
-const VIDEOS = [1, 2, 3, 4, 5, 6];
+/* === VIDEOS REALES DE TESTIMONIOS (Cloudinary) ===
+   Verticales 9:16 (grabados con celular). f_auto/q_auto: Cloudinary sirve el
+   formato compatible con cada navegador (los .mov se transcodifican solos).
+   poster = fotograma 0 del propio video (so_0,f_jpg). */
+const CLOUD = "https://res.cloudinary.com/dzh85ye7y/video/upload";
+const VIDEOS = [
+  "v1783372764/59fdd258-247d-440d-a1b4-3ae9343be49b_pdf725.mov",
+  "v1783372770/ad20d9cc-7491-40ef-a7ea-22fd972d7a18_w5klnm.mp4",
+  "v1783372776/eab62dc1-9ba9-4b26-acbc-52268e5ae35f_wkonrr.mp4",
+  "v1783372788/1._CREMIL_Alexander_Arvelaez_oqpxxa.mov",
+  "v1783372801/1._CREMIL_Fernando_Orozco_umkh69.mp4",
+  "v1783372808/1._CREMIL_VID-20241205-WA0083_ocbw04.mp4",
+].map((path) => ({
+  src: `${CLOUD}/f_auto,q_auto/${path}`,
+  poster: `${CLOUD}/so_0,f_jpg,q_auto/${path.replace(/\.(mov|mp4)$/, ".jpg")}`,
+}));
+/* === FIN VIDEOS === */
 ---
 <section id="testimonios" class="tst-hero relative overflow-hidden">
   {/* === FONDO BEIGE TESTIMONIOS (reversible) === */}
@@ -19,31 +35,33 @@ const VIDEOS = [1, 2, 3, 4, 5, 6];
       </h2>
     </div>
 
-    {/* Grid de placeholders de video (3×2 desktop, 2 tablet, 1 móvil) */}
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {/* === GRID DE VIDEOS DE TESTIMONIOS (verticales 9:16, 3×2 desktop / 2 tablet / 1 móvil) ===
+        <video> nativo: controls (play manual), SIN autoplay (6 a la vez saturarían),
+        playsinline (móvil reproduce dentro de la card), preload="metadata" (no baja
+        los 6 completos), object-cover (llena la card sin deformar). */}
+    <div class="mx-auto grid max-w-[420px] grid-cols-1 gap-6 sm:max-w-[680px] sm:grid-cols-2 lg:max-w-[980px] lg:grid-cols-3">
       {
-        VIDEOS.map((n, i) => (
+        VIDEOS.map((v, i) => (
           <div
             data-reveal
             style={`--reveal-delay:${i * 90}ms`}
-            class="aspect-video overflow-hidden rounded-2xl border-t-2 border-orange/70 bg-white shadow-[0_18px_44px_-18px_rgba(1,17,38,.28)]"
+            class="aspect-[9/16] overflow-hidden rounded-2xl border-t-2 border-orange/70 bg-navy shadow-[0_18px_44px_-18px_rgba(1,17,38,.28)]"
           >
-            {/* TODO: reemplazar por <iframe> de YouTube del testimonio {n}
-                Ej:
-                <iframe class="h-full w-full" src="https://www.youtube.com/embed/VIDEO_ID"
-                  title="Testimonio {n}" frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen></iframe>
-            */}
-            <div class="flex h-full w-full items-center justify-center">
-              <span class="text-[13px] font-bold uppercase tracking-[2px] text-orange/40">
-                Video
-              </span>
-            </div>
+            <video
+              class="h-full w-full object-cover"
+              src={v.src}
+              poster={v.poster}
+              controls
+              playsinline
+              preload="metadata"
+            >
+              Tu navegador no soporta video HTML5.
+            </video>
           </div>
         ))
       }
     </div>
+    {/* === FIN GRID DE VIDEOS === */}
   </div>
 </section>
 
