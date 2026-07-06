@@ -100,10 +100,10 @@ Envuelve TODAS las páginas: `Base` + `Header` + `<main><slot/></main>` + `Foote
 - **Patrón eyebrow** (repetido a pedido del usuario): eyebrows de sección en **blanco** `text-[16px] sm:text-[18px]` (no cian, no 13px).
 - **Patrón reveal lateral**: `data-reveal="left"` / `"right"` (translateX ±48px) definido en `global.css` (junto al `data-reveal` base). Usado en conocenos ("Quiénes somos") y servicios (zig-zag).
 
-### Testimonios (`testimonios.astro` + `components/Testimonios.astro`) — REESCRITO 2026-06-23, FONDO BEIGE 2026-06-24 ⚠️
-**Ya NO es carrusel de citas en texto.** Se eliminó la card con comilla + cita + nombre/rol + controles ‹ N/N › y su script (y los imports `Icon`/`TESTIMONIOS`). Ahora:
+### Testimonios (`testimonios.astro` + `components/Testimonios.astro`) — VIDEOS REALES 2026-07-06 ⚠️
+**Ya NO es carrusel de citas en texto** (reescrito 2026-06-23) **ni grid de placeholders** (videos reales 2026-07-06). Ahora:
 1. **Encabezado** — eyebrow "TESTIMONIOS" **naranja** `text-[16px] sm:text-[18px]` (agrandado 2026-06-24, antes 13px gris) + título grande "La voz de quienes ya nos eligieron" **navy** (`40/52/60px`).
-2. **Grid 6 placeholders de video** — `aspect-video`, 3 col desktop / 2 tablet / 1 móvil, `rounded-2xl`, **fondo BLANCO** + sombra suave de elevación + **borde superior 2px naranja** (`border-t-2 border-orange/70`), "VIDEO" naranja tenue (`text-orange/40`), reveal con stagger. Cada uno con comentario `{/* TODO: reemplazar por <iframe> de YouTube del testimonio N */}` + ejemplo iframe. → **pendiente videos reales**.
+2. **Grid 6 VIDEOS REALES verticales 9:16** (2026-07-06, commit `4761b58`) — array `VIDEOS` en frontmatter (encapsulado `/* === VIDEOS REALES DE TESTIMONIOS === */`): 6 rutas Cloudinary (`v1783372764`–`808`, incl. 2 `.mov` — `f_auto` los transcodifica al formato compatible por navegador; verificado 200). `.map()` genera `{src, poster}`; **poster = fotograma 0 del propio video** (`so_0,f_jpg,q_auto`, extensión `.jpg`). Cards `aspect-[9/16]` (verticales, celular), `rounded-2xl`, **fondo navy** + borde superior 2px naranja + sombra, reveal stagger. Grid 3 col desktop / 2 tablet / 1 móvil con **`max-w` por breakpoint (980/680/420px)** para que las 6 verticales no queden gigantes (~310px c/u desktop). `<video>` nativo: `controls` (play manual), **SIN autoplay**, `playsinline`, `preload="metadata"`, `object-cover`. Comentarios TODO iframe YouTube **eliminados** (ya no van; es Cloudinary).
 3. **CTA cierre** — banda navy `#011126` (conecta sin corte con footer navy): "¿Listo para que tu familia también esté respaldada?" + subtítulo cian + botón naranja "Contáctanos por WhatsApp" (`wa.me/573181626167`, `btn-shine`).
 
 - **FONDO BEIGE (2026-06-24)** — sección encabezado+grid: fondo **beige `#EAE5DD`** con degradado vertical MUY sutil (`linear-gradient(170deg,#F0ECE4,#EAE5DD,#E5DFD5)`) + 2 blobs naranja `blur(130px)` opacidad 0.06/0.07 en esquinas (atmósfera casi imperceptible, peso cero, sin animación). Cards blancas resaltan sobre el beige. Empalme beige→CTA navy→footer navy = corte definido limpio. Todo en `<style>` scoped, encapsulado `/* === FONDO BEIGE TESTIMONIOS (reversible) === */ ... /* === FIN === */` (clases `.tst-hero` `.tst-mesh` `.tst-blob`). Antes se probó fondo navy+mesh cian/naranja → cambiado a beige a pedido.
@@ -195,7 +195,7 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 - [ ] **Validar la cuota con un ejemplo verificado de Julián** — comparar el resultado de la web contra su `cotizar.py` (misma fórmula 1.99% m.v. + $45.600). Fórmula YA implementada (commit `7da2aee`); falta el visto bueno numérico del cliente. Casos ya calculados en la sección "Calculadora de crédito".
 
 **Videos:**
-- [ ] **Videos reales testimonios:** reemplazar los 6 placeholders VIDEO 16:9 de `components/Testimonios.astro` por `<iframe>` YouTube (estructura `aspect-video` lista, comentario TODO en cada uno).
+- [x] ~~**Videos reales testimonios (página `/testimonios`)**~~ — **HECHO 2026-07-06** (commit `4761b58`): 6 videos reales Cloudinary en `<video>` nativo, cards verticales 9:16 (ver sección Testimonios).
 - [ ] **Video real Testimonios Home** + botón "Conoce más" → `/testimonios`.
 - [ ] **Placeholder VIDEO en servicios** (sección Testimonios, arriba del badge Google) → video real.
 
@@ -215,7 +215,20 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 
 - [x] ~~Fotos reales servicios (zig-zag)~~ — **HECHO** (`DETALLE.img`), 8/8 + Crédito fácil.
 
-## Estado / último avance (al 2026-07-03) — calculadora solo $1M + testimonios Google + hover valores
+## Estado / último avance (al 2026-07-06) — videos reales en /testimonios
+
+Todo commiteado y pusheado a `main`. Deploy a producción hecho (build + wrangler por separado, workaround libuv).
+
+- ✅ **`4761b58`** **Testimonios (página): 6 videos reales Cloudinary** en cards **verticales 9:16** (antes 6 placeholders 16:9 con TODO iframe YouTube). `<video>` nativo con `controls`/`playsinline`/`preload="metadata"`/sin autoplay, poster `so_0,f_jpg`, `f_auto,q_auto` (los 2 `.mov` se transcodifican solos). Grid 3×2 con `max-w` por breakpoint. Encabezado, fondo beige y CTA navy intactos. Detalle completo en la sección Testimonios.
+
+### Para retomar
+- **Validar cuota calculadora** contra `cotizar.py` de Julián.
+- **URL real ficha Google** cuando el cliente la pase.
+- **Videos pendientes:** Testimonios Home + placeholder video servicios (los de `/testimonios` YA están).
+- **Dominio `servimil.co`** a Cloudflare Pages.
+- **Limpieza:** componentes huérfanos + dep `three`.
+
+## Estado / avance previo (al 2026-07-03) — calculadora solo $1M + testimonios Google + hover valores
 
 Todo commiteado y pusheado a `main` (`github.com/Marlonoficial777/sitio-web-servimil`). Working tree limpio. Cada cambio con `npm run build` + `npx wrangler pages deploy dist --project-name=servimil --branch=main --commit-dirty=true` (workaround libuv). Commits del día, en orden:
 
