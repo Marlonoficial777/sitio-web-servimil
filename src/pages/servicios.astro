@@ -490,14 +490,22 @@ const PLANES: Plan[] = [
         </h2>
       </div>
 
-      {/* TODO: reemplazar placeholder por video de testimonio cuando esté listo */}
-      <div data-reveal class="mx-auto mb-14 w-full max-w-3xl">
-        <div class="flex aspect-video items-center justify-center rounded-2xl bg-white shadow-[0_18px_50px_-20px_rgba(1,17,38,.3)]">
-          <span class="text-[14px] font-semibold uppercase tracking-[2px] text-navy/30">
-            Video
-          </span>
+      {/* === VIDEO TESTIMONIO (Short YouTube xl4GR_wP-Bg, vertical 9:16) — reversible ===
+           Ajustar tamaño aquí: max-w-[360px] controla el ancho del video en desktop.
+           Sin autoplay (play manual). aspect-[9/16] mantiene proporción responsive. */}
+      <div data-reveal class="mx-auto mb-14 w-full max-w-[360px]">
+        <div class="aspect-[9/16] overflow-hidden rounded-2xl shadow-[0_18px_50px_-20px_rgba(1,17,38,.3)]">
+          <iframe
+            src="https://www.youtube.com/embed/xl4GR_wP-Bg"
+            title="Testimonio Servimil"
+            class="h-full w-full border-0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
         </div>
       </div>
+      {/* === FIN VIDEO TESTIMONIO === */}
 
       {/* === BADGE RESEÑAS DE GOOGLE (propio, sin servicios externos) — reversible ===
            Reemplaza al widget Trustindex (prueba vencida). Ajustar aquí nota/estrellas/URL.

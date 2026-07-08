@@ -92,7 +92,7 @@ Envuelve TODAS las páginas: `Base` + `Header` + `<main><slot/></main>` + `Foote
 2. **Cinta marquee** (en `servicios.astro`) — UNA sola banda recta naranja `#F34616`, texto blanco mayúsculas, separador ✦, loop R→L 48s, `mask-image` fade en bordes, hover pausa. Array `CINTA`. **CLICKEABLE** (2026-06-23): cada nombre con bloque equivalente es `<a href="#id">` (mapa `CINTA_LINK` nombre→id; ambos sets del loop tienen enlaces). Scroll suave (global) + `scroll-margin-top:100px` en bloques. "Tecnología" sin bloque = texto plano. `.marquee-link` hover subrayado/opacidad.
 3. **Nuestros planes** — 3 cards (array `PLANES`): Plus $39.900 / **Plus Superior $49.900 destacada "MÁS POPULAR"** / Élite $59.900. Precio grande, caja cobertura bono cian, checks, botón "Afíliate ahora" → `WHATSAPP` (wa.me/573181626167). Eyebrow blanco. **ids** `plan-plus / plan-plus-superior / plan-elite` + `scroll-margin-top:110px` (destino de los botones del Home). **Highlight de llegada**: script lee `location.hash` en `load`/`hashchange` → clase `.plan-highlight` (glow+borde naranja+scale, anim `planArrive` 2s una vez, autolimpia en `animationend`).
 4. **Servicios en detalle (zig-zag)** — 8 bloques alternados texto↔**foto real 4:3** (array `DETALLE`, campo `img` Cloudinary `q_auto/f_auto`): Bono, Asistencia financiera, Jurídica, Nómina, Seguros y auxilios, Entretenimiento, Bienestar y salud, Viajes. **Fotos reales puestas 2026-06-23.** Cada bloque con `id` (array `DETALLE_IDS`) + `scroll-margin-top:100px` (destino de cinta + lista Home). Reveal lateral opuesto (`data-reveal="left|right"`). **Animaciones premium**: stagger interno del texto (`.det-stagger` `--det-i`), hover imagen zoom `scale(1.05)` (`overflow-hidden`) + sombra ↑, parallax sutil del bloque decorativo (`.det-decor`), ícono entrada `scale`+rebote. Todo respeta reduced-motion. Eyebrow blanco.
-5. **Testimonios (badge + reseñas propias)** (rehecho 2026-07-03) — tras "Servicios en detalle", antes del footer. Fondo **navy `#011126`**. Título único "TESTIMONIOS" blanco extrabold (32/40/46px). Debajo: **placeholder VIDEO 16:9** (`aspect-video`, `max-w-3xl`, bg blanco, comentario TODO iframe). ⚠️ **Trustindex ELIMINADO** (prueba de 7 días vencida → mostraba mensaje rojo "trial period has expired"). Reemplazado por:
+5. **Testimonios (badge + reseñas propias)** (rehecho 2026-07-03) — tras "Servicios en detalle", antes del footer. Fondo **navy `#011126`**. Título único "TESTIMONIOS" blanco extrabold (32/40/46px). Debajo: **VIDEO real embebido** (2026-07-08): iframe YouTube **Short `xl4GR_wP-Bg`** (`youtube.com/embed/xl4GR_wP-Bg`), **vertical 9:16** (`aspect-[9/16]`, `max-w-[360px]` centrado — ajustar tamaño ahí), `rounded-2xl` + sombra, sin autoplay, `allowfullscreen` + permisos estándar, `loading="lazy"`. Encapsulado `{/* === VIDEO TESTIMONIO ... === */}`. (Antes: placeholder blanco 16:9 "VIDEO".) ⚠️ **Trustindex ELIMINADO** (prueba de 7 días vencida → mostraba mensaje rojo "trial period has expired"). Reemplazado por:
    - **Badge Google propio** (HTML/CSS, sin servicios externos, `max-w-[440px]`): card blanca + logo Google (SVG oficial 4 colores) + "Reseñas de Google" + **4.7** grande navy + estrellas (capa naranja recortada al **94%**=4.7/5 sobre grises) + "Reseñas reales de nuestras familias" + botón naranja `btn-shine` **"Ver reseñas en Google"** → `https://www.google.com/maps/place/SERVIMIL+COLOMBIA` (`target=_blank`). Encapsulado `{/* === BADGE RESEÑAS DE GOOGLE ... === */ ... /* === FIN === */ }`.
    - **Grid de 4 reseñas reales** (array `RESENAS` en frontmatter, `max-w-[920px]`, `grid-cols-1 md:grid-cols-2` = 2×2): cada card blanca (`h-full flex-col`, altura pareja, sombra) con **avatar circular inicial+color**, nombre, 5 estrellas naranja, ícono Google + "Google", y texto exacto de la reseña. Reviewers: Davinson Banguera, Carlos Murillo, Juancarlos Campo, Nicolas Davila. Encapsulado `{/* === GRID DE RESEÑAS DE GOOGLE ... === */ }`.
    - ⚠️ (histórico) Se intentó marquee auto-scroll de las cards del viejo Trustindex → **revertido**.
@@ -197,7 +197,7 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 **Videos:**
 - [x] ~~**Videos reales testimonios (página `/testimonios`)**~~ — **HECHO 2026-07-06** (commit `4761b58`): 6 videos reales Cloudinary en `<video>` nativo, cards verticales 9:16 (ver sección Testimonios).
 - [ ] **Video real Testimonios Home** + botón "Conoce más" → `/testimonios`.
-- [ ] **Placeholder VIDEO en servicios** (sección Testimonios, arriba del badge Google) → video real.
+- [x] ~~**Placeholder VIDEO en servicios** (sección Testimonios, arriba del badge Google)~~ — **HECHO 2026-07-08**: Short YouTube `xl4GR_wP-Bg` embebido, vertical 9:16.
 
 **Google reseñas:**
 - [ ] **Confirmar URL de la ficha de Google** — hoy el botón apunta a `https://www.google.com/maps/place/SERVIMIL+COLOMBIA` (búsqueda por nombre, no la ficha canónica). Cuando el cliente pase el link exacto de su Google Business, cambiarlo en el badge de `servicios.astro`.
@@ -215,16 +215,17 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 
 - [x] ~~Fotos reales servicios (zig-zag)~~ — **HECHO** (`DETALLE.img`), 8/8 + Crédito fácil.
 
-## Estado / último avance (al 2026-07-06) — videos reales en /testimonios
+## Estado / último avance (al 2026-07-08) — video real en Servicios/Testimonios
 
 Todo commiteado y pusheado a `main`. Deploy a producción hecho (build + wrangler por separado, workaround libuv).
 
-- ✅ **`4761b58`** **Testimonios (página): 6 videos reales Cloudinary** en cards **verticales 9:16** (antes 6 placeholders 16:9 con TODO iframe YouTube). `<video>` nativo con `controls`/`playsinline`/`preload="metadata"`/sin autoplay, poster `so_0,f_jpg`, `f_auto,q_auto` (los 2 `.mov` se transcodifican solos). Grid 3×2 con `max-w` por breakpoint. Encabezado, fondo beige y CTA navy intactos. Detalle completo en la sección Testimonios.
+- ✅ **Servicios/Testimonios: video real** — placeholder blanco "VIDEO" 16:9 → **iframe YouTube Short `xl4GR_wP-Bg`** vertical 9:16 (`aspect-[9/16]`, `max-w-[360px]` centrado, rounded-2xl + sombra, sin autoplay, allowfullscreen, lazy). Encapsulado `{/* === VIDEO TESTIMONIO === */}`.
+- ✅ **`4761b58`** (2026-07-06) **Testimonios (página): 6 videos reales Cloudinary** en cards **verticales 9:16** (antes 6 placeholders 16:9 con TODO iframe YouTube). `<video>` nativo con `controls`/`playsinline`/`preload="metadata"`/sin autoplay, poster `so_0,f_jpg`, `f_auto,q_auto` (los 2 `.mov` se transcodifican solos). Grid 3×2 con `max-w` por breakpoint. Encabezado, fondo beige y CTA navy intactos. Detalle completo en la sección Testimonios.
 
 ### Para retomar
 - **Validar cuota calculadora** contra `cotizar.py` de Julián.
 - **URL real ficha Google** cuando el cliente la pase.
-- **Videos pendientes:** Testimonios Home + placeholder video servicios (los de `/testimonios` YA están).
+- **Videos pendientes:** Testimonios Home (los de `/testimonios` y el de Servicios YA están).
 - **Dominio `servimil.co`** a Cloudflare Pages.
 - **Limpieza:** componentes huérfanos + dep `three`.
 
