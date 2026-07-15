@@ -95,10 +95,12 @@ const c = CREDIT_CONFIG;
       >
         <div class="mb-[6px] text-[13px] font-medium text-cyan">Cuota mensual estimada</div>
         <div id="cuotaFmt" class="text-[36px] font-bold leading-none tracking-[-1px]"></div>
-        <div class="mt-[10px] text-[13px] text-[#b8c6d4]">
+        {/* Oculto a pedido del cliente (2026-07-15) — solo visual, el cálculo no cambia.
+             Quitar `hidden` para volver a mostrar total y nota de aporte. */}
+        <div hidden class="mt-[10px] text-[13px] text-[#b8c6d4]">
           Total estimado a pagar: <span id="totalFmt"></span>
         </div>
-        <div class="mt-[10px] text-[11px] text-[#8ea3b8]">
+        <div hidden class="mt-[10px] text-[11px] text-[#8ea3b8]">
           Incluye aporte administrativo de $45.600 por cuota.
         </div>
       </div>

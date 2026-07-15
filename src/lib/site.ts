@@ -23,7 +23,7 @@ export const NAV_LINKS = [
 export const SERVICIOS = [
   { icon: "heart", title: "Bono de condolencia", desc: "Un apoyo que llega cuando más se necesita, sin trámites complicados." },
   { icon: "money", title: "Asistencia financiera", desc: "Respaldo para tus metas y tranquilidad para tus finanzas." },
-  { icon: "bank", title: "Asistencia jurídica", desc: "Abogados de tu lado para resolver lo que necesites." },
+  { icon: "bank", title: "Asesoría jurídica", desc: "Abogados de tu lado para resolver lo que necesites." },
   { icon: "file", title: "Administración de nómina", desc: "Tu nómina ordenada y bajo control, sin sorpresas." },
   { icon: "shield", title: "Seguros", desc: "Protección a la medida para ti y los tuyos." },
   { icon: "play", title: "Entretenimiento", desc: "Momentos para disfrutar en familia, con beneficios exclusivos." },
@@ -69,7 +69,7 @@ export const NUEVOS = [
   },
   {
     icon: "legal",
-    title: "Asistencia Jurídica Especializada",
+    title: "Asesoría Jurídica Especializada",
     desc: "Defendemos tus derechos con abogados que conocen el sector.",
     items: [
       "Derechos de petición, tutelas y demandas",
