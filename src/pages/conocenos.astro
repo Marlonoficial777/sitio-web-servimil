@@ -157,85 +157,62 @@ const VALORES = [
     </div>
   </section>
 
-  {/* ---------- 4. NUESTRO PROPÓSITO (banda cinematográfica) ---------- */}
-  <section class="relative isolate flex min-h-[520px] items-center overflow-hidden bg-navy text-white">
-    {/* === FONDO VIDEO (reemplaza imagen, reversible) === */}
-    <video
+  {/* ================================================================
+       4. NUESTRO PROPÓSITO — SECCIÓN UNIFICADA (2026-07-15, reversible)
+       Fusión de las antiguas secciones 4 "Nuestro propósito" y
+       5 "Propuesta de valor" (ambas con VIDEO de fondo de soldado; los
+       dos videos seguidos se veían duplicados). Ahora: UNA sola banda
+       con IMAGEN ESTÁTICA (soldado con bandera al atardecer), sin
+       video, sin Ken Burns, sin animación de fondo.
+       object-position 68% = el soldado queda bien encuadrado también
+       en el recorte vertical de móvil (está a la derecha del cuadro).
+       Para revertir: restaurar las 2 secciones del commit anterior.
+     ================================================================ */}
+  <section class="relative isolate flex min-h-[560px] items-center overflow-hidden bg-navy text-white sm:min-h-[620px]">
+    <img
+      src="https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1784133364/hf_20260622_142422_62b1fd70-1673-4e0e-9f51-ae3658448f68_1_wnlvy3.png"
+      alt=""
       class="absolute inset-0 -z-20 h-full w-full object-cover"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="metadata"
-      poster="https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782138372/hf_20260622_142422_62b1fd70-1673-4e0e-9f51-ae3658448f68_tfvbz4.png"
+      style="object-position:68% center;"
+      loading="lazy"
+      decoding="async"
       aria-hidden="true"
-    >
-      <source
-        src="https://res.cloudinary.com/dzh85ye7y/video/upload/q_auto/f_auto/v1782250192/hf_20260623_212538_a6f18756-4c43-47b1-96b1-84d83358a5f8_jxez8c.mp4"
-        type="video/mp4"
-      />
-    </video>
-    {/* === FIN FONDO VIDEO === */}
-    {/* Overlay navy degradado para legibilidad */}
+    />
+    {/* Overlay navy (~.6 al centro, sólido en bordes para transición limpia
+        con la banda de stats arriba y el corte a Valores abajo) + brillo
+        radial naranja sutil abajo (clímax cálido) */}
     <div
       class="absolute inset-0 -z-10"
       aria-hidden="true"
-      style="background:linear-gradient(180deg,rgba(1,17,38,1) 0%,rgba(1,17,38,.7) 18%,rgba(1,17,38,.68) 45%,rgba(1,17,38,1) 100%);"
+      style="background:radial-gradient(900px 500px at 50% 120%,rgba(243,70,22,.16),transparent 60%),linear-gradient(180deg,rgba(1,17,38,1) 0%,rgba(1,17,38,.62) 20%,rgba(1,17,38,.6) 55%,rgba(1,17,38,.78) 82%,rgba(1,17,38,1) 100%);"
     ></div>
 
-    <div class="mx-auto max-w-[760px] px-6 py-[104px] text-center sm:py-[120px]">
-      <h2 data-reveal class="m-0 mb-6 text-[32px] font-bold leading-[1.14] tracking-[-.7px] sm:text-[42px]">
+    <div class="relative mx-auto max-w-[900px] px-6 py-[112px] text-center sm:py-[136px]">
+      {/* Eyebrow */}
+      <div data-reveal class="mb-5 text-[16px] font-extrabold uppercase tracking-[2px] text-white sm:text-[18px]">
         Nuestro propósito
-      </h2>
-      <p data-reveal style="--reveal-delay:140ms" class="m-0 text-[18px] leading-[1.75] text-white/85 sm:text-[20px]">
-        Queremos ser la empresa número uno en asistencia y acompañamiento para
-        los miembros del Ministerio de Defensa y sus familias. Porque entendemos
-        <span class="font-semibold text-orange">el peso del uniforme y el valor del sacrificio</span>. Cada servicio que ofrecemos es
-        <span class="font-semibold text-orange">nuestra forma de decir GRACIAS</span>
-        a quienes hacen tanto por nuestro país.
-      </p>
-    </div>
-  </section>
+      </div>
 
-  {/* ---------- 5. PROPUESTA DE VALOR (clímax emotivo) ---------- */}
-  <section class="relative isolate flex min-h-[560px] items-center overflow-hidden bg-navy text-white">
-    {/* === FONDO VIDEO (reemplaza imagen, reversible) === */}
-    <video
-      class="absolute inset-0 -z-20 h-full w-full object-cover"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="metadata"
-      poster="https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1782139329/hf_20260622_143926_a0f80310-7eba-4fad-9f57-e1eac48d35e2_pn7ggd.png"
-      aria-hidden="true"
-    >
-      <source
-        src="https://res.cloudinary.com/dzh85ye7y/video/upload/q_auto/f_auto/v1782250296/hf_20260623_212926_491a8eb3-87b6-4825-b76b-0f6fbdfcad11_w8zc8a.mp4"
-        type="video/mp4"
-      />
-    </video>
-    {/* === FIN FONDO VIDEO === */}
-    {/* Overlay navy cinematográfico */}
-    <div
-      class="absolute inset-0 -z-10"
-      aria-hidden="true"
-      style="background:radial-gradient(900px 500px at 50% 120%,rgba(243,70,22,.18),transparent 60%),linear-gradient(180deg,rgba(1,17,38,1) 0%,rgba(1,17,38,.7) 22%,rgba(1,17,38,.7) 78%,rgba(1,17,38,1) 100%);"
-    ></div>
-
-    <div class="relative mx-auto max-w-[900px] px-6 py-[112px] text-center sm:py-[128px]">
+      {/* Título grande */}
       <p class="m-0 text-[26px] font-bold leading-[1.32] tracking-[-.5px] text-balance sm:text-[38px]">
-        <span data-reveal class="inline">Así como tú proteges a Colombia, nosotros</span>
-        <span data-reveal style="--reveal-delay:200ms" class="inline text-orange drop-shadow-[0_0_26px_rgba(243,70,22,.55)]"> protegemos, respaldamos y acompañamos</span>
-        <span data-reveal style="--reveal-delay:380ms" class="inline"> a nuestras fuerzas públicas y a sus familias cuando más lo necesitan.</span>
+        <span data-reveal style="--reveal-delay:140ms" class="inline">Así como tú proteges a Colombia, nosotros</span>
+        <span data-reveal style="--reveal-delay:300ms" class="inline text-orange drop-shadow-[0_0_26px_rgba(243,70,22,.55)]"> protegemos, respaldamos y acompañamos</span>
+        <span data-reveal style="--reveal-delay:460ms" class="inline"> a nuestras fuerzas públicas y a sus familias cuando más lo necesitan.</span>
       </p>
 
-      {/* Atribución / firma */}
-      <div data-reveal style="--reveal-delay:560ms" class="mt-9 text-center">
-        <span class="text-[16px] font-semibold uppercase tracking-[1.6px] text-white sm:text-[18px]">El compromiso de Servimil</span>
+      {/* Párrafo de cierre emocional */}
+      <p data-reveal style="--reveal-delay:620ms" class="mx-auto mb-0 mt-7 max-w-[680px] text-[17px] leading-[1.75] text-white/85 sm:text-[19px]">
+        Porque entendemos <span class="font-semibold text-orange">el peso del uniforme y el valor del sacrificio</span>.
+        Cada servicio que ofrecemos es <span class="font-semibold text-orange">nuestra forma de decir GRACIAS</span>.
+      </p>
+
+      {/* Firma */}
+      <div data-reveal style="--reveal-delay:780ms" class="mt-10 text-center">
+        <span class="text-[15px] font-semibold uppercase tracking-[1.6px] text-white sm:text-[17px]">— El compromiso de Servimil</span>
       </div>
     </div>
   </section>
+  {/* ============ FIN SECCIÓN UNIFICADA NUESTRO PROPÓSITO ============ */}
 
   {/* ---------- 6. VALORES ---------- */}
   <section
