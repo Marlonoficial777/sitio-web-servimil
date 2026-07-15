@@ -37,6 +37,25 @@ import { WHATSAPP_URL, WHATSAPP_DISPLAY } from "../lib/site";
       </div>
     </div>
 
+    {/* === COLUMNA MAPA (Google Maps embed, 2026-07-15) — reversible ===
+         Pin en la dirección de la empresa (Cra 7C # 125-36, Bogotá).
+         Cuadrado compacto 200x200, mismo alto de columna que las demás. */}
+    <div class="flex flex-col gap-3">
+      <div class="mb-0.5 text-[15px] font-semibold text-white">Encuéntranos</div>
+      <iframe
+        src="https://maps.google.com/maps?q=Cra%207C%20%23%20125-36%2C%20Bogot%C3%A1%2C%20Colombia&z=16&output=embed"
+        title="Ubicación de Servimil: Cra 7C # 125-36, Bogotá"
+        width="200"
+        height="200"
+        class="h-[200px] w-[200px] rounded-xl border-0"
+        style="filter:saturate(.9);"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+      ></iframe>
+    </div>
+    {/* === FIN COLUMNA MAPA === */}
+
     <div class="flex flex-col gap-3">
       <div class="mb-0.5 text-[15px] font-semibold text-white">Síguenos</div>
       <div class="flex gap-3">
