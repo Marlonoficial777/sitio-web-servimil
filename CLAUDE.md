@@ -54,7 +54,7 @@ Clases: `bg-navy`, `text-orange`, `border-cyan`, `bg-ice`, etc.
 
 **Ya NO es one-page.** 4 páginas reales (Astro routing en `src/pages/`). El menú navega entre páginas, NO hace scroll a secciones.
 
-- `/` → **index.astro** (Home)
+- `/` → **index.astro** (Home; cierra con **`MapaUbicacion.astro`** — banda "Encuéntranos" con Google Maps clickeable, SOLO en Home, arriba del footer)
 - `/conocenos` → **conocenos.astro** (quiénes somos, misión, valores, CTA)
 - `/servicios` → **servicios.astro** (sección Ecosistema = esfera 3D + acordeón)
 - `/testimonios` → **testimonios.astro** (grid de videos + CTA, ver abajo)
@@ -80,19 +80,18 @@ Envuelve TODAS las páginas: `Base` + `Header` + `<main><slot/></main>` + `Foote
 1. **Hero cinematográfico** — video Cloudinary full-screen (`100svh`, object-cover, autoplay/muted/loop, poster so_0). Overlay degradado navy (30%→75%) + viñeteado. Texto alineado izquierda con el logo (`max-w-[1200px]`), centrado vertical. Sin eyebrow. Entrada cascada al cargar (`.cn-in` + delays). Indicador scroll "Conoce nuestra historia" + bounce.
 2. **Quiénes somos** — "Más de 3 años caminando a tu lado", 2 col (texto + img placeholder).
 3. **Stats conteo** — 20.664 / +3 / 100% (banda navy).
-4. **Nuestro propósito** — banda cinematográfica. **Fondo VIDEO Cloudinary** (2026-06-23, antes imagen Ken Burns): `<video autoplay muted loop playsinline preload="metadata">` + `poster` = la imagen anterior, `object-cover -z-20`. Overlay navy + texto quietos encima.
-5. **Propuesta de valor** — clímax. **Fondo VIDEO Cloudinary** (2026-06-23, antes imagen Ken Burns): mismo patrón video+poster. Overlay navy radial naranja + cita grande + firma "El compromiso de Servimil". **Ken Burns y sway eliminados** en estas 2 (el video trae su movimiento). Encapsulado `{/* === FONDO VIDEO === */}`.
+4. **Nuestro propósito — SECCIÓN UNIFICADA** (2026-07-15, antes eran 2: "Nuestro propósito" + "Propuesta de valor", ambas con video de soldado — se veían duplicadas). UNA banda con **IMAGEN ESTÁTICA** Cloudinary `v1784133364` (soldado con bandera al atardecer), `object-position:68% center`, overlay navy ~60% + radial naranja, SIN video/Ken Burns. Texto: eyebrow NUESTRO PROPÓSITO → título con "protegemos, respaldamos y acompañamos" naranja → párrafo con resaltados naranja → firma "EL COMPROMISO DE SERVIMIL" (sin guion). Encapsulado `{/* === 4. NUESTRO PROPÓSITO — SECCIÓN UNIFICADA === */}`.
 6. **Valores** — 4 cards (Compromiso, Transparencia, Cercanía, Disponibilidad). Rayita superior naranja/cian (`<span>` accent). **Borde naranja + glow al hover/active/focus-within** (2026-07-03): clase `.val-card` (estilo scoped `/* === BORDE NARANJA HOVER/ACTIVE ... === */`), `border-color:#F34616` + box-shadow (elevación + contorno `0 0 0 1px` + glow `.22`), `cursor:pointer`, transición `.3s`. Conserva la rayita superior y la elevación `-translate-y-2`.
-7. **Para quiénes trabajamos** — frase Ministerio de Defensa.
+7. **Para quiénes trabajamos / Respaldo institucional** — frase Ministerio de Defensa + fila de **6 entidades** (2026-07-15): Ejército, Armada, Fuerza Aérea, Policía Nacional, **CREMIL** (`landmark`), **CASUR** (`piggy-bank`) — íconos genéricos Lucide en verde `#9CB04A`, grid 2/3/6 col.
 8. **CTA final** — "Escríbenos ahora" (WhatsApp) + "Conoce nuestros servicios" (/servicios).
 
 ### Servicios (`servicios.astro`) — REDISEÑADO 2026-06-22 ⚠️
 **Ya NO usa esfera 3D ni acordeón.** Three.js quitado de `Ecosistema.astro` (peso muerto fuera; dep `three` sigue en package.json sin uso). Orden actual:
 1. **Hero** (`Ecosistema.astro`) — **video de fondo a pantalla completa** (`min-h-100svh`) de familia viendo película (Cloudinary, cálido). Capas: video `z-0` → overlay **NEGRO neutro** `rgba(0,0,0,~.55)` `z-[1]` (NO navy, para conservar tonos cálidos) → contenido `z-10`. Header **transparente** sobre el video (sin `solidHeader`). Texto centrado: eyebrow blanco "NUESTROS SERVICIOS" + título + subtítulo + flecha bounce decorativa. Video carga por JS solo si NO reduced-motion y NO móvil (`<768px` = solo poster `so_0`).
 2. **Cinta marquee** (en `servicios.astro`) — UNA sola banda recta naranja `#F34616`, texto blanco mayúsculas, separador ✦, loop R→L 48s, `mask-image` fade en bordes, hover pausa. Array `CINTA`. **CLICKEABLE** (2026-06-23): cada nombre con bloque equivalente es `<a href="#id">` (mapa `CINTA_LINK` nombre→id; ambos sets del loop tienen enlaces). Scroll suave (global) + `scroll-margin-top:100px` en bloques. "Tecnología" sin bloque = texto plano. `.marquee-link` hover subrayado/opacidad.
-3. **Nuestros planes** — 3 cards (array `PLANES`): Plus $39.900 / **Plus Superior $49.900 destacada "MÁS POPULAR"** / Élite $59.900. Precio grande, caja cobertura bono cian, checks, botón "Afíliate ahora" → `WHATSAPP` (wa.me/573181626167). Eyebrow blanco. **ids** `plan-plus / plan-plus-superior / plan-elite` + `scroll-margin-top:110px` (destino de los botones del Home). **Highlight de llegada**: script lee `location.hash` en `load`/`hashchange` → clase `.plan-highlight` (glow+borde naranja+scale, anim `planArrive` 2s una vez, autolimpia en `animationend`).
+3. **Nuestros planes — REESTRUCTURADO 2026-07-15** — 3 cards CORTAS (array `PLANES`, Élite $59.900 "MÁS POPULAR" / Plus Superior $49.900 / Plus $39.900): solo los **4 ítems que CAMBIAN** entre planes (bono condolencia, mascota, persona 75 años, entretenimiento) + caja cobertura + botón "Afíliate ahora" → `WHATSAPP`. Debajo del grid: **"+" centrado** (círculo naranja glow) y **UNA caja ancha ESTÁTICA "INCLUIDO EN TODOS LOS PLANES"** con los 8 beneficios comunes (const **`PLAN_COMUNES`**) en grid 3/2/1 col, checks naranjas. Nada desplegable. Nota legal "Aplican carencias..." **QUITADA** de esta sección (2026-07-15). **ids** `plan-plus / plan-plus-superior / plan-elite` + `scroll-margin-top:110px` + highlight de llegada (`.plan-highlight`) siguen igual.
 4. **Servicios en detalle (zig-zag)** — 8 bloques alternados texto↔**foto real 4:3** (array `DETALLE`, campo `img` Cloudinary `q_auto/f_auto`): Bono, Asistencia financiera, Jurídica, Nómina, Seguros y auxilios, Entretenimiento, Bienestar y salud, Viajes. **Fotos reales puestas 2026-06-23.** Cada bloque con `id` (array `DETALLE_IDS`) + `scroll-margin-top:100px` (destino de cinta + lista Home). Reveal lateral opuesto (`data-reveal="left|right"`). **Animaciones premium**: stagger interno del texto (`.det-stagger` `--det-i`), hover imagen zoom `scale(1.05)` (`overflow-hidden`) + sombra ↑, parallax sutil del bloque decorativo (`.det-decor`), ícono entrada `scale`+rebote. Todo respeta reduced-motion. Eyebrow blanco.
-5. **Testimonios (badge + reseñas propias)** (rehecho 2026-07-03) — tras "Servicios en detalle", antes del footer. Fondo **navy `#011126`**. Título único "TESTIMONIOS" blanco extrabold (32/40/46px). Debajo: **VIDEO real embebido** (2026-07-08): iframe YouTube **Short `xl4GR_wP-Bg`** (`youtube.com/embed/xl4GR_wP-Bg`), **vertical 9:16** (`aspect-[9/16]`, `max-w-[360px]` centrado — ajustar tamaño ahí), `rounded-2xl` + sombra, sin autoplay, `allowfullscreen` + permisos estándar, `loading="lazy"`. Encapsulado `{/* === VIDEO TESTIMONIO ... === */}`. (Antes: placeholder blanco 16:9 "VIDEO".) ⚠️ **Trustindex ELIMINADO** (prueba de 7 días vencida → mostraba mensaje rojo "trial period has expired"). Reemplazado por:
+5. **Testimonios (badge + reseñas propias)** (rehecho 2026-07-03) — tras "Servicios en detalle", antes del footer. Fondo **navy `#011126`**. Título único "TESTIMONIOS" blanco extrabold (32/40/46px). Debajo: **VIDEO NATIVO mp4 propio** (2026-07-15, antes iframe YouTube Short `xl4GR_wP-Bg` que superponía "IMG 1870"/"RAPPI CREDIT", imposible ocultar por parámetros): archivo **`public/videos/testimonio-servimil.mp4`** (720×1280, 5.5MB, descargado del canal del cliente) + poster `.jpg`, `<video controls playsinline preload="metadata">`, **vertical 9:16** (`aspect-[9/16]`, `max-w-[360px]` centrado — ajustar tamaño ahí), `rounded-2xl` + sombra, sin autoplay. Encapsulado `{/* === VIDEO TESTIMONIO ... === */}`. ⚠️ **Trustindex ELIMINADO** (prueba de 7 días vencida → mostraba mensaje rojo "trial period has expired"). Reemplazado por:
    - **Badge Google propio** (HTML/CSS, sin servicios externos, `max-w-[440px]`): card blanca + logo Google (SVG oficial 4 colores) + "Reseñas de Google" + **4.7** grande navy + estrellas (capa naranja recortada al **94%**=4.7/5 sobre grises) + "Reseñas reales de nuestras familias" + botón naranja `btn-shine` **"Ver reseñas en Google"** → `https://www.google.com/maps/place/SERVIMIL+COLOMBIA` (`target=_blank`). Encapsulado `{/* === BADGE RESEÑAS DE GOOGLE ... === */ ... /* === FIN === */ }`.
    - **Grid de 4 reseñas reales** (array `RESENAS` en frontmatter, `max-w-[920px]`, `grid-cols-1 md:grid-cols-2` = 2×2): cada card blanca (`h-full flex-col`, altura pareja, sombra) con **avatar circular inicial+color**, nombre, 5 estrellas naranja, ícono Google + "Google", y texto exacto de la reseña. Reviewers: Davinson Banguera, Carlos Murillo, Juancarlos Campo, Nicolas Davila. Encapsulado `{/* === GRID DE RESEÑAS DE GOOGLE ... === */ }`.
    - ⚠️ (histórico) Se intentó marquee auto-scroll de las cards del viejo Trustindex → **revertido**.
@@ -141,7 +140,8 @@ public/  favicon.svg, _headers
 
 ## Calculadora de crédito (`CreditWidget.astro`)
 
-- Botón flotante naranja **"Analiza tu crédito"** (abajo-derecha, `z-50`) → abre modal accesible en la misma página (slider monto + select cuotas → cuota mensual estimada + total + CTA WhatsApp).
+- Botón flotante naranja **"Analiza tu crédito"** (abajo-derecha, `z-50`) → abre modal accesible en la misma página (slider monto + select cuotas → cuota mensual estimada + CTA WhatsApp).
+- ⚠️ **OCULTOS DE LA VISTA (2026-07-15, a pedido del cliente):** la línea "Total estimado a pagar" y la nota "Incluye aporte administrativo de $45.600" llevan atributo `hidden` (comentario reversible en `CreditWidget.astro`). **SOLO visual**: el aporte se SIGUE sumando a la cuota y el JS sigue calculando el total. Cuota verificada idéntica tras el cambio.
 - **FÓRMULA REAL (HECHA) — UNA SOLA LÍNEA** ⚠️ **Servimil presta ÚNICAMENTE hasta $1.000.000** (corregido 2026-07-03, commit `01a2b27`; la "Línea 2 / aliados" fue **eliminada**):
   - **Slider monto:** `min $200.000 → max $1.000.000` (antes $50M, mal). `defaultMonto $500.000`. Etiqueta tope "$1.000.000".
   - **Cálculo (SIEMPRE, todo monto ≤ $1M):** amortización francesa `cuota_credito = P·i(1+i)^n / [(1+i)^n − 1]` con `i = monthlyRate = 0.0199` (1.99% m.v.), **+ `aporteAdmin = $45.600`** (cuota SICOD) sumado a CADA cuota. `total = cuota_total · n`. Formato COP `Intl.NumberFormat("es-CO")`. Función **`payment(P,n)`** en `CreditWidget.astro` (antes `line1Payment`).
@@ -215,7 +215,39 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 
 - [x] ~~Fotos reales servicios (zig-zag)~~ — **HECHO** (`DETALLE.img`), 8/8 + Crédito fácil.
 
-## Estado / último avance (al 2026-07-08) — video real en Servicios/Testimonios
+## Estado / último avance (al 2026-07-15) — tanda grande de ajustes del cliente
+
+Todo commiteado y pusheado a `main`, deploy a producción tras cada cambio (build + wrangler por separado, workaround libuv). Commits del día, en orden:
+
+- ✅ **`8babdad`** Tanda de 6 ajustes: (1) teléfono contacto en footer (luego eliminado, ver `4dbcb6f`); (2) dirección en footer; (3) **"asistencia jurídica" → "asesoría jurídica" en TODO el sitio** (servicios.astro: cinta+mapa anclas+título+alt+3 planes; site.ts ×2; Base.astro meta; ValorContador Home quedó "Asesoría jurídica y asistencia financiera"). Anclas `#asistencia-juridica` NO cambiaron; (4) iframe YouTube con `modestbranding` (insuficiente, ver `fedebac`); (5)+(6) **Calculadora: líneas "Total estimado a pagar" y nota del aporte $45.600 OCULTAS con `hidden`** (solo visual, comentario reversible; `payment()` intacto — cuota verificada IDÉNTICA: $1M/12=$140.102).
+- ✅ **`bc0005b`** Footer: dirección real **"Cra 7C # 125-36, Bogotá, Colombia"** (ícono pin SVG inline).
+- ✅ **`fedebac`** **Servicios/Testimonios: video nativo mp4 propio** en vez del iframe YouTube (el embed superponía título "IMG 1870" + canal "RAPPI CREDIT", imposible ocultar por parámetros). Short descargado con yt-dlp (720×1280, 1:23, 5.5MB) → **`public/videos/testimonio-servimil.mp4`** + poster `.jpg` (servidos por Pages). `<video controls playsinline preload="metadata">`, mismo marco 9:16 `max-w-[360px]`.
+- ✅ **`7be7965`** + **`aa6d438`** **Conócenos: FUSIÓN de "Nuestro propósito" + "Propuesta de valor"** en UNA sección con **IMAGEN ESTÁTICA** (los 2 videos de soldado seguidos se veían duplicados). Imagen Cloudinary `v1784133364` (soldado con bandera al atardecer), `object-position:68% center` (soldado a la derecha, bien encuadrado en móvil), overlay navy ~60% (bordes sólidos) + radial naranja. Texto unificado: eyebrow NUESTRO PROPÓSITO → título "Así como tú proteges..." (resaltado naranja "protegemos, respaldamos y acompañamos") → párrafo ("peso del uniforme...", "...GRACIAS" en naranja) → firma "EL COMPROMISO DE SERVIMIL" (sin guion). Encapsulado reversible.
+- ✅ **`4dbcb6f`** Footer: eliminado el teléfono `318 162 69 67` — queda SOLO WhatsApp `+57 318 162 6167` + dirección.
+- ✅ **`6a10891`→`261a44b`** **Mapa "Encuéntranos"**: iteró (columna cuadradita en footer → revertida → franja full-width tras footer en todas las páginas → **solo Home, ARRIBA del footer**). Estado final: componente **`MapaUbicacion.astro`** renderizado solo en `index.astro` (última sección del main). Banda navy full-width: eyebrow ENCUÉNTRANOS + dirección + iframe Google Maps (pin Cra 7C # 125-36, zoom 16) 320/380px alto. **Todo el mapa es clickeable** (iframe `pointer-events-none` envuelto en `<a>` → `google.com/maps/dir` con destino la dirección); pastilla "Toca para ver cómo llegar" se agregó y QUITÓ a pedido.
+- ✅ **`60d2a7d`** Footer: la **dirección también es link** a `google.com/maps/dir` (todas las páginas, hover cian).
+- ✅ **`b5ec4c0`→`0098ab6`** **Servicios/Planes REESTRUCTURADOS** (v1 desplegable por tarjeta → REHECHA según boceto): tarjetas CORTAS solo con los **4 ítems que cambian** (bono condolencia, mascota, persona 75 años, entretenimiento) + CTA; **un "+" centrado** (círculo naranja glow) y debajo **UNA caja ancha ESTÁTICA "INCLUIDO EN TODOS LOS PLANES"** con los 8 comunes (const **`PLAN_COMUNES`**, textos exactos) en grid 3/2/1 col. Sin nada colapsable.
+- ✅ **`6957a66`** Servicios/Planes: **nota legal "Aplican carencias..." QUITADA** (la del Home en `Planes.astro` SIGUE — el cliente no pidió quitarla ahí).
+- ✅ **`040f9ac`** Servicios/Viajes (zig-zag): **imagen nueva** (familia con bus moderno, `v1784144890`, q_auto/f_auto), alt actualizado.
+- ✅ **`0469b95`** **Conócenos/Respaldo institucional: + CREMIL y CASUR** (6 entidades). Íconos genéricos Lucide **nuevos en `Icon.astro`**: `landmark` (CREMIL) y `piggy-bank` (CASUR). Mismo verde `#9CB04A`. Grid 2/3/6 col (separadores solo lg).
+
+### Para retomar (2026-07-16)
+- **Validar cuota calculadora** contra `cotizar.py` de Julián (números en tabla "Calculadora de crédito"; ojo: total y aporte ya NO se muestran, solo la cuota).
+- **URL real ficha Google** cuando el cliente la pase (badge en servicios.astro).
+- **Video real Testimonios Home** + botón "Conoce más" → `/testimonios` (único video pendiente).
+- **Dominio `servimil.co`** a Cloudflare Pages.
+- **Imagen real** fondo `CierreEmocional.astro` (Home).
+- **Limpieza:** componentes huérfanos (`Servicios`, `Bienestar`, `NuevosServicios`, `ResumenServicios`, `TrustBar`) + dep `three`.
+- Preguntar si también se quita la nota legal de planes del **Home** (`Planes.astro`).
+
+### Cambios de referencia rápida (2026-07-15)
+- **Calculadora**: total y aporte ocultos con `hidden` en `CreditWidget.astro` (quitar `hidden` para restaurar). Fórmula intacta.
+- **Planes servicios**: ítems comunes viven en `PLAN_COMUNES` (frontmatter servicios.astro); los de cada tarjeta en `PLANES[].items` (solo 4).
+- **Video testimonio servicios**: archivo local `public/videos/testimonio-servimil.mp4` (NO Cloudinary, NO YouTube).
+- **Mapa**: `src/components/MapaUbicacion.astro`, solo en Home.
+- **"Asesoría jurídica"** es el término vigente en todo el sitio (no "asistencia jurídica").
+
+## Estado / avance previo (al 2026-07-08) — video real en Servicios/Testimonios
 
 Todo commiteado y pusheado a `main`. Deploy a producción hecho (build + wrangler por separado, workaround libuv).
 
