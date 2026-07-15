@@ -490,19 +490,21 @@ const PLANES: Plan[] = [
         </h2>
       </div>
 
-      {/* === VIDEO TESTIMONIO (Short YouTube xl4GR_wP-Bg, vertical 9:16) — reversible ===
+      {/* === VIDEO TESTIMONIO (mp4 propio en /videos/, vertical 9:16) — reversible ===
+           Antes: iframe YouTube xl4GR_wP-Bg (mostraba título "IMG 1870" + canal superpuestos;
+           imposible ocultarlos vía parámetros). Ahora video nativo sin branding.
            Ajustar tamaño aquí: max-w-[360px] controla el ancho del video en desktop.
            Sin autoplay (play manual). aspect-[9/16] mantiene proporción responsive. */}
       <div data-reveal class="mx-auto mb-14 w-full max-w-[360px]">
-        <div class="aspect-[9/16] overflow-hidden rounded-2xl shadow-[0_18px_50px_-20px_rgba(1,17,38,.3)]">
-          <iframe
-            src="https://www.youtube.com/embed/xl4GR_wP-Bg?modestbranding=1&rel=0&showinfo=0"
-            title="Testimonio Servimil"
-            class="h-full w-full border-0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            loading="lazy"
-          ></iframe>
+        <div class="aspect-[9/16] overflow-hidden rounded-2xl bg-navy shadow-[0_18px_50px_-20px_rgba(1,17,38,.3)]">
+          <video
+            src="/videos/testimonio-servimil.mp4"
+            poster="/videos/testimonio-servimil.jpg"
+            controls
+            playsinline
+            preload="metadata"
+            class="h-full w-full object-cover"
+          ></video>
         </div>
       </div>
       {/* === FIN VIDEO TESTIMONIO === */}
