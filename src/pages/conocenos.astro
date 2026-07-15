@@ -19,6 +19,10 @@ const FUERZAS = [
   { icon: "anchor", label: "Armada" },
   { icon: "plane", label: "Fuerza Aérea" },
   { icon: "shield", label: "Policía Nacional" },
+  /* === CREMIL + CASUR (2026-07-15, reversible) — íconos genéricos Lucide
+     (landmark / piggy-bank), NO logos oficiales, mismo verde militar. === */
+  { icon: "landmark", label: "CREMIL" },
+  { icon: "piggy-bank", label: "CASUR" },
 ];
 const VALORES = [
   { icon: "heart", accent: "orange", title: "Compromiso", desc: "Estamos contigo en cada paso, en los buenos y en los difíciles momentos." },
@@ -298,13 +302,15 @@ const VALORES = [
       </p>
 
       {/* Fuerzas */}
-      <div class="mx-auto mt-12 grid max-w-[560px] grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4 sm:gap-x-2">
+      {/* 6 entidades: 2 col móvil / 3 tablet / 6 en una fila desktop.
+           Separadores solo en lg (fila única) para no dejar bordes sueltos. */}
+      <div class="mx-auto mt-12 grid max-w-[840px] grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-6 lg:gap-x-2">
         {
           FUERZAS.map((f, i) => (
             <div
               data-reveal
               style={`--reveal-delay:${240 + i * 90}ms`}
-              class="group flex flex-col items-center gap-3 sm:border-l sm:border-white/10 sm:first:border-l-0"
+              class="group flex flex-col items-center gap-3 lg:border-l lg:border-white/10 lg:first:border-l-0"
             >
               <span class="transition-transform duration-300 ease-out group-hover:scale-110 group-hover:text-white" style="color:#9CB04A;">
                 <Icon name={f.icon} size={30} stroke={1.7} />
