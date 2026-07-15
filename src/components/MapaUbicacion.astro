@@ -1,0 +1,23 @@
+---
+/* === FRANJA MAPA UBICACIÓN (2026-07-15) — reversible ===
+   Banda full-width de Google Maps "Encuéntranos" con pin en
+   Cra 7C # 125-36, Bogotá. Antes vivía dentro de Footer.astro (salía en
+   todas las páginas, debajo del footer); ahora es componente propio y se
+   usa SOLO en el Home (index.astro), arriba del footer. */
+---
+<section class="bg-navy" aria-label="Ubicación de Servimil">
+  <div class="mx-auto max-w-[1200px] px-6 pb-4 pt-10 text-center">
+    <div class="text-[16px] font-extrabold uppercase tracking-[2px] text-white sm:text-[18px]">
+      Encuéntranos
+    </div>
+    <div class="mt-2 text-[14px] text-[#92a3b5]">Cra 7C # 125-36, Bogotá, Colombia</div>
+  </div>
+  <iframe
+    src="https://maps.google.com/maps?q=Cra%207C%20%23%20125-36%2C%20Bogot%C3%A1%2C%20Colombia&z=16&output=embed"
+    title="Mapa: Cra 7C # 125-36, Bogotá, Colombia"
+    class="block h-[320px] w-full border-0 sm:h-[380px]"
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    allowfullscreen
+  ></iframe>
+</section>
