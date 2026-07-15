@@ -206,9 +206,10 @@ const DETALLE: Detalle[] = [
 /* === PLANES: VISIBLE vs COMÚN (2026-07-15, reversible) ===
    Antes cada plan llevaba la lista completa de 12 ítems (los 8 finales eran
    idénticos en los 3). Ahora `items` = solo los 4 que CAMBIAN entre planes
-   (siempre visibles) y PLAN_COMUNES = los 8 compartidos, que van dentro del
-   desplegable "+ Ver todo lo incluido" de cada tarjeta. Textos exactos, sin
-   cambios. Para revertir: volver a poner los 12 ítems en cada plan. */
+   (en la tarjeta) y PLAN_COMUNES = los 8 compartidos, que se muestran UNA
+   sola vez en la caja ancha estática "Incluido en todos los planes" debajo
+   del grid (separador "+" en medio). Textos exactos, sin cambios.
+   Para revertir: volver a poner los 12 ítems en cada plan y borrar la caja. */
 const PLAN_COMUNES = [
   "Asesoría jurídica (titular + primer grado de consanguinidad)",
   "Asistencia financiera y declaración de renta",
@@ -346,12 +347,9 @@ const PLANES: Plan[] = [
                 <p class="mt-5 mb-0 text-[13.5px] font-semibold text-cyan">{p.intro}</p>
               )}
 
-              {/* === VISIBLE vs DESPLEGABLE (2026-07-15, reversible) ===
-                   Arriba: solo los ítems que CAMBIAN entre planes. Abajo: botón
-                   "+ Ver todo lo incluido" que expande los beneficios COMUNES
-                   (PLAN_COMUNES, iguales en los 3). z-[1] porque el link
-                   estirado del CTA (after:inset-0) cubre toda la tarjeta. */}
-              <ul class="mt-4 mb-0 flex list-none flex-col gap-2.5 p-0">
+              {/* Solo los ítems que CAMBIAN entre planes; los comunes van en la
+                   caja ancha "Incluido en todos los planes" debajo del grid. */}
+              <ul class="mt-4 mb-7 flex flex-1 list-none flex-col gap-2.5 p-0">
                 {p.items.map((it) => (
                   <li class="flex items-start gap-2.5 text-[13.5px] leading-[1.5] text-white/85">
                     <span class={`mt-0.5 shrink-0 ${p.popular ? "text-orange" : "text-cyan"}`}>
@@ -361,48 +359,6 @@ const PLANES: Plan[] = [
                   </li>
                 ))}
               </ul>
-
-              <button
-                type="button"
-                data-plan-toggle
-                aria-expanded="false"
-                aria-controls={`comunes-${PLAN_IDS[i]}`}
-                class={`relative z-[1] mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border bg-transparent px-4 py-2.5 text-[13px] font-semibold transition-colors active:scale-[.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan ${
-                  p.popular
-                    ? "border-orange/40 text-orange hover:bg-orange/10"
-                    : "border-white/20 text-cyan hover:bg-cyan/10"
-                }`}
-              >
-                <span data-plan-toggle-plus class="plan-toggle-plus text-[16px] font-bold leading-none" aria-hidden="true">+</span>
-                <span data-plan-toggle-label>Ver todo lo incluido</span>
-              </button>
-
-              <div
-                id={`comunes-${PLAN_IDS[i]}`}
-                data-plan-comunes
-                class="plan-comunes relative z-[1]"
-              >
-                <div class="overflow-hidden">
-                  <div class="pt-4 pb-1">
-                    <div class="mb-2.5 text-[11px] font-bold uppercase tracking-[1px] text-white/50">
-                      Incluido en todos los planes
-                    </div>
-                    <ul class="m-0 flex list-none flex-col gap-2.5 p-0">
-                      {PLAN_COMUNES.map((it) => (
-                        <li class="flex items-start gap-2.5 text-[13.5px] leading-[1.5] text-white/85">
-                          <span class={`mt-0.5 shrink-0 ${p.popular ? "text-orange" : "text-cyan"}`}>
-                            <Icon name="check" size={17} stroke={2.6} />
-                          </span>
-                          <span>{it}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              {/* === FIN VISIBLE vs DESPLEGABLE === */}
-
-              <div class="mb-7"></div>
 
               <a
                 href={WHATSAPP}
@@ -420,6 +376,41 @@ const PLANES: Plan[] = [
           ))
         }
       </div>
+
+      {/* === CAJA ANCHA "INCLUIDO EN TODOS LOS PLANES" (2026-07-15, reversible) ===
+           Separador "+" centrado que conecta las 3 tarjetas con UNA caja
+           full-width ESTÁTICA (sin desplegable) con los 8 beneficios comunes
+           (PLAN_COMUNES). Mismo lenguaje visual de las tarjetas. */}
+      <div data-reveal class="mt-2 flex justify-center" aria-hidden="true">
+        <span class="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-orange/50 bg-orange/15 text-[28px] font-bold leading-none text-orange shadow-[0_0_28px_rgba(243,70,22,.25)]">
+          +
+        </span>
+      </div>
+
+      <div
+        data-reveal
+        class="mt-6 rounded-3xl border border-white/12 bg-white/[.045] p-7 shadow-[0_18px_44px_rgba(0,0,0,.28)] backdrop-blur-md sm:p-9"
+      >
+        <div class="mb-6 text-center">
+          <div class="text-[15px] font-extrabold uppercase tracking-[1.6px] text-white sm:text-[17px]">
+            Incluido en todos los planes
+          </div>
+          <p class="m-0 mt-2 text-[14px] text-white/60">
+            Elijas el plan que elijas, tu familia cuenta con todo esto:
+          </p>
+        </div>
+        <ul class="m-0 grid list-none grid-cols-1 gap-x-8 gap-y-3.5 p-0 sm:grid-cols-2 lg:grid-cols-3">
+          {PLAN_COMUNES.map((it) => (
+            <li class="flex items-start gap-2.5 text-[13.5px] leading-[1.5] text-white/85">
+              <span class="mt-0.5 shrink-0 text-orange">
+                <Icon name="check" size={17} stroke={2.6} />
+              </span>
+              <span>{it}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      {/* === FIN CAJA ANCHA INCLUIDO EN TODOS LOS PLANES === */}
 
       <p data-reveal class="mx-auto mt-10 max-w-[640px] text-center text-[12.5px] leading-[1.5] text-white/45">
         Aplican carencias y condiciones según cada servicio. Consulta términos completos.
@@ -658,55 +649,9 @@ const PLANES: Plan[] = [
     })();
   </script>
 
-  {/* === TOGGLE BENEFICIOS COMUNES EN PLANES (2026-07-15, reversible) ===
-       Cada tarjeta expande/colapsa su lista de beneficios comunes de forma
-       independiente. El colapso es CSS (grid-template-rows 0fr→1fr). */}
-  <script is:inline>
-    (() => {
-      document.querySelectorAll("[data-plan-toggle]").forEach((btn) => {
-        const panel = document.getElementById(btn.getAttribute("aria-controls"));
-        const plus = btn.querySelector("[data-plan-toggle-plus]");
-        const label = btn.querySelector("[data-plan-toggle-label]");
-        if (!panel) return;
-        btn.addEventListener("click", (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const open = panel.classList.toggle("is-open");
-          btn.setAttribute("aria-expanded", String(open));
-          if (plus) plus.textContent = open ? "−" : "+";
-          if (label) label.textContent = open ? "Ver menos" : "Ver todo lo incluido";
-        });
-      });
-    })();
-  </script>
 </Page>
 
 <style>
-  /* === DESPLEGABLE BENEFICIOS COMUNES EN PLANES (2026-07-15, reversible) ===
-     Colapsado por defecto (también sin JS). grid-template-rows 0fr→1fr da la
-     transición suave de altura; el hijo directo lleva overflow-hidden. */
-  .plan-comunes {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.35s ease;
-  }
-  .plan-comunes.is-open {
-    grid-template-rows: 1fr;
-  }
-  .plan-toggle-plus {
-    transition: transform 0.25s ease;
-  }
-  [aria-expanded="true"] .plan-toggle-plus {
-    transform: rotate(180deg);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .plan-comunes,
-    .plan-toggle-plus {
-      transition: none;
-    }
-  }
-  /* === FIN DESPLEGABLE PLANES === */
-
   /* ---- Fila logos streaming (bloque Entretenimiento) ---- */
   .strm-logo {
     width: 78px;
