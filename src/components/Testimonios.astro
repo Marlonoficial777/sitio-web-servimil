@@ -35,33 +35,75 @@ const VIDEOS = [
       </h2>
     </div>
 
-    {/* === GRID DE VIDEOS DE TESTIMONIOS (verticales 9:16, 3×2 desktop / 2 tablet / 1 móvil) ===
-        <video> nativo: controls (play manual), SIN autoplay (6 a la vez saturarían),
-        playsinline (móvil reproduce dentro de la card), preload="metadata" (no baja
-        los 6 completos), object-cover (llena la card sin deformar). */}
-    <div class="mx-auto grid max-w-[420px] grid-cols-1 gap-6 sm:max-w-[680px] sm:grid-cols-2 lg:max-w-[980px] lg:grid-cols-3">
-      {
-        VIDEOS.map((v, i) => (
-          <div
-            data-reveal
-            style={`--reveal-delay:${i * 90}ms`}
-            class="aspect-[9/16] overflow-hidden rounded-2xl border-t-2 border-orange/70 bg-navy shadow-[0_18px_44px_-18px_rgba(1,17,38,.28)]"
-          >
-            <video
-              class="h-full w-full object-cover"
-              src={v.src}
-              poster={v.poster}
-              controls
-              playsinline
-              preload="metadata"
-            >
-              Tu navegador no soporta video HTML5.
-            </video>
+    {/* === CARRUSEL DE VIDEOS DE TESTIMONIOS (2026-07-16, reversible) ===
+        Antes: grid 3×2 con los 6 videos a la vez (revertir con git si hace
+        falta: commit 59b42b8 y anteriores). Ahora: UN video vertical 9:16 a
+        la vez (~560px alto desktop), flechas ‹ › a los lados (navegación
+        CIRCULAR), dots clickeables debajo (activo naranja). Al cambiar de
+        slide se PAUSAN todos los videos (solo se reproduce el visible).
+        <video> nativo: controls, SIN autoplay, playsinline, preload=metadata. */}
+    <div class="tst-carousel mx-auto max-w-[520px]" data-tst-carousel data-reveal>
+      <div class="flex items-center justify-center gap-3 sm:gap-5">
+        <button
+          type="button"
+          data-tst-prev
+          aria-label="Testimonio anterior"
+          class="tst-arrow flex h-11 w-11 flex-none cursor-pointer items-center justify-center rounded-full border border-navy/15 bg-white text-navy shadow-[0_8px_22px_-8px_rgba(1,17,38,.35)] transition-[background-color,color,transform] duration-200 hover:bg-orange hover:text-white active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 sm:h-12 sm:w-12"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+
+        {/* Viewport: un slide visible; el track se desliza con translateX */}
+        <div class="w-full max-w-[315px] overflow-hidden rounded-2xl">
+          <div data-tst-track class="tst-track flex">
+            {
+              VIDEOS.map((v, i) => (
+                <div class="w-full flex-none" data-tst-slide>
+                  <div class="aspect-[9/16] max-h-[560px] overflow-hidden rounded-2xl border-t-2 border-orange/70 bg-navy shadow-[0_18px_44px_-18px_rgba(1,17,38,.28)]">
+                    <video
+                      class="h-full w-full object-cover"
+                      src={v.src}
+                      poster={v.poster}
+                      controls
+                      playsinline
+                      preload="metadata"
+                      aria-label={`Testimonio en video ${i + 1} de ${VIDEOS.length}`}
+                    >
+                      Tu navegador no soporta video HTML5.
+                    </video>
+                  </div>
+                </div>
+              ))
+            }
           </div>
-        ))
-      }
+        </div>
+
+        <button
+          type="button"
+          data-tst-next
+          aria-label="Testimonio siguiente"
+          class="tst-arrow flex h-11 w-11 flex-none cursor-pointer items-center justify-center rounded-full border border-navy/15 bg-white text-navy shadow-[0_8px_22px_-8px_rgba(1,17,38,.35)] transition-[background-color,color,transform] duration-200 hover:bg-orange hover:text-white active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 sm:h-12 sm:w-12"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      {/* Dots indicadores (clickeables) */}
+      <div class="mt-6 flex items-center justify-center gap-2.5" role="tablist" aria-label="Elegir testimonio">
+        {
+          VIDEOS.map((_, i) => (
+            <button
+              type="button"
+              data-tst-dot={i}
+              role="tab"
+              aria-label={`Ir al testimonio ${i + 1}`}
+              class="tst-dot h-2.5 w-2.5 cursor-pointer rounded-full border-0 bg-navy/25 p-0 transition-[background-color,transform] duration-200 hover:bg-navy/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2"
+            />
+          ))
+        }
+      </div>
     </div>
-    {/* === FIN GRID DE VIDEOS === */}
+    {/* === FIN CARRUSEL DE VIDEOS === */}
   </div>
 </section>
 
@@ -89,6 +131,57 @@ const VIDEOS = [
     </div>
   </div>
 </section>
+
+{/* === CARRUSEL TESTIMONIOS: estilos + lógica (2026-07-16, reversible) === */}
+<style>
+  .tst-track {
+    transition: transform 0.45s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  .tst-dot.is-active {
+    background: #F34616;
+    transform: scale(1.25);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tst-track,
+    .tst-dot,
+    .tst-arrow {
+      transition: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector("[data-tst-carousel]");
+    if (!root) return;
+    const track = root.querySelector("[data-tst-track]");
+    const slides = root.querySelectorAll("[data-tst-slide]");
+    const dots = root.querySelectorAll("[data-tst-dot]");
+    const n = slides.length;
+    let idx = 0;
+
+    function go(next) {
+      // circular: del último salta al primero y viceversa
+      idx = (next + n) % n;
+      track.style.transform = `translateX(-${idx * 100}%)`;
+      dots.forEach((d, i) => {
+        d.classList.toggle("is-active", i === idx);
+        d.setAttribute("aria-selected", String(i === idx));
+      });
+      // pausa todos los videos que no están visibles
+      slides.forEach((s, i) => {
+        const v = s.querySelector("video");
+        if (v && i !== idx && !v.paused) v.pause();
+      });
+    }
+
+    root.querySelector("[data-tst-prev]")?.addEventListener("click", () => go(idx - 1));
+    root.querySelector("[data-tst-next]")?.addEventListener("click", () => go(idx + 1));
+    dots.forEach((d, i) => d.addEventListener("click", () => go(i)));
+    go(0);
+  })();
+</script>
+{/* === FIN CARRUSEL === */}
 
 {/* === FONDO BEIGE TESTIMONIOS (reversible) === */}
 <style>
