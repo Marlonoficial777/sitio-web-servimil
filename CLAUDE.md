@@ -99,10 +99,10 @@ Envuelve TODAS las páginas: `Base` + `Header` + `<main><slot/></main>` + `Foote
 - **Patrón eyebrow** (repetido a pedido del usuario): eyebrows de sección en **blanco** `text-[16px] sm:text-[18px]` (no cian, no 13px).
 - **Patrón reveal lateral**: `data-reveal="left"` / `"right"` (translateX ±48px) definido en `global.css` (junto al `data-reveal` base). Usado en conocenos ("Quiénes somos") y servicios (zig-zag).
 
-### Testimonios (`testimonios.astro` + `components/Testimonios.astro`) — VIDEOS REALES 2026-07-06 ⚠️
-**Ya NO es carrusel de citas en texto** (reescrito 2026-06-23) **ni grid de placeholders** (videos reales 2026-07-06). Ahora:
+### Testimonios (`testimonios.astro` + `components/Testimonios.astro`) — CARRUSEL 2026-07-16 ⚠️
+**Ya NO es carrusel de citas en texto** (2026-06-23) **ni grid de placeholders** (2026-07-06) **ni grid de 6 videos** (2026-07-16). Ahora:
 1. **Encabezado** — eyebrow "TESTIMONIOS" **naranja** `text-[16px] sm:text-[18px]` (agrandado 2026-06-24, antes 13px gris) + título grande "La voz de quienes ya nos eligieron" **navy** (`40/52/60px`).
-2. **Grid 6 VIDEOS REALES verticales 9:16** (2026-07-06, commit `4761b58`) — array `VIDEOS` en frontmatter (encapsulado `/* === VIDEOS REALES DE TESTIMONIOS === */`): 6 rutas Cloudinary (`v1783372764`–`808`, incl. 2 `.mov` — `f_auto` los transcodifica al formato compatible por navegador; verificado 200). `.map()` genera `{src, poster}`; **poster = fotograma 0 del propio video** (`so_0,f_jpg,q_auto`, extensión `.jpg`). Cards `aspect-[9/16]` (verticales, celular), `rounded-2xl`, **fondo navy** + borde superior 2px naranja + sombra, reveal stagger. Grid 3 col desktop / 2 tablet / 1 móvil con **`max-w` por breakpoint (980/680/420px)** para que las 6 verticales no queden gigantes (~310px c/u desktop). `<video>` nativo: `controls` (play manual), **SIN autoplay**, `playsinline`, `preload="metadata"`, `object-cover`. Comentarios TODO iframe YouTube **eliminados** (ya no van; es Cloudinary).
+2. **CARRUSEL de 6 VIDEOS REALES verticales 9:16** (2026-07-16, commit `95ce6f2`; antes grid 3×2 del `4761b58` — revertir desde `59b42b8`). Array `VIDEOS` en frontmatter (encapsulado `/* === VIDEOS REALES DE TESTIMONIOS === */`): 6 rutas Cloudinary (`v1783372764`–`808`, incl. 2 `.mov` — `f_auto` transcodifica; poster = fotograma 0, `so_0,f_jpg,q_auto`). **UN video a la vez** centrado (viewport `max-w-[315px]`, card `aspect-[9/16] max-h-[560px]`, fondo navy + borde sup. naranja): track flex con `translateX` (transición .45s, off con reduced-motion), **flechas ‹ ›** circulares a los lados (blancas, hover naranja, navegación **CIRCULAR**), **6 dots clickeables** debajo (`.tst-dot`, activo naranja `.is-active` escala 1.25). **Al cambiar de slide se pausan los videos no visibles** (script `is:inline`, encapsulado `{/* === CARRUSEL TESTIMONIOS === */}`). `<video>` nativo: `controls`, **SIN autoplay**, `playsinline`, `preload="metadata"`, `object-cover`.
 3. **CTA cierre** — banda navy `#011126` (conecta sin corte con footer navy): "¿Listo para que tu familia también esté respaldada?" + subtítulo cian + botón naranja "Contáctanos por WhatsApp" (`wa.me/573181626167`, `btn-shine`).
 
 - **FONDO BEIGE (2026-06-24)** — sección encabezado+grid: fondo **beige `#EAE5DD`** con degradado vertical MUY sutil (`linear-gradient(170deg,#F0ECE4,#EAE5DD,#E5DFD5)`) + 2 blobs naranja `blur(130px)` opacidad 0.06/0.07 en esquinas (atmósfera casi imperceptible, peso cero, sin animación). Cards blancas resaltan sobre el beige. Empalme beige→CTA navy→footer navy = corte definido limpio. Todo en `<style>` scoped, encapsulado `/* === FONDO BEIGE TESTIMONIOS (reversible) === */ ... /* === FIN === */` (clases `.tst-hero` `.tst-mesh` `.tst-blob`). Antes se probó fondo navy+mesh cian/naranja → cambiado a beige a pedido.
@@ -215,7 +215,22 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 
 - [x] ~~Fotos reales servicios (zig-zag)~~ — **HECHO** (`DETALLE.img`), 8/8 + Crédito fácil.
 
-## Estado / último avance (al 2026-07-15) — tanda grande de ajustes del cliente
+## Estado / último avance (al 2026-07-16) — carrusel de testimonios
+
+Todo commiteado y pusheado a `main`, deploy a producción hecho.
+
+- ✅ **`95ce6f2`** **Testimonios (página): grid 3×2 → CARRUSEL** de videos. Un vertical 9:16 a la vez (~315px ancho / máx 560px alto), flechas ‹ › circulares (blancas → naranja al hover), 6 dots clickeables (activo naranja), track `translateX` con transición suave (respeta reduced-motion), **pausa automática de los videos no visibles al cambiar**. Mismos 6 videos Cloudinary. Encabezado, fondo beige y CTA navy intactos. Detalle en la sección "Testimonios".
+
+### Para retomar (2026-07-17)
+- **Validar cuota calculadora** contra `cotizar.py` de Julián (total y aporte ya NO se muestran, solo la cuota).
+- **URL real ficha Google** cuando el cliente la pase (badge en servicios.astro).
+- **Video real Testimonios Home** + botón "Conoce más" → `/testimonios` (único video pendiente).
+- **Dominio `servimil.co`** a Cloudflare Pages.
+- **Imagen real** fondo `CierreEmocional.astro` (Home).
+- **Limpieza:** componentes huérfanos (`Servicios`, `Bienestar`, `NuevosServicios`, `ResumenServicios`, `TrustBar`) + dep `three`.
+- Preguntar si también se quita la nota legal de planes del **Home** (`Planes.astro`).
+
+## Estado / avance previo (al 2026-07-15) — tanda grande de ajustes del cliente
 
 Todo commiteado y pusheado a `main`, deploy a producción tras cada cambio (build + wrangler por separado, workaround libuv). Commits del día, en orden:
 
