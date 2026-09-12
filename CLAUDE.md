@@ -59,6 +59,9 @@ Clases: `bg-navy`, `text-orange`, `border-cyan`, `bg-ice`, etc.
 - `/servicios` → **servicios.astro** (sección Ecosistema = esfera 3D + acordeón)
 - `/testimonios` → **testimonios.astro** (grid de videos + CTA, ver abajo)
 
+### `layouts/Base.astro` — `<head>` y SEO
+Título, descripción, Poppins, favicon y el observer de `[data-reveal]`. **Desde 2026-09-12 emite también `<link rel="canonical">`, `og:url`, `og:image` (1200×630 generada por Cloudinary desde el fotograma 0 del video del hero), `og:site_name`, `og:locale` y `twitter:card`** — antes el link compartido por WhatsApp salía **sin imagen de vista previa**. Prop opcional **`image`** para sobrescribir la portada por página.
+
 ### Layout compartido — `layouts/Page.astro`
 Envuelve TODAS las páginas: `Base` + `Header` + `<main><slot/></main>` + `Footer` + `CreditWidget`. Prop `solidHeader` (bool) → header sólido desde arriba (páginas internas sin hero oscuro). Home NO lo pasa (header transparente sobre hero).
 
@@ -136,11 +139,13 @@ public/  favicon.svg, _headers
 - Overlay `#011126` a ~58% encima del video para legibilidad del texto blanco.
 - **Poster** fallback = fotograma 0 del propio video (Cloudinary `so_0,f_jpg`).
 - Respeta **`prefers-reduced-motion`**: si está activo, NO reproduce el video, muestra solo el poster (la fuente se carga por JS solo si no hay reduced-motion).
+- ⚠️ **VERSIÓN MÓVIL (2026-09-12)**: el `<source>` lleva **`data-src-mobile`** con la misma URL + **`w_720,q_auto`**. El script elige según `(max-width: 767px)`: móvil → 390 KB, desktop → los 5,3 MB originales. En móvil **sigue habiendo video** (no es imagen fija); la pérdida de resolución no se nota bajo el overlay al 58%. Mismo patrón en `conocenos.astro` (`HERO_VIDEO_MOBILE`, 517 KB vs 8,7 MB). **El hero de /servicios (`Ecosistema.astro`) NO carga video en móvil** (solo poster) — eso es de antes y se deja así.
 - z-index: video `-z-20`, overlay `-z-10`, contenido `z-10`.
 
 ## Calculadora de crédito (`CreditWidget.astro`)
 
 - Botón flotante naranja **"Analiza tu crédito"** (abajo-derecha, `z-50`) → abre modal accesible en la misma página (slider monto + select cuotas → cuota mensual estimada + CTA WhatsApp).
+- ⚠️ **MÓVIL (2026-09-12):** el botón flotante pasa a **círculo 56×56** (`max-sm:h-14 max-sm:w-14 max-sm:p-0 …`) y el texto va en `<span class="max-sm:sr-only">`. Antes ocupaba el 55-65% del ancho y **tapaba el botón "Afíliate ahora"** de las tarjetas de plan. El `<select>` de cuotas lleva **`max-sm:text-[16px]`** (Safari iOS hace **zoom automático** con fuente < 16px) y el panel usa **`max-h-[92svh]`** (no `vh`, que no descuenta la barra de direcciones). Nada de esto toca la fórmula ni el desktop.
 - ⚠️ **OCULTOS DE LA VISTA (2026-07-15, a pedido del cliente):** la línea "Total estimado a pagar" y la nota "Incluye aporte administrativo de $45.600" llevan atributo `hidden` (comentario reversible en `CreditWidget.astro`). **SOLO visual**: el aporte se SIGUE sumando a la cuota y el JS sigue calculando el total. Cuota verificada idéntica tras el cambio.
 - **FÓRMULA REAL (HECHA) — UNA SOLA LÍNEA** ⚠️ **Servimil presta ÚNICAMENTE hasta $1.000.000** (corregido 2026-07-03, commit `01a2b27`; la "Línea 2 / aliados" fue **eliminada**):
   - **Slider monto:** `min $200.000 → max $1.000.000` (antes $50M, mal). `defaultMonto $500.000`. Etiqueta tope "$1.000.000".
@@ -177,7 +182,9 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 - URL: `https://res.cloudinary.com/dzh85ye7y/image/upload/e_trim/q_auto/f_auto/v1781730267/Logo-Horizontal-Original-2_ys22y9.png`
 - Blanco vía `filter:brightness(0) invert(1)` cuando `dark` (header + footer).
 - Tamaño actual (ajustado a ojo con el usuario): `h-8 md:h-9`, `w-auto` (sin deformar). **El `mt-7` se quitó** — el wrapper del logo ahora es `flex items-center` y se alinea al mismo eje que menú y WhatsApp.
-- Usado con `dark` en `Header.astro` y `Footer.astro`. Sigue siendo link a `#top`, con micro-hover.
+- Usado con `dark` en `Header.astro` y `Footer.astro`, con micro-hover.
+- ⚠️ **`href` CONDICIONAL (2026-09-12, commit `5ca8a3a`)**: `#top` en Home (conserva el scroll suave al hero) y **`/` en las páginas internas**. Antes era `#top` fijo y como ese ancla solo existe en `Hero.astro`, en /conocenos, /servicios y /testimonios **el click al logo no hacía nada**.
+- Área táctil ≥44px en móvil vía `max-sm:-my-2 max-sm:py-2` (el margen negativo cancela el padding → no mueve nada).
 
 ## Lugares clave para editar
 
@@ -203,7 +210,7 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 - [ ] **Confirmar URL de la ficha de Google** — hoy el botón apunta a `https://www.google.com/maps/place/SERVIMIL+COLOMBIA` (búsqueda por nombre, no la ficha canónica). Cuando el cliente pase el link exacto de su Google Business, cambiarlo en el badge de `servicios.astro`.
 
 **Verificaciones / infra:**
-- [ ] **Verificar en vivo** que el WhatsApp nuevo (`573181626167`) se sirve en **producción** (posible caché CDN de Cloudflare tras el cambio).
+- [x] ~~**Verificar en vivo** que el WhatsApp nuevo (`573181626167`) se sirve en **producción**~~ — **HECHO 2026-09-12**: confirmado en `servimil.pages.dev`, un solo número en todo el sitio.
 - [x] ~~**Fórmula real de la calculadora**~~ — **HECHO** (commit `7da2aee`): 1.99% m.v. + aporte $45.600, dos líneas, plazos 12–36 paso 2. Verificada en dev 2026-07-03 (ver tabla de números arriba). Queda solo la validación con Julián (arriba).
 - [ ] **Conectar dominio `servimil.co`** a Cloudflare Pages.
 - [ ] **Imagen real** fondo `CierreEmocional.astro` (Home) → Cloudinary.
@@ -215,7 +222,73 @@ Aplicado vía skill **`ui-ux-pro-max`** (ver abajo). Todo respeta `prefers-reduc
 
 - [x] ~~Fotos reales servicios (zig-zag)~~ — **HECHO** (`DETALLE.img`), 8/8 + Crédito fácil.
 
-## Estado / último avance (al 2026-07-16) — carrusel de testimonios
+## Estado / último avance (al 2026-09-12) — QA completa + MÓVIL ⚠️
+
+Todo commiteado, pusheado a `main` y **desplegado a producción** (verificado en vivo).
+
+### Commits del día
+
+- ✅ **`5ca8a3a`** **QA: 5 hallazgos de auditoría corregidos.** (1) **Logo** `href="#top"` no llevaba a ningún lado en páginas internas (`#top` solo existe en `Hero.astro`) → ahora `#top` en Home y `/` en el resto. (2) **Scroll horizontal en /conocenos**: la sección "Quiénes somos" era la única sin `overflow-hidden` y su hijo `data-reveal="right"` parte en `translateX(48px)`. (3) **`<h1>` faltante** en /servicios y /testimonios (h2→h1 en `Ecosistema.astro` y `Testimonios.astro`; sin cambio visual, el preflight de Tailwind hereda tamaño/peso). (4) **`og:image` + canonical** en `Base.astro` (al compartir por WhatsApp salía sin vista previa). (5) `aria-hidden` en la imagen decorativa de conócenos. Además `scroll-margin-top` de las tarjetas de plan 110→150px.
+- ✅ **`c202878`** **MÓVIL: optimización completa sin tocar el desktop** (ver sección "Móvil" abajo).
+- ✅ **`e8d28e1`** **Heroes: video liviano en móvil**, calidad original en desktop.
+- ✅ **`06db1da`** **`preload="none"`** en el video de testimonio de /servicios.
+
+### Móvil — cómo se hizo (patrón a seguir de aquí en adelante)
+
+**Regla:** todo con variantes **`max-sm:`** (< 640px) o `max-[360px]:`, que solo existen por debajo del breakpoint → el desktop no se toca. Si hay que cambiar una clase base, solo cuando ya existe un `sm:` que restaura el valor de desktop (ej. `gap-14 sm:gap-24`).
+
+Cambios aplicados:
+- **Botón flotante** (`CreditWidget.astro`): en móvil pasa a **círculo 56×56** (`max-sm:h-14 max-sm:w-14 max-sm:p-0 …`). Ocupaba **55-65% del ancho** y tapaba el botón "Afíliate ahora" de las tarjetas de plan. El texto queda en un `<span class="max-sm:sr-only">` → el nombre accesible no cambia.
+- **Áreas táctiles ≥44px** (mínimo Apple HIG): dots del carrusel (eran 10×10), enlaces de la cinta marquee (27px de alto), flecha del hero de servicios, teléfono/dirección/redes del footer, logo, botón del menú del hero, ítems de `ValorContador`. ⚠️ En los dots se usa `max-sm:box-content max-sm:bg-clip-content max-sm:p-[17px]` para agrandar el área sin agrandar el punto; **por eso `.tst-dot.is-active` usa `background-color` y NO el shorthand `background`** (el shorthand resetea `background-clip` y pintaría los 44px enteros de naranja).
+- **`<select>` de cuotas a 16px en móvil** (`max-sm:text-[16px]`): Safari iOS hace **zoom automático** al enfocar cualquier control con fuente < 16px.
+- **Panel de la calculadora** `max-h-[92vh]` → **`92svh`** (la barra de direcciones de Safari cortaba el contenido; en desktop `svh == vh`).
+- **Texto < 14px** subido en móvil (19 clases). Los micro-rótulos en mayúscula se dejan en 13px a propósito, para no deformar las pastillas.
+- **Carrusel de testimonios**: en móvil las flechas se **superponen** sobre los bordes del video (`max-sm:absolute`) en vez de ocupar fila propia → el video pasa de 215px a **315px** (y de 160 a 272px en pantallas de 320px).
+- **Header angosto**: `max-sm:gap-3`, pastilla de WhatsApp como círculo (`max-sm:px-3`) y logo a 28px por debajo de 360px (`max-[360px]:[&_img]:h-7`). Antes, a 320px **la hamburguesa se salía ~30px del viewport** (no se detectaba como overflow por ser `fixed`).
+- **Zig-zag servicios** `gap-20` → `gap-14 sm:gap-24` (~190px menos de scroll).
+
+### ⚠️ PESO EN DATOS MÓVILES — dos trampas encontradas
+
+1. **Videos de hero con `autoplay`**: se descargaban COMPLETOS en celular (Home 5,3 MB, Conócenos 8,7 MB). Solución: **segunda URL de Cloudinary con `w_720,q_auto`** + el script del hero elige según `(max-width: 767px)`. Atributo **`data-src-mobile`** en el `<source>` de `Hero.astro` y `conocenos.astro`. El hero **sigue siendo video** en móvil (no se cambió por imagen); no se nota porque va detrás de un overlay navy al 58%. **Desktop sirve la URL original sin `q_auto/f_auto`, que es la calidad que pidió el cliente.**
+2. ⚠️ **Cloudflare Pages NO soporta peticiones Range** en archivos estáticos: a un `Range:` responde **`200` con el archivo entero** (no `206`) y sin `Accept-Ranges`. Por eso `preload="metadata"` en **`public/videos/testimonio-servimil.mp4`** bajaba los **5,5 MB completos en cada visita** a /servicios. Solución: **`preload="none"`** (el `poster` ya estaba, así que se ve igual y descarga solo al tocar play). **Los videos de Cloudinary NO tienen este problema** (responden `206` correctamente). **Regla: cualquier video servido desde `public/` va con `preload="none"`; si necesita `metadata`, súbelo a Cloudinary.**
+   - ⚠️ **Al medir peso, hazlo contra PRODUCCIÓN**: en local `astro preview` sí responde a Range, así que este bug es invisible en dev (0,27 MB en local vs 5,71 MB en prod).
+
+### Resultados medidos (bytes reales, CDP, perfil iPhone 14 Pro, contra producción)
+
+| Página | Datos móviles antes | después | Desktop |
+|---|---|---|---|
+| `/` | 5,51 MB | **0,69 MB** | 6,27 MB (original, sin cambios) |
+| `/conocenos` | 11,18 MB | **0,84 MB** | 8,88 MB (original, sin cambios) |
+| `/servicios` | 5,71 MB | **0,18 MB** | sin cambios |
+| `/testimonios` | 0,30 MB | 0,30 MB | sin cambios |
+
+| Medida (iPhone SE / 14 Pro / Pixel 7 / 320px) | Antes | Ahora |
+|---|---|---|
+| Áreas táctiles < 44px | 9 / 7 / 42 / 13 por página | **0 en las 16 combinaciones** |
+| Texto < 14px | 7 / 9 / 26 / 1 | 3 / 1 / 3 / 0 (micro-rótulos intencionales) |
+| Botón flotante | 55-65% del ancho | **14-18%** |
+| Scroll horizontal | 4 casos en /conocenos | **0 en 16 combinaciones** |
+
+### 🔬 Cómo probar que NO se dañó el desktop (método, reutilizable)
+
+Comparar capturas **NO sirve**: el contador animado hace que la misma página difiera consigo misma (home-1280 daba 2436 px de diferencia contra sí misma). Lo que sí sirve:
+
+**Diff de geometría y estilos calculados.** Se recorren todos los elementos (`body *`) y se serializa `tagName | x | y | width | height | fontSize | color | backgroundColor | display | padding | margin | backgroundClip`, a 1280 y 1440px, con `reducedMotion: 'reduce'`. Se compara contra un build del código anterior (`git stash` → build → capturar → `git stash pop` → build). Resultado exigido: **0 cambios**.
+
+- Resultado de esta tanda: **0 cambios** en los 341 / 302 / 762 / 184 elementos de cada página. Único nodo nuevo: el `<span>` del botón flotante, misma posición y estilos.
+- Ojo: el campo `margin` de los elementos con `mx-auto` **fluctúa entre corridas idénticas** (Chrome a veces reporta el valor usado de `margin:auto` y a veces `0px`). No es una regresión — verificar siempre con una segunda corrida del MISMO código antes de perseguir una diferencia.
+
+### Para retomar (2026-09-13)
+- **Validar cuota calculadora** contra `cotizar.py` de Julián (único pendiente real de negocio).
+- **URL real ficha Google** cuando el cliente la pase (badge en `servicios.astro`).
+- **Video real Testimonios Home** + botón "Conoce más" → `/testimonios`.
+- **Dominio `servimil.co`** a Cloudflare Pages.
+- **Imagen real** fondo `CierreEmocional.astro` (Home).
+- **Limpieza:** componentes huérfanos (`Servicios`, `Bienestar`, `NuevosServicios`, `ResumenServicios`, `TrustBar`) + dep `three`.
+- Preguntar si también se quita la nota legal de planes del **Home** (`Planes.astro`).
+- Opcionales evaluados y **descartados por poca ganancia**: `srcset` en 6 imágenes (ya tienen `q_auto/f_auto`, el ahorro real son decenas de KB) y reducir el alto de /servicios en móvil (12.700px — exige reestructurar y cambia lo que el cliente ya aprobó).
+
+## Estado / avance previo (al 2026-07-16) — carrusel de testimonios
 
 Todo commiteado y pusheado a `main`, deploy a producción hecho.
 
@@ -353,6 +426,9 @@ Todo commiteado y pusheado a `main` (`github.com/Marlonoficial777/sitio-web-serv
 
 ## Notas
 
+- ⚠️ **MÓVIL — regla fija (desde 2026-09-12):** todo ajuste para celular se hace con **`max-sm:`** (< 640px) o `max-[360px]:`, nunca tocando la clase base. Solo se cambia una clase base cuando ya existe un `sm:` que restaura el valor de desktop (ej. `gap-14 sm:gap-24`). Así el desktop queda intacto por construcción.
+- ⚠️ **Videos en `public/`:** siempre **`preload="none"`** — Cloudflare Pages no soporta Range y con `metadata` el navegador se baja el archivo entero. Si hace falta `metadata`, súbelo a Cloudinary.
+- ⚠️ **Medir peso siempre contra PRODUCCIÓN**, no contra `astro preview` (en local sí hay Range y el problema anterior es invisible).
 - Animaciones respetan `prefers-reduced-motion`.
 - Íconos: agregar en `Icon.astro`, referenciar por `name` desde `site.ts`.
 - Repo git local (sin remoto aún). Commit en cada cambio para respaldo.
