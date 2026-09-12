@@ -4,11 +4,20 @@ import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
+  /** Imagen de vista previa al compartir (WhatsApp, Facebook…). 1200×630. */
+  image?: string;
 }
+// Fotograma del video del hero recortado a 1200×630 por Cloudinary.
+const OG_IMAGE_DEFAULT =
+  "https://res.cloudinary.com/dzh85ye7y/video/upload/so_0,c_fill,g_auto,w_1200,h_630,q_auto,f_jpg/v1781727489/hf_20260617_200631_87bd6292-1278-4edf-b339-65579f26455e_zd1gav.jpg";
 const {
   title = "Servimil — Beneficios para la fuerza pública y sus familias",
   description = "Servimil respalda a los integrantes del Ministerio de Defensa y la fuerza pública: salud, asesoría jurídica, seguros, crédito y más. Disponibilidad 24/7/365.",
+  image = OG_IMAGE_DEFAULT,
 } = Astro.props;
+
+// URL canónica de esta página (Astro.site = https://servimil.pages.dev).
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!doctype html>
@@ -18,6 +27,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={canonical} />
     <title>{title}</title>
 
     <!-- Tipografía de marca: Poppins -->
@@ -28,10 +38,23 @@ const {
       rel="stylesheet"
     />
 
-    <!-- Open Graph -->
+    <!-- Open Graph (vista previa al compartir por WhatsApp / redes) -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Servimil" />
+    <meta property="og:locale" content="es_CO" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Servimil — beneficios para la fuerza pública y sus familias" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
   </head>
   <body>
     <slot />

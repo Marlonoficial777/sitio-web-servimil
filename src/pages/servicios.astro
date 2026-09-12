@@ -308,6 +308,9 @@ const PLANES: Plan[] = [
         </p>
       </div>
 
+      {/* scroll-margin-top de las tarjetas = 150px: 110 del header + los 38px
+          que el reveal (translateY) sube la tarjeta al activarse. Con 110 la
+          tarjeta quedaba bajo el header al llegar por deep-link desde el Home. */}
       <div class="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-3">
         {
           PLANES.map((p, i) => (
@@ -315,7 +318,7 @@ const PLANES: Plan[] = [
               id={PLAN_IDS[i]}
               data-plan-card
               data-reveal
-              style={`--reveal-delay:${i * 110}ms;scroll-margin-top:110px`}
+              style={`--reveal-delay:${i * 110}ms;scroll-margin-top:150px`}
               class={`group relative flex cursor-pointer flex-col rounded-3xl border p-7 backdrop-blur-md transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-2 active:scale-[.99] sm:p-8 ${
                 p.popular
                   ? "border-orange/60 bg-white/[.07] shadow-[0_30px_64px_rgba(0,0,0,.45)] lg:-mt-4 lg:mb-0 ring-1 ring-orange/30 hover:shadow-[0_40px_80px_rgba(243,70,22,.35)]"

@@ -84,7 +84,10 @@ const VALORES = [
   </section>
 
   {/* ---------- 2. QUIÉNES SOMOS ---------- */}
-  <section class="bg-ice">
+  {/* overflow-hidden: el reveal lateral (data-reveal="right") parte en
+     translateX(48px) y generaba scroll horizontal hasta entrar en viewport.
+     Mismo patrón que el resto de secciones de esta página. */}
+  <section class="overflow-hidden bg-ice">
     <div class="mx-auto grid max-w-[1100px] items-center gap-10 px-6 py-[88px] lg:grid-cols-2 lg:gap-16">
       <div data-reveal="left">
         <div class="mb-3 text-[16px] font-bold uppercase tracking-[1.2px] text-cyan sm:text-[18px]">
@@ -176,6 +179,7 @@ const VALORES = [
     <img
       src="https://res.cloudinary.com/dzh85ye7y/image/upload/q_auto/f_auto/v1784133364/hf_20260622_142422_62b1fd70-1673-4e0e-9f51-ae3658448f68_1_wnlvy3.png"
       alt=""
+      aria-hidden="true"
       class="absolute inset-0 -z-20 h-full w-full object-cover"
       style="object-position:68% center;"
       loading="lazy"

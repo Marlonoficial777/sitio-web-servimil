@@ -7,9 +7,13 @@ const { dark = false } = Astro.props;
 // e_trim recorta el gran padding transparente del PNG (1200x1200 → 968x170).
 const LOGO =
   "https://res.cloudinary.com/dzh85ye7y/image/upload/e_trim/q_auto/f_auto/v1781730267/Logo-Horizontal-Original-2_ys22y9.png";
+// En Home #top hace scroll suave al hero; en páginas internas ese ancla no
+// existe (solo está en Hero.astro), así que el logo debe navegar al inicio.
+const path = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const href = path === "/" ? "#top" : "/";
 ---
 <a
-  href="#top"
+  href={href}
   aria-label="Servimil — inicio"
   class="inline-flex items-center no-underline transition-transform duration-300 hover:-translate-y-0.5 hover:scale-[1.03]"
 >
