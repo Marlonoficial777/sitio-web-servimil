@@ -529,12 +529,19 @@ const PLANES: Plan[] = [
            Sin autoplay (play manual). aspect-[9/16] mantiene proporción responsive. */}
       <div data-reveal class="mx-auto mb-14 w-full max-w-[360px]">
         <div class="aspect-[9/16] overflow-hidden rounded-2xl bg-navy shadow-[0_18px_50px_-20px_rgba(1,17,38,.3)]">
+          {/* preload="none" (NO "metadata"): Cloudflare Pages NO soporta
+              peticiones Range — devuelve 200 con el archivo entero en vez de
+              206 — así que con "metadata" el navegador se bajaba los 5,5 MB
+              completos en cada visita. Con "none" solo se ve el poster y el
+              video se descarga cuando el usuario toca play.
+              (Los 6 videos de /testimonios no tienen este problema: están en
+              Cloudinary, que sí responde 206.) */}
           <video
             src="/videos/testimonio-servimil.mp4"
             poster="/videos/testimonio-servimil.jpg"
             controls
             playsinline
-            preload="metadata"
+            preload="none"
             class="h-full w-full object-cover"
           ></video>
         </div>
