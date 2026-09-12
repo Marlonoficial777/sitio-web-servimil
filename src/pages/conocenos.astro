@@ -6,6 +6,10 @@ import { WHATSAPP_URL } from "../lib/site";
 // Hero — video Cloudinary. Poster = fotograma 0 (so_0,f_jpg).
 const HERO_VIDEO =
   "https://res.cloudinary.com/dzh85ye7y/video/upload/v1781989446/hf_20260620_205800_cbf925a2-0bb5-4b1a-aba4-59862401d3b8_nhuthx.mp4";
+/* Versión liviana SOLO para móvil (<768px): 517 KB en vez de 8,7 MB.
+   Desktop sigue con la calidad original. */
+const HERO_VIDEO_MOBILE =
+  "https://res.cloudinary.com/dzh85ye7y/video/upload/w_720,q_auto/v1781989446/hf_20260620_205800_cbf925a2-0bb5-4b1a-aba4-59862401d3b8_nhuthx.mp4";
 const HERO_POSTER =
   "https://res.cloudinary.com/dzh85ye7y/video/upload/so_0,q_auto,f_jpg/v1781989446/hf_20260620_205800_cbf925a2-0bb5-4b1a-aba4-59862401d3b8_nhuthx.jpg";
 
@@ -51,7 +55,7 @@ const VALORES = [
       class="absolute inset-0 -z-20 h-full w-full object-cover"
       style="background:#011126;"
     >
-      <source data-src={HERO_VIDEO} type="video/mp4" />
+      <source data-src={HERO_VIDEO} data-src-mobile={HERO_VIDEO_MOBILE} type="video/mp4" />
     </video>
 
     {/* Overlay degradado navy (más oscuro abajo) + viñeteado */}
@@ -416,9 +420,12 @@ const VALORES = [
     if (!v) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
+    // En móvil (<768px) se usa la versión liviana; en desktop, la original.
+    const small = window.matchMedia("(max-width: 767px)").matches;
     const s = v.querySelector("source");
-    if (s && s.dataset.src) {
-      s.src = s.dataset.src;
+    const url = small && s && s.dataset.srcMobile ? s.dataset.srcMobile : s && s.dataset.src;
+    if (s && url) {
+      s.src = url;
       v.load();
       v.play().catch(() => {});
     }

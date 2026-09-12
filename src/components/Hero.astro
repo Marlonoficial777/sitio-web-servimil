@@ -4,6 +4,12 @@ import { WHATSAPP_URL } from "../lib/site";
 
 const VIDEO_URL =
   "https://res.cloudinary.com/dzh85ye7y/video/upload/v1781727489/hf_20260617_200631_87bd6292-1278-4edf-b339-65579f26455e_zd1gav.mp4";
+/* Versión liviana SOLO para móvil (<768px): Cloudinary reescala a 720px de
+   ancho con calidad automática → 390 KB en vez de 5,3 MB. El video se ve
+   detrás de un overlay navy al 58%, así que la diferencia no se nota.
+   En desktop se sigue sirviendo VIDEO_URL con la calidad original. */
+const VIDEO_URL_MOBILE =
+  "https://res.cloudinary.com/dzh85ye7y/video/upload/w_720,q_auto/v1781727489/hf_20260617_200631_87bd6292-1278-4edf-b339-65579f26455e_zd1gav.mp4";
 // Poster = fotograma 0 del propio video (Cloudinary genera el JPG)
 const POSTER_URL =
   "https://res.cloudinary.com/dzh85ye7y/video/upload/so_0,q_auto,f_jpg/v1781727489/hf_20260617_200631_87bd6292-1278-4edf-b339-65579f26455e_zd1gav.jpg";
@@ -26,7 +32,7 @@ const POSTER_URL =
     class="absolute inset-0 -z-20 h-full w-full object-cover"
     style="background:#011126;"
   >
-    <source data-src={VIDEO_URL} type="video/mp4" />
+    <source data-src={VIDEO_URL} data-src-mobile={VIDEO_URL_MOBILE} type="video/mp4" />
   </video>
 
   <!-- ============ OVERLAY OSCURO ============ -->
@@ -71,9 +77,12 @@ const POSTER_URL =
     if (!v) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return; // solo poster, no reproducir
+    // En móvil (<768px) se usa la versión liviana; en desktop, la original.
+    const small = window.matchMedia("(max-width: 767px)").matches;
     const s = v.querySelector("source");
-    if (s && s.dataset.src) {
-      s.src = s.dataset.src;
+    const url = small && s && s.dataset.srcMobile ? s.dataset.srcMobile : s && s.dataset.src;
+    if (s && url) {
+      s.src = url;
       v.load();
       v.play().catch(() => {});
     }
