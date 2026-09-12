@@ -21,7 +21,7 @@ const MINI = [
   <div class="mx-auto grid max-w-[1200px] items-center gap-10 px-6 py-[88px] lg:grid-cols-2 lg:gap-16">
     {/* ---------- IZQUIERDA: título + lista de checks ---------- */}
     <div>
-      <div data-reveal class="mb-3 text-[13px] font-bold uppercase tracking-[1.2px] text-navy/60">
+      <div data-reveal class="mb-3 text-[13px] max-sm:text-[14px] font-bold uppercase tracking-[1.2px] text-navy/60">
         Todo en un solo lugar
       </div>
       <h2 data-reveal style="--reveal-delay:60ms" class="m-0 mb-3 text-[32px] font-bold leading-[1.12] tracking-[-.8px] text-navy sm:text-[40px]">
@@ -37,7 +37,7 @@ const MINI = [
             <li data-reveal style={`--reveal-delay:${180 + i * 80}ms`}>
               <a
                 href={b.href}
-                class="group flex cursor-pointer items-center gap-3 rounded-xl px-2 py-2 no-underline transition-[background-color,transform] duration-200 hover:translate-x-1 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-ice"
+                class="group flex cursor-pointer items-center gap-3 rounded-xl px-2 py-2 max-sm:py-[9px] no-underline transition-[background-color,transform] duration-200 hover:translate-x-1 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-ice"
               >
                 <span class="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-cyan text-navy transition-transform duration-200 group-hover:scale-110">
                   <Icon name="check" size={16} stroke={2.4} />
@@ -98,7 +98,7 @@ const MINI = [
                   </span>
                 )}
               </div>
-              <div class="mt-1.5 text-[12px] font-medium leading-snug text-[#5a6a7a]">
+              <div class="mt-1.5 text-[12px] max-sm:text-[14px] font-medium leading-snug text-[#5a6a7a]">
                 {m.label}
               </div>
             </div>

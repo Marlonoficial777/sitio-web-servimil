@@ -43,12 +43,14 @@ const VIDEOS = [
         slide se PAUSAN todos los videos (solo se reproduce el visible).
         <video> nativo: controls, SIN autoplay, playsinline, preload=metadata. */}
     <div class="tst-carousel mx-auto max-w-[520px]" data-tst-carousel data-reveal>
-      <div class="flex items-center justify-center gap-3 sm:gap-5">
+      {/* relative: en movil las flechas se superponen sobre los bordes del video
+          para que el video use todo el ancho (antes quedaba en 160px a 320px). */}
+      <div class="relative flex items-center justify-center gap-3 sm:gap-5">
         <button
           type="button"
           data-tst-prev
           aria-label="Testimonio anterior"
-          class="tst-arrow flex h-11 w-11 flex-none cursor-pointer items-center justify-center rounded-full border border-navy/15 bg-white text-navy shadow-[0_8px_22px_-8px_rgba(1,17,38,.35)] transition-[background-color,color,transform] duration-200 hover:bg-orange hover:text-white active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 sm:h-12 sm:w-12"
+          class="tst-arrow flex h-11 w-11 flex-none cursor-pointer items-center justify-center rounded-full border border-navy/15 bg-white text-navy shadow-[0_8px_22px_-8px_rgba(1,17,38,.35)] transition-[background-color,color,transform] duration-200 hover:bg-orange hover:text-white active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 sm:h-12 sm:w-12 max-sm:absolute max-sm:top-1/2 max-sm:z-10 max-sm:-translate-y-1/2 max-sm:left-0"
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
         </button>
@@ -82,14 +84,17 @@ const VIDEOS = [
           type="button"
           data-tst-next
           aria-label="Testimonio siguiente"
-          class="tst-arrow flex h-11 w-11 flex-none cursor-pointer items-center justify-center rounded-full border border-navy/15 bg-white text-navy shadow-[0_8px_22px_-8px_rgba(1,17,38,.35)] transition-[background-color,color,transform] duration-200 hover:bg-orange hover:text-white active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 sm:h-12 sm:w-12"
+          class="tst-arrow flex h-11 w-11 flex-none cursor-pointer items-center justify-center rounded-full border border-navy/15 bg-white text-navy shadow-[0_8px_22px_-8px_rgba(1,17,38,.35)] transition-[background-color,color,transform] duration-200 hover:bg-orange hover:text-white active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 sm:h-12 sm:w-12 max-sm:absolute max-sm:top-1/2 max-sm:z-10 max-sm:-translate-y-1/2 max-sm:right-0"
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
         </button>
       </div>
 
       {/* Dots indicadores (clickeables) */}
-      <div class="mt-6 flex items-center justify-center gap-2.5" role="tablist" aria-label="Elegir testimonio">
+      {/* En móvil los dots se agrandan a 44x44 de área táctil (el punto visible
+          sigue midiendo 10px gracias a box-content + bg-clip-content); por eso
+          el gap baja a 0 ahí, para que los 6 quepan en pantallas de 320px. */}
+      <div class="mt-6 flex items-center justify-center gap-2.5 max-sm:gap-0" role="tablist" aria-label="Elegir testimonio">
         {
           VIDEOS.map((_, i) => (
             <button
@@ -97,7 +102,7 @@ const VIDEOS = [
               data-tst-dot={i}
               role="tab"
               aria-label={`Ir al testimonio ${i + 1}`}
-              class="tst-dot h-2.5 w-2.5 cursor-pointer rounded-full border-0 bg-navy/25 p-0 transition-[background-color,transform] duration-200 hover:bg-navy/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2"
+              class="tst-dot h-2.5 w-2.5 cursor-pointer rounded-full border-0 bg-navy/25 p-0 transition-[background-color,transform] duration-200 hover:bg-navy/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 max-sm:box-content max-sm:bg-clip-content max-sm:p-[17px]"
             />
           ))
         }
@@ -138,7 +143,10 @@ const VIDEOS = [
     transition: transform 0.45s cubic-bezier(0.33, 1, 0.68, 1);
   }
   .tst-dot.is-active {
-    background: #F34616;
+    /* background-color (no el shorthand "background"): el shorthand resetearía
+       background-clip y en móvil pintaría de naranja los 44px del área táctil
+       en vez del punto de 10px. Mismo render en desktop. */
+    background-color: #F34616;
     transform: scale(1.25);
   }
   @media (prefers-reduced-motion: reduce) {

@@ -326,14 +326,14 @@ const PLANES: Plan[] = [
               }`}
             >
               {p.popular && (
-                <div class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-orange px-4 py-1 text-[11px] font-bold uppercase tracking-[1.2px] text-white shadow-lg">
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-orange px-4 py-1 text-[11px] max-sm:text-[13px] font-bold uppercase tracking-[1.2px] text-white shadow-lg">
                   Más popular
                 </div>
               )}
 
               <h3 class="m-0 text-[20px] font-bold tracking-[-.3px]">{p.name}</h3>
               {p.tagline && (
-                <p class="m-0 mt-1 text-[13px] font-medium text-orange">{p.tagline}</p>
+                <p class="m-0 mt-1 text-[13px] max-sm:text-[14px] font-medium text-orange">{p.tagline}</p>
               )}
 
               <div class="mt-5 flex items-end gap-1.5">
@@ -342,19 +342,19 @@ const PLANES: Plan[] = [
               </div>
 
               <div class="mt-4 rounded-2xl border border-cyan/20 bg-cyan/[.07] px-4 py-3 text-center">
-                <div class="text-[11px] font-bold uppercase tracking-[1px] text-cyan">Bono de condolencia</div>
+                <div class="text-[11px] max-sm:text-[13px] font-bold uppercase tracking-[1px] text-cyan">Bono de condolencia</div>
                 <div class="mt-0.5 text-[22px] font-bold text-white">{p.cobertura}</div>
               </div>
 
               {p.intro && (
-                <p class="mt-5 mb-0 text-[13.5px] font-semibold text-cyan">{p.intro}</p>
+                <p class="mt-5 mb-0 text-[13.5px] max-sm:text-[15px] font-semibold text-cyan">{p.intro}</p>
               )}
 
               {/* Solo los ítems que CAMBIAN entre planes; los comunes van en la
                    caja ancha "Incluido en todos los planes" debajo del grid. */}
               <ul class="mt-4 mb-7 flex flex-1 list-none flex-col gap-2.5 p-0">
                 {p.items.map((it) => (
-                  <li class="flex items-start gap-2.5 text-[13.5px] leading-[1.5] text-white/85">
+                  <li class="flex items-start gap-2.5 text-[13.5px] max-sm:text-[15px] leading-[1.5] text-white/85">
                     <span class={`mt-0.5 shrink-0 ${p.popular ? "text-orange" : "text-cyan"}`}>
                       <Icon name="check" size={17} stroke={2.6} />
                     </span>
@@ -404,7 +404,7 @@ const PLANES: Plan[] = [
         </div>
         <ul class="m-0 grid list-none grid-cols-1 gap-x-8 gap-y-3.5 p-0 sm:grid-cols-2 lg:grid-cols-3">
           {PLAN_COMUNES.map((it) => (
-            <li class="flex items-start gap-2.5 text-[13.5px] leading-[1.5] text-white/85">
+            <li class="flex items-start gap-2.5 text-[13.5px] max-sm:text-[15px] leading-[1.5] text-white/85">
               <span class="mt-0.5 shrink-0 text-orange">
                 <Icon name="check" size={17} stroke={2.6} />
               </span>
@@ -429,7 +429,9 @@ const PLANES: Plan[] = [
         </h2>
       </div>
 
-      <div class="flex flex-col gap-20 sm:gap-24">
+      {/* gap-14 en móvil (sm:gap-24 mantiene el desktop igual): ahorra ~190px
+          de scroll en los 9 bloques del zig-zag. */}
+      <div class="flex flex-col gap-14 sm:gap-24">
         {
           DETALLE.map((d, i) => {
             const even = i % 2 === 0;
@@ -505,7 +507,7 @@ const PLANES: Plan[] = [
         }
       </div>
 
-      <p data-reveal class="mx-auto mt-16 max-w-[640px] text-center text-[12.5px] leading-[1.5] text-white/45">
+      <p data-reveal class="mx-auto mt-16 max-w-[640px] text-center text-[12.5px] max-sm:text-[14px] leading-[1.5] text-white/45">
         Aplican carencias y condiciones según cada servicio. Consulta términos completos.
       </p>
     </div>
@@ -563,7 +565,7 @@ const PLANES: Plan[] = [
                 <div class="text-[#d8dee6]" aria-hidden="true">★★★★★</div>
                 <div class="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap text-orange" style="width:94%" aria-hidden="true">★★★★★</div>
               </div>
-              <span class="mt-[5px] text-[12.5px] text-[#5a6a7a]">Reseñas reales de nuestras familias</span>
+              <span class="mt-[5px] text-[12.5px] max-sm:text-[14px] text-[#5a6a7a]">Reseñas reales de nuestras familias</span>
             </div>
           </div>
 
@@ -610,7 +612,7 @@ const PLANES: Plan[] = [
                       <path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"/>
                       <path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/>
                     </svg>
-                    <span class="text-[11px] font-medium text-[#8a97a5]">Google</span>
+                    <span class="text-[11px] max-sm:text-[13px] font-medium text-[#8a97a5]">Google</span>
                   </div>
                 </div>
               </div>
@@ -773,6 +775,15 @@ const PLANES: Plan[] = [
     }
     .marquee-sep {
       margin-inline: 18px;
+    }
+    /* Área táctil de los enlaces: 27px -> 45px de alto. El padding de la banda
+       se reduce en la misma medida (20 -> 11), así la cinta sigue midiendo
+       67px de alto exactamente igual que antes. */
+    .marquee-link {
+      padding-block: 11px;
+    }
+    .marquee-band {
+      padding-block: 11px;
     }
   }
   @media (prefers-reduced-motion: reduce) {

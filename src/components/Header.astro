@@ -22,9 +22,11 @@ const isActive = (href: string) => {
   class:list={["fixed inset-x-0 top-0 z-40 bg-transparent", { "is-scrolled": solid }]}
 >
   <div
-    class="mx-auto flex h-[80px] max-w-[1200px] items-center justify-between gap-6 px-6 md:h-[88px]"
+    class="mx-auto flex h-[80px] max-w-[1200px] items-center justify-between gap-6 px-6 md:h-[88px] max-sm:gap-3"
   >
-    <span class="h-stagger flex items-center" style="animation-delay:0s">
+    {/* max-[360px]: en pantallas muy angostas el logo baja a 28px de alto para
+         que la hamburguesa no se salga del viewport. Solo afecta al header. */}
+    <span class="h-stagger flex items-center max-[360px]:[&_img]:h-7" style="animation-delay:0s">
       <Logo dark />
     </span>
 
@@ -52,7 +54,7 @@ const isActive = (href: string) => {
         href={WHATSAPP_URL}
         target="_blank"
         rel="noopener"
-        class="h-stagger inline-flex cursor-pointer items-center gap-[9px] rounded-full border border-white/30 bg-white/10 px-[22px] py-[12px] text-[16px] font-semibold text-white no-underline backdrop-blur-sm transition-colors hover:border-white/60 hover:bg-white/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+        class="h-stagger inline-flex cursor-pointer items-center gap-[9px] rounded-full border border-white/30 bg-white/10 px-[22px] py-[12px] max-sm:px-3 text-[16px] font-semibold text-white no-underline backdrop-blur-sm transition-colors hover:border-white/60 hover:bg-white/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
         style={`animation-delay:${0.12 + NAV_LINKS.length * 0.08}s`}
       >
         <Icon name="whatsapp" size={18} stroke={2} />
