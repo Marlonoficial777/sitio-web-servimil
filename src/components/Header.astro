@@ -24,17 +24,21 @@ const isActive = (href: string) => {
   <div
     class="mx-auto flex h-[80px] max-w-[1200px] items-center justify-between gap-6 px-6 md:h-[88px] max-sm:gap-3"
   >
-    {/* max-md:ml-11 → en celular/tablet el logo se corre a la derecha para dejar
-         espacio a las 3 rayitas de HeroMenu (fixed arriba-izquierda); antes el
-         logo las tapaba. Como ocupa más ancho, el logo baja por escalones en
-         pantallas angostas (<386 / <363 / <341px) para que la hamburguesa no se
-         salga del viewport. Solo afecta al header por debajo de md. */}
-    <span class="h-stagger flex items-center max-md:ml-11 max-[386px]:[&_img]:h-7 max-[363px]:[&_img]:h-6 max-[341px]:[&_img]:h-5" style="animation-delay:0s">
+    {/* El logo deja espacio a las 3 rayitas de HeroMenu (fixed arriba-izquierda),
+         que antes quedaban tapadas:
+         - <lg: ml-11 fijo (rayitas en left-3). Como ocupa más ancho, el logo baja
+           por escalones en pantallas angostas (<386 / <363 / <341px) para que la
+           hamburguesa no se salga del viewport.
+         - lg+: rayitas en left-10 (terminan en 84px). El margen compensa solo lo
+           que falta para que el logo arranque en ~104px y vale 0 desde ~1360px,
+           donde el contenedor centrado ya deja el espacio. */}
+    <span class="h-stagger flex items-center max-lg:ml-11 lg:ml-[max(0px,calc(80px_-_max(0px,calc((100vw_-_1200px)/2))))] max-[386px]:[&_img]:h-7 max-[363px]:[&_img]:h-6 max-[341px]:[&_img]:h-5" style="animation-delay:0s">
       <Logo dark />
     </span>
 
-    <!-- Navegación desktop -->
-    <nav class="hidden items-center gap-[34px] md:flex" aria-label="Principal">
+    <!-- Navegación desktop (desde lg: en tablet no cabe junto al logo y las rayitas
+         de HeroMenu, el logo se aplastaba; ahí se usa el menú móvil) -->
+    <nav class="hidden items-center gap-[34px] lg:flex" aria-label="Principal">
       {
         NAV_LINKS.map((l, i) => (
           <a
@@ -71,7 +75,7 @@ const isActive = (href: string) => {
         aria-label="Abrir menú"
         aria-expanded="false"
         aria-controls="mobileNav"
-        class="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/30 text-white transition-transform active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-navy md:hidden"
+        class="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/30 text-white transition-transform active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-navy lg:hidden"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
           <path d="M3 6h18M3 12h18M3 18h18" />
@@ -83,7 +87,7 @@ const isActive = (href: string) => {
   <!-- Navegación móvil desplegable -->
   <nav
     id="mobileNav"
-    class="hidden border-t border-white/10 bg-navy/95 px-6 py-4 backdrop-blur-md md:hidden"
+    class="hidden border-t border-white/10 bg-navy/95 px-6 py-4 backdrop-blur-md lg:hidden"
     aria-label="Principal móvil"
   >
     <ul class="flex flex-col gap-1">
