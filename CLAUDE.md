@@ -69,6 +69,11 @@ Envuelve TODAS las páginas: `Base` + `Header` + `<main><slot/></main>` + `Foote
 - `fixed` overlay. Transparente sobre hero; al scroll (>40px) gana `.is-scrolled` → fondo sólido `rgba(1,17,38,.92)` + sombra + blur. Prop `solid` (vía `data-solid`) → siempre sólido (lo usan páginas internas).
 - **Link activo:** `aria-current="page"` + color cian, según `Astro.url.pathname` (desktop + móvil).
 - Altura `h-[80px] md:h-[88px]`, 3 alineados (`items-center`). Stagger `.h-stagger`. Hover links `scale-[1.06]`+cian.
+- ⚠️ **LOGO vs 3 RAYITAS (2026-09-13, commits `2fa6938` + `92c5fa9`)**: `HeroMenu.astro` (3 rayitas, `fixed` arriba-izquierda, en TODAS las páginas vía `Page.astro`) quedaba **tapado por el logo** en todo ancho < ~1360px, y su panel abierto (sin fondo) se mezclaba con el `<h1>` del hero. Arreglo:
+  - **Enlaces desktop desde `lg` (1024px), no `md`**: en tablet (768–1023) no cabían logo + 4 enlaces + WhatsApp + rayitas y el logo **se aplastaba** (proporción 2.29 vs 5.69). Tablet usa el header móvil (hamburguesa `#navToggle` + WhatsApp).
+  - **Logo**: `max-lg:ml-11` (rayitas en `left-3`) + escalones de alto en pantallas angostas (`<386px` h-7, `<363px` h-6, `<341px` h-5) para que la hamburguesa no se salga. Desde `lg`: `ml-[max(0px,calc(80px - max(0px,(100vw-1200px)/2)))]` → margen solo lo que falta para arrancar en ~104px; **vale 0 desde ~1360px** (1366/1440/1920 idénticos a antes).
+  - **Panel**: fondo `bg-navy/95` + blur + `rounded-2xl` en todos los tamaños; líneas a lo ancho, la última sin borde.
+  - **Clics**: la caja `#heroMenu` es `fixed` y mide lo que el panel **aunque esté cerrado** → se comía los clics de lo que había debajo (logo, enlaces al hacer scroll; ya pasaba antes a 1440). Ahora `pointer-events-none` en la caja, `pointer-events-auto` en el botón y `#heroMenu.is-open #heroMenuPanel { pointer-events:auto }`. **Si se toca HeroMenu, conservar esto** (`pointer-events` se hereda: sin la regla `.is-open` los enlaces del panel no reciben clic).
 
 ### Home (`index.astro`) — orden
 1. **Hero** (`Hero`) — video Cloudinary full-screen. Título 2 líneas, sin badge, CTA WhatsApp izquierda. **Video sin `q_auto/f_auto`** (calidad original, pesa más).
