@@ -24,9 +24,12 @@ const isActive = (href: string) => {
   <div
     class="mx-auto flex h-[80px] max-w-[1200px] items-center justify-between gap-6 px-6 md:h-[88px] max-sm:gap-3"
   >
-    {/* max-[360px]: en pantallas muy angostas el logo baja a 28px de alto para
-         que la hamburguesa no se salga del viewport. Solo afecta al header. */}
-    <span class="h-stagger flex items-center max-[360px]:[&_img]:h-7" style="animation-delay:0s">
+    {/* max-md:ml-11 → en celular/tablet el logo se corre a la derecha para dejar
+         espacio a las 3 rayitas de HeroMenu (fixed arriba-izquierda); antes el
+         logo las tapaba. Como ocupa más ancho, el logo baja por escalones en
+         pantallas angostas (<386 / <363 / <341px) para que la hamburguesa no se
+         salga del viewport. Solo afecta al header por debajo de md. */}
+    <span class="h-stagger flex items-center max-md:ml-11 max-[386px]:[&_img]:h-7 max-[363px]:[&_img]:h-6 max-[341px]:[&_img]:h-5" style="animation-delay:0s">
       <Logo dark />
     </span>
 

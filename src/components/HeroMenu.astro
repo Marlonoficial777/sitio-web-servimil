@@ -5,7 +5,7 @@
 {/* === MENÚ VERTICAL HERO (sup. izq., reversible) — fixed sobre el header === */}
 <div
   id="heroMenu"
-  class="fixed top-[22px] left-6 z-50 md:top-[26px] md:left-10"
+  class="fixed top-[22px] left-6 z-50 md:top-[26px] md:left-10 max-md:top-[18px] max-md:left-3"
 >
   {/* Botón 3 rayitas */}
   <button
@@ -23,7 +23,7 @@
   {/* Lista desplegable */}
   <nav
     id="heroMenuPanel"
-    class="pointer-events-none mt-3 flex -translate-y-2 flex-col opacity-0 transition-all duration-300 ease-out"
+    class="pointer-events-none mt-3 flex -translate-y-2 flex-col opacity-0 transition-all duration-300 ease-out max-md:min-w-[220px] max-md:rounded-2xl max-md:border max-md:border-white/10 max-md:bg-navy/95 max-md:px-5 max-md:py-1.5 max-md:shadow-2xl max-md:backdrop-blur-md"
     aria-label="Navegación rápida"
     aria-hidden="true"
   >
@@ -102,5 +102,19 @@
     color: #96dded;
     padding-left: 10px;
     outline: none;
+  }
+  /* Celular/tablet: el panel lleva fondo navy (clases max-md: del <nav>) para no
+     mezclarse con el título del hero. Dentro de la caja las líneas van a lo ancho
+     y sin borde en los extremos. */
+  @media (max-width: 767.98px) {
+    .hm-item {
+      width: auto;
+    }
+    .hm-item:first-child {
+      border-top: 0;
+    }
+    .hm-item:last-child {
+      border-bottom: 0;
+    }
   }
 </style>
